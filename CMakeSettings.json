@@ -1,0 +1,65 @@
+{
+  "configurations": [
+    {
+      "name": "Visual Studio 15 x86",
+      "generator": "Visual Studio 15 2017",
+      "buildRoot": "C:\\Users\\Kay\\Desktop\\Build",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
+        {
+          "name": "PACKAGE_DIR",
+          "value": "${projectDir}\\build_packages"
+        }
+      ]
+    },
+    {
+      "name": "Visual Studio 15 x64",
+      "generator": "Visual Studio 15 2017 Win64",
+      "buildRoot": "C:\\Users\\Kay\\Desktop\\Build",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
+        {
+          "name": "PACKAGE_DIR",
+          "value": "${projectDir}\\build_packages"
+        }
+      ]
+    },
+    {
+      "name": "Visual Studio 15 x86 PACKAGES",
+      "generator": "Visual Studio 15 2017",
+      "buildRoot": "C:\\Users\\Kay\\Desktop\\Build\\_Packages",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
+        {
+          "name": "PACKAGE_DIR",
+          "value": "${projectDir}\\build_packages"
+        },
+        {
+          "name": "BUILD_PACKAGES",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "name": "Visual Studio 15 x64 PACKAGES",
+      "generator": "Visual Studio 15 2017 Win64",
+      "buildRoot": "C:\\Users\\Kay\\Desktop\\Build\\_Packages",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
+        {
+          "name": "PACKAGE_DIR",
+          "value": "${projectDir}\\build_packages"
+        },
+        {
+          "name": "BUILD_PACKAGES",
+          "value": "true"
+        }
+      ]
+    }
+
+  ]
+}
