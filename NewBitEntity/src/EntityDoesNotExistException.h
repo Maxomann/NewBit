@@ -10,7 +10,7 @@ namespace nb
 			class EntityDoesNotExistException : public std::exception
 			{
 			public:
-				virtual const char* what()const override;
+				DLL_EXPORT virtual const char* what()const override;
 			};
 		}
 	}

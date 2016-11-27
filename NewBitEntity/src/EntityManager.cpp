@@ -9,6 +9,7 @@ void nb::entity::EntityManager::executeDeleteEntities()
 			if ( *it == &el )
 			{
 				m_toDelete.erase( remove( m_toDelete.begin(), m_toDelete.end(), &el ) );
+				el.destroy();
 				return true;
 			}
 		}
@@ -21,7 +22,7 @@ void nb::entity::EntityManager::executeDeleteEntities()
 	}
 }
 
-nb::entity::Entity * nb::entity::EntityManager::createEntity( std::vector<std::unique_ptr<Component>>& components )
+nb::entity::Entity * nb::entity::EntityManager::createEntity( std::vector<std::unique_ptr<Component>>&& components )
 {
 	Entity entity;
 	for ( auto& el : components )
@@ -35,4 +36,9 @@ nb::entity::Entity * nb::entity::EntityManager::createEntity( std::vector<std::u
 void nb::entity::EntityManager::deleteEntity( Entity * entity )
 {
 	m_toDelete.push_back( entity );
+}
+
+DLL_EXPORT int nb::entity::EntityManager::getEntityCount() const
+{
+	return m_entities.size();
 }

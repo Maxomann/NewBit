@@ -4,7 +4,7 @@ project(NewBit)
 function(nb_target_add_libraries TARGET_NAME)
 
 	# SFML
-	set(CMAKE_MODULE_PATH "${PACKAGE_DIR}/sfml/cmake/Modules" ${CMAKE_MODULE_PATH})
+	set(CMAKE_MODULE_PATH "${PACKAGE_DIR}/sfml/cmake/Modules")
 	set(SFML_ROOT "${PACKAGE_DIR}/sfml")
 	find_package(SFML 2 REQUIRED system window graphics network audio)
 	if(SFML_FOUND)
@@ -15,30 +15,32 @@ function(nb_target_add_libraries TARGET_NAME)
 	# json
 	target_include_directories(${TARGET_NAME} PUBLIC "${PACKAGE_DIR}/json/include")
 
+	# UnitTest++
+	set(UnitTest++_DIR "${PACKAGE_DIR}/unittest/lib/cmake/UnitTest++")
+	find_package (UnitTest++)
+	if(UnitTest++_FOUND)
+		target_include_directories(${TARGET_NAME} PUBLIC ${UTPP_INCLUDE_DIRS})
+		target_link_libraries(${TARGET_NAME} "${PACKAGE_DIR}/unittest/lib/UnitTest++.lib")
+
+	endif()
+
 endfunction()
 
 if(BUILD_PACKAGES)
 	add_subdirectory(build_packages)
 else()
-	set(EXECUTABLE_NAME NewBitEntity)
+	include_directories(.)
 
-	FILE(GLOB HEADER_FILES NewBitEntity/src/*.h)
-	FILE(GLOB SOURCE_FILES NewBitEntity/src/*.cpp)
-	add_library(${EXECUTABLE_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-	####
+	add_subdirectory(NewBitEntity)
 
-	# add_subdirectory(NewBitCore)
-	set(EXECUTABLE_NAME NewBitCore)
+	add_subdirectory(NewBitCore)
 
-	FILE(GLOB HEADER_FILES NewBitCore/src/*.h)
-	FILE(GLOB SOURCE_FILES NewBitCore/src/*.cpp)
-	add_executable(${EXECUTABLE_NAME} ${HEADER_FILES} ${SOURCE_FILES})
-	target_link_libraries(${EXECUTABLE_NAME} NewBitEntity)
+	if(BUILD_TEST)
+		add_subdirectory(NewBitEntityTest)
+	endif()
 
-	nb_target_add_libraries(${EXECUTABLE_NAME})
-
-	####
-
-	include_directories(./)
 endif()

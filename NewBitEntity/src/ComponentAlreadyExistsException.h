@@ -11,9 +11,9 @@ namespace nb
 			{
 				const std::string m_message;
 			public:
-				ComponentAlreadyExistsException( const std::string& componentTypeName );
+				DLL_EXPORT ComponentAlreadyExistsException( const std::string& componentTypeName );
 
-				virtual const char* what()const override;
+				DLL_EXPORT virtual const char* what()const override;
 			};
 		}
 	}

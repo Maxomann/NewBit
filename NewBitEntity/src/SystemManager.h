@@ -26,7 +26,7 @@ namespace nb
 			SystemManager( EntityManager& entityManager );
 
 			template < class T >
-			System* addSystem()
+			T* addSystem()
 			{
 				auto system = std::make_unique<T>();
 
@@ -40,16 +40,16 @@ namespace nb
 				{
 					throw exception::SystemAlreadyExistsException( type.name() );
 				}
-				return insertResult.first->second.get();
+				return (T*) insertResult.first->second.get();
 			};
 
 			template < class T >
-			System* getSystem()const
+			T* getSystem()const
 			{
-				const typeIndex = std::type_index( typeid( T ) );
+				const auto typeIndex = std::type_index( typeid( T ) );
 				try
 				{
-					return m_systems.at( typeIndex ).get();
+					return (T*) m_systems.at( typeIndex ).get();
 				}
 				catch ( std::out_of_range )
 				{
@@ -60,7 +60,7 @@ namespace nb
 			template < class T >
 			void removeSystem()
 			{
-				const typeIndex = std::type_index( typeid( T ) );
+				const auto typeIndex = std::type_index( typeid( T ) );
 				try
 				{
 					auto& system = m_systems.at( typeIndex );
@@ -73,7 +73,7 @@ namespace nb
 				}
 			};
 
-			void initSystems();
+			DLL_EXPORT void initSystems();
 		};
 	}
 }

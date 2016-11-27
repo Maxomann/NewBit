@@ -36,12 +36,12 @@ namespace nb
 			};
 
 			template < class T >
-			Component* getComponent()const
+			T* getComponent()const
 			{
-				const typeIndex = std::type_index( typeid( T ) );
+				const auto typeIndex = std::type_index( typeid( T ) );
 				try
 				{
-					return m_components.at( typeIndex ).get();
+					return (T*) m_components.at( typeIndex ).get();
 				}
 				catch ( std::out_of_range )
 				{
@@ -52,7 +52,7 @@ namespace nb
 			template < class T >
 			void removeComponent()
 			{
-				const typeIndex = std::type_index( typeid( T ) );
+				const auto typeIndex = std::type_index( typeid( T ) );
 				try
 				{
 					auto& component = m_components.at( typeIndex );
@@ -66,6 +66,8 @@ namespace nb
 			};
 
 			void init();
+			/* Not called on World::~World() */
+			void destroy();
 		};
 	}
 }

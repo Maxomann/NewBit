@@ -11,9 +11,9 @@ namespace nb
 			{
 				const std::string m_message;
 			public:
-				SystemDoesNotExistException( const std::string& systemTypeName );
+				DLL_EXPORT SystemDoesNotExistException( const std::string& systemTypeName );
 
-				virtual const char* what()const override;
+				DLL_EXPORT virtual const char* what()const override;
 			};
 		}
 	}

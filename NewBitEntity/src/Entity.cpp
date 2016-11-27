@@ -12,3 +12,9 @@ void nb::entity::Entity::init()
 	}
 	m_isInit = true;
 }
+
+void nb::entity::Entity::destroy()
+{
+	for ( auto& el : m_components )
+		el.second->destroy( *this );
+}

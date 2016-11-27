@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "typedefs.h"
 #include "Entity.h"
 #include "EntityDoesNotExistException.h"
 
@@ -17,8 +16,10 @@ namespace nb
 			void executeDeleteEntities();
 
 		public:
-			Entity* createEntity( std::vector<std::unique_ptr<Component>>& components );
-			void deleteEntity( Entity* entity );
+			DLL_EXPORT Entity* createEntity( std::vector<std::unique_ptr<Component>>&& components );
+			DLL_EXPORT void deleteEntity( Entity* entity );
+
+			DLL_EXPORT int getEntityCount()const;
 		};
 	}
 }

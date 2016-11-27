@@ -10,7 +10,7 @@ namespace nb
 			class EntityAlreadyInitializedException : public std::exception
 			{
 			public:
-				virtual const char* what()const override;
+				DLL_EXPORT virtual const char* what()const override;
 			};
 		}
 	}
