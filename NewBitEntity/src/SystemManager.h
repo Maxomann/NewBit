@@ -16,8 +16,12 @@ namespace nb
 			EntityManager* r_entityManager;
 
 			std::unordered_map<std::type_index, std::unique_ptr<System>> m_systems;
+			std::vector<System*> m_systemsByUpdateOrder;
 
 			bool m_isInit = false;
+
+			bool m_isSorted = false;
+			void sortSystemsByUpdateOrder();
 
 		protected:
 			void updateSystems();
@@ -40,7 +44,11 @@ namespace nb
 				{
 					throw exception::SystemAlreadyExistsException( type.name() );
 				}
-				return (T*) insertResult.first->second.get();
+				auto systemPointer = (T*) insertResult.first->second.get();
+
+				m_systemsByUpdateOrder.push_back( systemPointer );
+				m_isSorted = false;
+				return systemPointer;
 			};
 
 			template < class T >
@@ -65,6 +73,11 @@ namespace nb
 				{
 					auto& system = m_systems.at( typeIndex );
 					system->destroy( *this, *r_entityManager );
+					m_systemsByUpdateOrder.erase(
+						std::remove( m_systemsByUpdateOrder.begin(),
+									 m_systemsByUpdateOrder.end(),
+									 system.get() )
+					);
 					m_systems.erase( typeIndex );
 				}
 				catch ( std::out_of_range )

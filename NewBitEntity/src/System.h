@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "UpdateOrder.h"
 
 namespace nb
 {
@@ -13,12 +14,14 @@ namespace nb
 		public:
 			System() = delete;
 			template < class DerivedType >
-			System( DerivedType* derived )
-				: type( typeid( DerivedType ) )
+			System( DerivedType* derived, UpdateOrder updateOrder = 0 )
+				: type( typeid( DerivedType ) ),
+				updateOrder( updateOrder )
 			{};
 			System( const System& system ) = delete;
 			System( System&& system ) = default;
-			const std::type_index type = typeid( System );
+			const std::type_index type;
+			const UpdateOrder updateOrder;
 
 			virtual void init( const SystemManager& systemManager, const EntityManager& entityManager ) = 0;
 			virtual void update( const SystemManager& systemManager, const EntityManager& entityManager ) = 0;
