@@ -7,13 +7,11 @@ namespace nb
 	{
 		namespace exception
 		{
-			class SystemAlreadyExistsException : public std::exception
+			class SystemAlreadyExistsException : public std::runtime_error
 			{
 				const std::string m_message;
 			public:
 				DLL_EXPORT SystemAlreadyExistsException( const std::string& m_systemTypeName );
-
-				DLL_EXPORT virtual const char* what()const override;
 			};
 		}
 	}

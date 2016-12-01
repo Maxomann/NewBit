@@ -1,6 +1,5 @@
 #include "SystemManagerAlreadyInitializedException.h"
 
-const char * nb::entity::exception::SystemManagerAlreadyInitializedException::what() const
-{
-	return "SystemManagerAlreadyInitializedException";
-}
+nb::entity::exception::SystemManagerAlreadyInitializedException::SystemManagerAlreadyInitializedException()
+	: std::runtime_error( "SystemManagerAlreadyInitializedException" )
+{}

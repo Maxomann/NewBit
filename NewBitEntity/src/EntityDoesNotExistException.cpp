@@ -1,6 +1,5 @@
 #include "EntityDoesNotExistException.h"
 
-const char * nb::entity::exception::EntityDoesNotExistException::what() const
-{
-	return "EntityDoesNotExistException";
-}
+nb::entity::exception::EntityDoesNotExistException::EntityDoesNotExistException()
+	: std::runtime_error( "EntityDoesNotExistException" )
+{}

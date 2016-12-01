@@ -7,13 +7,11 @@ namespace nb
 	{
 		namespace exception
 		{
-			class SystemDoesNotExistException : public std::exception
+			class SystemDoesNotExistException : public std::runtime_error
 			{
 				const std::string m_message;
 			public:
 				DLL_EXPORT SystemDoesNotExistException( const std::string& systemTypeName );
-
-				DLL_EXPORT virtual const char* what()const override;
 			};
 		}
 	}

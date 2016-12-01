@@ -10,5 +10,6 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <stdexcept>
 
 #define DLL_EXPORT __declspec(dllexport)

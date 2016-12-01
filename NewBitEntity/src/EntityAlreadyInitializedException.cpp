@@ -1,6 +1,5 @@
 #include "EntityAlreadyInitializedException.h"
 
-const char* nb::entity::exception::EntityAlreadyInitializedException::what() const
-{
-	return "EntityAlreadyInitializedException";
-}
+nb::entity::exception::EntityAlreadyInitializedException::EntityAlreadyInitializedException()
+	: std::runtime_error( "EntityAlreadyInitializedException" )
+{}

@@ -36,6 +36,7 @@ SUITE( NewBitEntity )
 		world.afterUpdate();
 
 		CHECK( world.getEntityCount() == 0 );
+
 		world.removeSystem<TestSystem>();
 	}
 }

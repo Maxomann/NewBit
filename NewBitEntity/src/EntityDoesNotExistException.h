@@ -7,10 +7,10 @@ namespace nb
 	{
 		namespace exception
 		{
-			class EntityDoesNotExistException : public std::exception
+			class EntityDoesNotExistException : public std::runtime_error
 			{
 			public:
-				DLL_EXPORT virtual const char* what()const override;
+				DLL_EXPORT EntityDoesNotExistException();
 			};
 		}
 	}

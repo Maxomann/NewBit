@@ -7,10 +7,10 @@ namespace nb
 	{
 		namespace exception
 		{
-			class SystemManagerAlreadyInitializedException : public std::exception
+			class SystemManagerAlreadyInitializedException : public std::runtime_error
 			{
 			public:
-				virtual const char* what()const override;
+				DLL_EXPORT SystemManagerAlreadyInitializedException();
 			};
 		}
 	}

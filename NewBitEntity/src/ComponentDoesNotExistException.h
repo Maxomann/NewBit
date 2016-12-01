@@ -7,13 +7,10 @@ namespace nb
 	{
 		namespace exception
 		{
-			class ComponentDoesNotExistException : public std::exception
+			class ComponentDoesNotExistException : public std::runtime_error
 			{
-				const std::string m_message;
 			public:
 				DLL_EXPORT ComponentDoesNotExistException( const std::string& componentTypeName );
-
-				DLL_EXPORT virtual const char* what()const override;
 			};
 		}
 	}
