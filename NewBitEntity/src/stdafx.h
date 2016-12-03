@@ -11,5 +11,6 @@
 #include <algorithm>
 #include <functional>
 #include <stdexcept>
+#include <utility>
 
 #define DLL_EXPORT __declspec(dllexport)

@@ -24,6 +24,9 @@ function(nb_target_add_libraries TARGET_NAME)
 
 	endif()
 
+	# libsigc++
+	#set(libsig_DIR "${PACKAGE_DIR}/libsic/"
+
 endfunction()
 
 if(BUILD_PACKAGES)
@@ -36,11 +39,12 @@ else()
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 	add_subdirectory(NewBitEntity)
+	add_subdirectory(NewBitEntityTest)
+
+	add_subdirectory(NewBitTexturePacker)
 
 	add_subdirectory(NewBitCore)
 
-	if(BUILD_TEST)
-		add_subdirectory(NewBitEntityTest)
-	endif()
+
 
 endif()

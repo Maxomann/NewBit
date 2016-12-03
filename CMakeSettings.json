@@ -59,41 +59,6 @@
           "value": "true"
         }
       ]
-    },
-    {
-      "name": "Visual Studio 15 x86 TEST",
-      "generator": "Visual Studio 15 2017",
-      "buildRoot": "C:\\Users\\Kay\\Desktop\\Build",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${projectDir}\\build_packages"
-        },
-        {
-          "name": "BUILD_TEST",
-          "value": "true"
-        }
-      ]
-    },
-    {
-      "name": "Visual Studio 15 x64 TEST",
-      "generator": "Visual Studio 15 2017 Win64",
-      "buildRoot": "C:\\Users\\Kay\\Desktop\\Build",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${projectDir}\\build_packages"
-        },
-        {
-          "name": "BUILD_TEST",
-          "value": "true"
-        }
-      ]
     }
-
   ]
 }
