@@ -42,6 +42,7 @@ else()
 	add_subdirectory(NewBitEntityTest)
 
 	add_subdirectory(NewBitTexturePacker)
+	add_subdirectory(NewBitTexturePackerTest)
 
 	add_subdirectory(NewBitCore)
 

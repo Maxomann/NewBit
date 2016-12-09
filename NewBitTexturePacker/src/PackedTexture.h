@@ -26,7 +26,7 @@ namespace nb
 			std::vector<std::pair<TextureId, sf::Texture>> m_subTextures;
 
 			const unsigned int m_maximumSize = 0;
-			std::vector<TextureReference> m_generatedTextureReferences;
+			std::unordered_map<TextureId, TextureReference> m_generatedTextureReferences;
 			std::deque<sf::RenderTexture> m_generatedTextures;
 
 			void m_throwIfGenerated();
@@ -44,8 +44,7 @@ namespace nb
 
 			void generate();
 
-			sf::Texture getTexture();
-			sf::Image renderAsImage()const;
+			std::vector<sf::Image> renderAsImages()const;
 
 			TextureReference getTextureReference( const TextureId& textureId )const;
 

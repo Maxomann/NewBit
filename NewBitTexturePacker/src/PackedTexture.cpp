@@ -74,6 +74,8 @@ void nb::tp::PackedTexture::generate()
 
 		if ( textureSize.x > m_maximumSize || textureSize.y > m_maximumSize )
 			throw exception::TextureTooLargeException( pack.id );
+
+		subTextureRects.push_back( pack );
 	}
 
 	// sort rects
@@ -90,7 +92,6 @@ void nb::tp::PackedTexture::generate()
 	{
 		m_generatedTextures.emplace_back();
 		m_generatedTextures.back().create( m_maximumSize, m_maximumSize, false );
-		m_generatedTextures.back().clear( sf::Color( 0, 0, 0, 0 ) );
 	}
 	// draw textures
 	for ( const auto& el : subTextureRects )
@@ -105,17 +106,34 @@ void nb::tp::PackedTexture::generate()
 	// generate TextureReferences
 	for ( const auto& el : subTextureRects )
 	{
-		m_generatedTextureReferences.push_back(
-			TextureReference( el.id,
-							  m_generatedTextures.at( el.destinationTextureId ).getTexture(),
-							  sf::Vector2i( el.rect.top, el.rect.left ) )
-		);
+		m_generatedTextureReferences.emplace(
+			make_pair( el.id,
+					   TextureReference( el.id,
+										 m_generatedTextures.at( el.destinationTextureId ).getTexture(),
+										 sf::Vector2i( el.rect.top, el.rect.left )
+					   ) ) );
 	}
 	// clear m_subTextures
 	m_subTextures.clear();
 
 	// set generated flag
 	m_isGenerated = true;
+}
+
+std::vector<sf::Image> nb::tp::PackedTexture::renderAsImages() const
+{
+	std::vector<sf::Image> retVal;
+	retVal.resize( m_generatedTextures.size() );
+
+	for ( unsigned int i = 0; i < m_generatedTextures.size(); ++i )
+		retVal.at( i ) = m_generatedTextures.at( i ).getTexture().copyToImage();
+
+	return retVal;
+}
+
+nb::tp::TextureReference nb::tp::PackedTexture::getTextureReference( const TextureId & textureId ) const
+{
+	return m_generatedTextureReferences.at( textureId );
 }
 
 void nb::tp::PackedTexture::packingAlgorithm( std::vector<PackingElement>& elements, const unsigned int maximumTextureSize )

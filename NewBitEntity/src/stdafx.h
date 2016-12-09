@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <typeinfo>
 #include <typeindex>
 #include <list>

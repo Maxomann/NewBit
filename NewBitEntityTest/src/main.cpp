@@ -44,7 +44,6 @@ SUITE( NewBitEntity )
 int main()
 {
 	auto retVal = UnitTest::RunAllTests();
-	if ( retVal )
-		system( "pause" );
+	system( "pause" );
 	return retVal;
 }

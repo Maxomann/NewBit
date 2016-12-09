@@ -2,6 +2,6 @@
 
 #include <UnitTest++\UnitTest++.h>
 
-#include <NewBitEntity\src\NewBitEntity.h>
+#include <NewBitTexturePacker\src\NewBitTexturePacker.h>
 
 #include <iostream>

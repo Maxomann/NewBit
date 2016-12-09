@@ -10,5 +10,7 @@
 #include <sstream>
 #include <tuple>
 #include <deque>
+#include <unordered_map>
+#include <filesystem>
 
 #include <SFML/Graphics.hpp>
