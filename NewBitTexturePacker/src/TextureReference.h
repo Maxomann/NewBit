@@ -9,13 +9,13 @@ namespace nb
 		class TextureReference
 		{
 			TextureId m_id;
-			sf::Texture& m_textureRef;
+			const sf::Texture& m_textureRef;
 			sf::Vector2i m_positionOnTexture;
 
 			sf::IntRect m_textureRect;
 
 		public:
-			TextureReference( TextureId id, sf::Texture& textureRef, sf::Vector2i positionOnTexture );
+			TextureReference( TextureId id, const sf::Texture& textureRef, sf::Vector2i positionOnTexture );
 			TextureReference( const TextureReference& tex ) = default;
 			TextureReference( TextureReference&& tex ) = default;
 

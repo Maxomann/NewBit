@@ -2,11 +2,21 @@
 #include "stdafx.h"
 #include "TextureReference.h"
 #include "PackedTextureGenerationStateException.h"
+#include "PackedTextureDuplicateException.h"
+#include "TextureTooLargeException.h"
 
 namespace nb
 {
 	namespace tp
 	{
+		struct PackingElement
+		{
+			TextureId id;
+			sf::Texture* texture;
+			sf::IntRect rect;
+			unsigned int destinationTextureId;
+		};
+
 		class PackedTexture
 		{
 			PackedTextureId m_id;
@@ -15,11 +25,15 @@ namespace nb
 
 			std::vector<std::pair<TextureId, sf::Texture>> m_subTextures;
 
+			const unsigned int m_maximumSize = 0;
+			std::vector<TextureReference> m_generatedTextureReferences;
+			std::deque<sf::RenderTexture> m_generatedTextures;
+
 			void m_throwIfGenerated();
 			void m_throwIfNotGenerated();
 
 		public:
-			PackedTexture( PackedTextureId id );
+			PackedTexture( PackedTextureId id, unsigned int maximumSize );
 			PackedTexture( const PackedTexture& tex ) = delete;
 			PackedTexture( PackedTexture&& tex ) = delete;
 
@@ -34,6 +48,8 @@ namespace nb
 			sf::Image renderAsImage()const;
 
 			TextureReference getTextureReference( const TextureId& textureId )const;
+
+			static void packingAlgorithm( std::vector<PackingElement>& elements, const unsigned int maximumTextureSize );
 		};
 	}
 }

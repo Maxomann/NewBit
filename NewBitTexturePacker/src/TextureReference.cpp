@@ -2,7 +2,7 @@
 using namespace std;
 
 nb::tp::TextureReference::TextureReference( TextureId id,
-											sf::Texture & textureRef,
+											const sf::Texture & textureRef,
 											sf::Vector2i positionOnTexture )
 	: m_id( id ),
 	m_textureRef( textureRef ),
