@@ -14,3 +14,5 @@
 #include <filesystem>
 
 #include <SFML/Graphics.hpp>
+
+#define DLL_EXPORT __declspec(dllexport)

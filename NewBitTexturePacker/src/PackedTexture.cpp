@@ -13,9 +13,22 @@ void nb::tp::PackedTexture::m_throwIfNotGenerated()
 		throw exception::PackedTextureGenerationStateException( m_id, m_isGenerated );
 }
 
-nb::tp::PackedTexture::PackedTexture( PackedTextureId id, unsigned int maximumSize )
+unsigned int nb::tp::PackedTexture::constructMaximumSize( unsigned int maximumSize, bool useRecommendedMaxSize )
+{
+	if ( useRecommendedMaxSize )
+	{
+		if ( maximumSize > nb::tp::PackedTexture::RECOMMENDED_MAX_SIZE )
+			return nb::tp::PackedTexture::RECOMMENDED_MAX_SIZE;
+		else
+			return maximumSize;
+	}
+	else
+		return maximumSize;
+}
+
+nb::tp::PackedTexture::PackedTexture( PackedTextureId id, unsigned int maximumSize, bool useRecommendedMaxSize )
 	: m_id( id ),
-	m_maximumSize( maximumSize )
+	m_maximumSize( constructMaximumSize( maximumSize, useRecommendedMaxSize ) )
 {}
 
 nb::tp::PackedTextureId nb::tp::PackedTexture::getId() const
@@ -136,5 +149,13 @@ nb::tp::TextureReference nb::tp::PackedTexture::getTextureReference( const Textu
 	return m_generatedTextureReferences.at( textureId );
 }
 
-void nb::tp::PackedTexture::packingAlgorithm( std::vector<PackingElement>& elements, const unsigned int maximumTextureSize )
-{}
+void nb::tp::PackedTexture::packingAlgorithm( std::vector<PackingElement>& elements,
+											  const unsigned int maximumTextureSize )
+{
+	int count = 0;
+	for ( auto& el : elements )
+	{
+		el.destinationTextureId = count / 2;
+		count++;
+	}
+}

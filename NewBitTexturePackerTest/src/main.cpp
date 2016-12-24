@@ -27,7 +27,7 @@ int main()
 
 	auto maxTexSize = sf::Texture::getMaximumSize();
 	cout << "MaxTextureSize: " << maxTexSize << endl;
-	nb::tp::PackedTexture packedTexture( 0, maxTexSize );
+	nb::tp::PackedTexture packedTexture( 0, 800 );
 	nb::tp::TextureId texId = 0;
 	for ( const auto& el : imagesToPack )
 	{
@@ -36,12 +36,11 @@ int main()
 	}
 	packedTexture.generate();
 
-	int a = 0;
-	/*auto& renderResult = packedTexture.renderAsImages();
+	auto& renderResult = packedTexture.renderAsImages();
 	unsigned int count = 0;
 	for ( const auto& el : renderResult )
 	{
 		el.saveToFile( "data/TexturePackerTestImages/result/result_image" + std::to_string( count ) + ".png" );
 		count++;
-	}*/
+	}
 }

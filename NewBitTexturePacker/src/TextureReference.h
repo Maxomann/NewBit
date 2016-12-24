@@ -15,16 +15,16 @@ namespace nb
 			sf::IntRect m_textureRect;
 
 		public:
-			TextureReference( TextureId id, const sf::Texture& textureRef, sf::Vector2i positionOnTexture );
-			TextureReference( const TextureReference& tex ) = default;
-			TextureReference( TextureReference&& tex ) = default;
+			DLL_EXPORT TextureReference( TextureId id, const sf::Texture& textureRef, sf::Vector2i positionOnTexture );
+			DLL_EXPORT TextureReference( const TextureReference& tex ) = default;
+			DLL_EXPORT TextureReference( TextureReference&& tex ) = default;
 
-			TextureId getId()const;
+			DLL_EXPORT TextureId getId()const;
 
-			void setTextureRect( sf::IntRect textureRect );
-			sf::IntRect getTextureRect()const;
+			DLL_EXPORT void setTextureRect( sf::IntRect textureRect );
+			DLL_EXPORT sf::IntRect getTextureRect()const;
 
-			void applyToSprite( sf::Sprite& sprite )const;
+			DLL_EXPORT void applyToSprite( sf::Sprite& sprite )const;
 		};
 	}
 }
