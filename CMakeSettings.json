@@ -1,8 +1,10 @@
 {
+  // Informationen zu dieser Datei finden Sie unter https://go.microsoft.com//fwlink//?linkid=834763.
   "configurations": [
     {
-      "name": "Visual Studio 15 x86",
+      "name": "x86-Debug",
       "generator": "Visual Studio 15 2017",
+      "configurationType": "Debug",
       "buildRoot": "${projectDir}\\build",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-m -v:minimal",
@@ -14,49 +16,44 @@
       ]
     },
     {
-      "name": "Visual Studio 15 x64",
-      "generator": "Visual Studio 15 2017 Win64",
-      "buildRoot": "${projectDir}\\build\\_x64",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${projectDir}\\build_packages\\_x64"
-        }
-      ]
-    },
-    {
-      "name": "Visual Studio 15 x86 PACKAGES",
+      "name": "x86-Release",
       "generator": "Visual Studio 15 2017",
-      "buildRoot": "${projectDir}\\build\\_Packages",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\build",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-m -v:minimal",
       "variables": [
         {
           "name": "PACKAGE_DIR",
           "value": "${projectDir}\\build_packages"
-        },
-        {
-          "name": "BUILD_PACKAGES",
-          "value": "true"
         }
       ]
     },
     {
-      "name": "Visual Studio 15 x64 PACKAGES",
+      "name": "x64-Debug",
       "generator": "Visual Studio 15 2017 Win64",
-      "buildRoot": "${projectDir}\\build\\_x64\\_Packages",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\build\\x64",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-m -v:minimal",
       "variables": [
         {
           "name": "PACKAGE_DIR",
-          "value": "${projectDir}\\build_packages\\_x64"
-        },
+          "value": "${projectDir}\\build_packages"
+        }
+      ]
+    },
+    {
+      "name": "x64-Release",
+      "generator": "Visual Studio 15 2017 Win64",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\build\\x64",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
         {
-          "name": "BUILD_PACKAGES",
-          "value": "true"
+          "name": "PACKAGE_DIR",
+          "value": "${projectDir}\\build_packages"
         }
       ]
     }
