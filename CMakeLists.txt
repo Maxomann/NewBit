@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 3.6.0)
 project(NewBit)
+set(PACKAGE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build_packages" )
 
 function(nb_target_add_libraries TARGET_NAME)
 
@@ -24,14 +25,14 @@ function(nb_target_add_libraries TARGET_NAME)
 
 	endif()
 
-	# libsigc++
-	#set(libsig_DIR "${PACKAGE_DIR}/libsic/"
-
 endfunction()
 
-if(BUILD_PACKAGES)
+# MAIN
+
+if(BUILD_LIB)
 	add_subdirectory(build_packages)
 else()
+
 	include_directories(.)
 
 	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -45,7 +46,5 @@ else()
 	add_subdirectory(NewBitTexturePackerTest)
 
 	add_subdirectory(NewBitCore)
-
-
 
 endif()

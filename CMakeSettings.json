@@ -1,59 +1,92 @@
 {
-  // Informationen zu dieser Datei finden Sie unter https://go.microsoft.com//fwlink//?linkid=834763.
+    // Informationen zu dieser Datei finden Sie unter https://go.microsoft.com//fwlink//?linkid=834763.
   "configurations": [
     {
       "name": "x86-Debug",
       "generator": "Visual Studio 15 2017",
       "configurationType": "Debug",
-      "buildRoot": "${projectDir}\\build",
+      "buildRoot": "${workspaceRoot}\\build\\${name}",
       "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${projectDir}\\build_packages"
-        }
-      ]
+      "buildCommandArgs": "-m -v:minimal"
     },
     {
       "name": "x86-Release",
       "generator": "Visual Studio 15 2017",
       "configurationType": "Release",
-      "buildRoot": "${projectDir}\\build",
+      "buildRoot": "${workspaceRoot}\\build\\${name}",
       "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${projectDir}\\build_packages"
-        }
-      ]
+      "buildCommandArgs": "-m -v:minimal"
     },
     {
       "name": "x64-Debug",
       "generator": "Visual Studio 15 2017 Win64",
       "configurationType": "Debug",
-      "buildRoot": "${projectDir}\\build\\x64",
+      "buildRoot": "${workspaceRoot}\\build\\${name}",
       "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${projectDir}\\build_packages"
-        }
-      ]
+      "buildCommandArgs": "-m -v:minimal"
     },
     {
       "name": "x64-Release",
       "generator": "Visual Studio 15 2017 Win64",
       "configurationType": "Release",
-      "buildRoot": "${projectDir}\\build\\x64",
+      "buildRoot": "${workspaceRoot}\\build\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal"
+    },
+
+    {
+      "name": "x86-Debug Lib",
+      "generator": "Visual Studio 15 2017",
+      "configurationType": "Debug",
+      "buildRoot": "${workspaceRoot}\\build_packages\\build\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-m -v:minimal",
       "variables": [
         {
-          "name": "PACKAGE_DIR",
-          "value": "${projectDir}\\build_packages"
+          "name": "BUILD_LIB",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "name": "x86-Release Lib",
+      "generator": "Visual Studio 15 2017",
+      "configurationType": "Release",
+      "buildRoot": "${workspaceRoot}\\build_packages\\build\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
+        {
+          "name": "BUILD_LIB",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "name": "x64-Debug Lib",
+      "generator": "Visual Studio 15 2017 Win64",
+      "configurationType": "Debug",
+      "buildRoot": "${workspaceRoot}\\build_packages\\build\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
+        {
+          "name": "BUILD_LIB",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "name": "x64-Release Lib",
+      "generator": "Visual Studio 15 2017 Win64",
+      "configurationType": "Release",
+      "buildRoot": "${workspaceRoot}\\build_packages\\build\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
+        {
+          "name": "BUILD_LIB",
+          "value": "true"
         }
       ]
     }
