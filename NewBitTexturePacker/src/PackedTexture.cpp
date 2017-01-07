@@ -195,7 +195,7 @@ void nb::tp::PackedTexture::packingAlgorithm(std::vector<PackingElement>& elemen
 bool nb::tp::Node::insert(std::list<Node>& storeNodesHere, PackingElement * el)
 {
 	//fits?
-	if (this->rect.width >= this->rect.width && el->rect.height >= el->rect.height)
+	if (this->rect.width >= el->rect.width && this->rect.height >= el->rect.height)
 	{
 		//isEmpty?
 		if (this->ptr == nullptr)
@@ -210,18 +210,39 @@ bool nb::tp::Node::insert(std::list<Node>& storeNodesHere, PackingElement * el)
 			storeNodesHere.emplace_back();
 			child[1] = &storeNodesHere.back();
 
+			bool isHorizontal = false;
+			if (ptr->rect.width > ptr->rect.height)
+				isHorizontal = true;
+
 			//create children
-			child[0]->rect.left = this->rect.left + ptr->rect.width;
-			child[0]->rect.top = this->rect.top;
+			if (isHorizontal)
+			{
+				child[0]->rect.left = this->rect.left + ptr->rect.width;
+				child[0]->rect.top = this->rect.top;
 
-			child[1]->rect.left = this->rect.left;
-			child[1]->rect.top = this->rect.top + ptr->rect.height;
+				child[0]->rect.width = this->rect.width - ptr->rect.width;
+				child[0]->rect.height = ptr->rect.height;
 
-			child[0]->rect.width = this->rect.width - ptr->rect.width;
-			child[0]->rect.height = this->rect.height;
+				child[1]->rect.left = this->rect.left;
+				child[1]->rect.top = this->rect.top + ptr->rect.height;
 
-			child[1]->rect.width = this->rect.width;
-			child[1]->rect.height = this->rect.height - ptr->rect.height;
+				child[1]->rect.width = this->rect.width;
+				child[1]->rect.height = this->rect.height - ptr->rect.height;
+			}
+			else
+			{
+				child[1]->rect.left = this->rect.left + ptr->rect.width;
+				child[1]->rect.top = this->rect.top;
+
+				child[1]->rect.width = this->rect.width - ptr->rect.width;
+				child[1]->rect.height = this->rect.height;
+
+				child[0]->rect.left = this->rect.left;
+				child[0]->rect.top = this->rect.top + ptr->rect.height;
+
+				child[0]->rect.width = ptr->rect.width;
+				child[0]->rect.height = this->rect.height - ptr->rect.height;
+			}
 
 			return true;
 		}
@@ -230,13 +251,12 @@ bool nb::tp::Node::insert(std::list<Node>& storeNodesHere, PackingElement * el)
 			//insert in child
 			auto dw = this->rect.width - el->rect.width;
 			auto dh = this->rect.height - el->rect.height;
-			if (dw > dh)
-				return child[0]->insert(storeNodesHere, el);
+			
+			if (child[0]->insert(storeNodesHere, el))
+				return true;
 			else
 				return child[1]->insert(storeNodesHere, el);
 		}
 	}
-
-
 	return false;
 }
