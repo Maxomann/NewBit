@@ -1,4 +1,5 @@
 include(ExternalProject)
+set(PACKAGE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" )
 
 # SFML
 set(sfml_INSTALL_DIR ${PACKAGE_DIR}/sfml)
