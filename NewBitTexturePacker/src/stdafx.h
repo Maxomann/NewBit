@@ -12,6 +12,7 @@
 #include <deque>
 #include <unordered_map>
 #include <filesystem>
+#include <array>
 
 #include <SFML/Graphics.hpp>
 

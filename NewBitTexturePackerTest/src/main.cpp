@@ -27,7 +27,7 @@ int main()
 
 	auto maxTexSize = sf::Texture::getMaximumSize();
 	cout << "MaxTextureSize: " << maxTexSize << endl;
-	nb::tp::PackedTexture packedTexture( 0, 800 );
+	nb::tp::PackedTexture packedTexture( 0, maxTexSize );
 	nb::tp::TextureId texId = 0;
 	for ( const auto& el : imagesToPack )
 	{
