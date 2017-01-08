@@ -12,6 +12,7 @@ SUITE( NewBitTexturePacker )
 int main()
 {
 	std::list<sf::Image> imagesToPack;
+	std::vector<std::string> imagesIds;
 
 	// Load all test images
 	for ( auto& p : filesystem::directory_iterator( "data/TexturePackerTestImages" ) )
@@ -21,20 +22,26 @@ int main()
 		{
 			imagesToPack.emplace_back();
 			imagesToPack.back().loadFromFile( path.string() );
+			imagesIds.push_back(path.filename().string());
 			cout << "Load image: " << path.string() << endl;
 		}
 	}
 
 	auto maxTexSize = sf::Texture::getMaximumSize();
 	cout << "MaxTextureSize: " << maxTexSize << endl;
-	nb::tp::PackedTexture packedTexture( 0, 4096 );
-	nb::tp::TextureId texId = 0;
+	nb::tp::PackedTexture packedTexture( 4096 );
+	unsigned int imagesToPackCounter = 0;
 	for ( const auto& el : imagesToPack )
 	{
-		packedTexture.addTexture( texId, el );
-		texId++;
+		packedTexture.addTexture( imagesIds.at(imagesToPackCounter), el);
+		imagesToPackCounter++;
 	}
 	packedTexture.generate();
+
+	ofstream file;
+	file.open("data/TexturePackerTestImages/result/_debug_info.json", ios::out | ios::trunc);
+	file << std::setw(4) << packedTexture._debug_info() << std::endl;
+	file.close();
 
 	auto& renderResult = packedTexture.renderAsImages();
 	unsigned int count = 0;

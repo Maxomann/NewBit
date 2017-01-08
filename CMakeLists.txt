@@ -1,6 +1,5 @@
 cmake_minimum_required (VERSION 3.6.0)
 project(NewBit)
-set(PACKAGE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build_packages" )
 
 function(nb_target_add_libraries TARGET_NAME)
 

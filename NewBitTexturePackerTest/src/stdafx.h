@@ -5,3 +5,4 @@
 #include <NewBitTexturePacker\src\NewBitTexturePacker.h>
 
 #include <iostream>
+#include <fstream>

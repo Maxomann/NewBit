@@ -3,15 +3,27 @@ using namespace std;
 
 nb::tp::TextureReference::TextureReference( TextureId id,
 											const sf::Texture & textureRef,
-											sf::Vector2i positionOnTexture )
+											sf::Vector2i positionOnTexture,
+											sf::IntRect defaultTextureRect)
 	: m_id( id ),
 	m_textureRef( textureRef ),
-	m_positionOnTexture( positionOnTexture )
+	m_positionOnTexture( positionOnTexture ),
+	m_textureRect(defaultTextureRect)
 {}
 
 nb::tp::TextureId nb::tp::TextureReference::getId() const
 {
 	return m_id;
+}
+
+const sf::Texture & nb::tp::TextureReference::getTexturePtr() const
+{
+	return m_textureRef;
+}
+
+sf::Vector2i nb::tp::TextureReference::getPositionOnTexture() const
+{
+	return m_positionOnTexture;
 }
 
 void nb::tp::TextureReference::setTextureRect( sf::IntRect textureRect )

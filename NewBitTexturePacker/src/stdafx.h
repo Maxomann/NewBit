@@ -14,6 +14,9 @@
 #include <filesystem>
 #include <array>
 
+#include <nlohmann/json.hpp>
+namespace json = nlohmann;
+
 #include <SFML/Graphics.hpp>
 
 #define DLL_EXPORT __declspec(dllexport)

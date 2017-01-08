@@ -5,13 +5,13 @@ using namespace sf;
 void nb::tp::PackedTexture::m_throwIfGenerated()
 {
 	if (m_isGenerated)
-		throw exception::PackedTextureGenerationStateException(m_id, m_isGenerated);
+		throw exception::PackedTextureGenerationStateException(m_isGenerated);
 }
 
 void nb::tp::PackedTexture::m_throwIfNotGenerated()
 {
 	if (!m_isGenerated)
-		throw exception::PackedTextureGenerationStateException(m_id, m_isGenerated);
+		throw exception::PackedTextureGenerationStateException(m_isGenerated);
 }
 
 unsigned int nb::tp::PackedTexture::constructMaximumSize(unsigned int maximumSize, bool useRecommendedMaxSize)
@@ -27,15 +27,9 @@ unsigned int nb::tp::PackedTexture::constructMaximumSize(unsigned int maximumSiz
 		return maximumSize;
 }
 
-nb::tp::PackedTexture::PackedTexture(PackedTextureId id, unsigned int maximumSize, bool useRecommendedMaxSize)
-	: m_id(id),
-	m_maximumSize(constructMaximumSize(maximumSize, useRecommendedMaxSize))
+nb::tp::PackedTexture::PackedTexture(unsigned int maximumSize, bool useRecommendedMaxSize)
+	: m_maximumSize(constructMaximumSize(maximumSize, useRecommendedMaxSize))
 {}
-
-nb::tp::PackedTextureId nb::tp::PackedTexture::getId() const
-{
-	return m_id;
-}
 
 void nb::tp::PackedTexture::addTexture(TextureId textureId, const sf::Image& image)
 {
@@ -84,7 +78,7 @@ void nb::tp::PackedTexture::generate()
 		pack.texture = &el.second;
 		const auto& textureSize = pack.texture->getSize();
 		pack.rect = sf::IntRect(0, 0, textureSize.x, textureSize.y);
-		pack.destinationTextureId = 0;
+		pack.destinationTextureCount = 0;
 
 		if (textureSize.x > m_maximumSize || textureSize.y > m_maximumSize)
 			throw exception::TextureTooLargeException(pack.id);
@@ -92,15 +86,15 @@ void nb::tp::PackedTexture::generate()
 		subTextureRects.push_back(pack);
 	}
 
-	// sort rects
+	// pack rects
 	packingAlgorithm(subTextureRects, m_maximumSize);
 
 	// prepare texture drawing
 	unsigned int highestDestinationTextureId = 0;
 	for (const auto& el : subTextureRects)
 	{
-		if (el.destinationTextureId > highestDestinationTextureId)
-			highestDestinationTextureId = el.destinationTextureId;
+		if (el.destinationTextureCount > highestDestinationTextureId)
+			highestDestinationTextureId = el.destinationTextureCount;
 	}
 	for (unsigned int i = 0; i <= highestDestinationTextureId; ++i)
 	{
@@ -113,7 +107,7 @@ void nb::tp::PackedTexture::generate()
 		sf::Sprite sprite;
 		sprite.setTexture(*el.texture);
 		sprite.setPosition(sf::Vector2f((float)el.rect.left, (float)el.rect.top));
-		m_generatedTextures.at(el.destinationTextureId).draw(sprite);
+		m_generatedTextures.at(el.destinationTextureCount).draw(sprite);
 	}
 	for (auto& el : m_generatedTextures)
 		el.display();
@@ -123,8 +117,9 @@ void nb::tp::PackedTexture::generate()
 		m_generatedTextureReferences.emplace(
 			make_pair(el.id,
 				TextureReference(el.id,
-					m_generatedTextures.at(el.destinationTextureId).getTexture(),
-					sf::Vector2i(el.rect.top, el.rect.left)
+					m_generatedTextures.at(el.destinationTextureCount).getTexture(),
+					sf::Vector2i(el.rect.top, el.rect.left),
+					sf::IntRect(0,0, el.rect.width, el.rect.height)
 				)));
 	}
 	// clear m_subTextures
@@ -150,6 +145,15 @@ nb::tp::TextureReference nb::tp::PackedTexture::getTextureReference(const Textur
 	return m_generatedTextureReferences.at(textureId);
 }
 
+std::vector<nb::tp::TextureReference> nb::tp::PackedTexture::getAllTextureReferences() const
+{
+	std::vector<TextureReference> retVal;
+	for (auto& el : m_generatedTextureReferences)
+		retVal.push_back(el.second);
+
+	return retVal;
+}
+
 void nb::tp::PackedTexture::packingAlgorithm(std::vector<PackingElement>& elements,
 	const unsigned int maximumTextureSize)
 {
@@ -172,7 +176,7 @@ void nb::tp::PackedTexture::packingAlgorithm(std::vector<PackingElement>& elemen
 			if (tex.insert(childrenNodeContainer, &el))
 			{
 				lastInsertSuccess = true;
-				el.destinationTextureId = counter;
+				el.destinationTextureCount = counter;
 				break;
 			}
 			counter++;
@@ -183,7 +187,7 @@ void nb::tp::PackedTexture::packingAlgorithm(std::vector<PackingElement>& elemen
 			textures.emplace_back();
 			textures.back().rect = IntRect(0, 0, maximumTextureSize, maximumTextureSize);
 			if (textures.back().insert(childrenNodeContainer, &el))
-				el.destinationTextureId = counter;//no +1 since counter gets increased by one before here
+				el.destinationTextureCount = counter;//no +1 since counter gets increased by one before here
 			else
 				throw exception::TextureTooLargeException(el.id);
 		}
@@ -251,7 +255,7 @@ bool nb::tp::Node::insert(std::list<Node>& storeNodesHere, PackingElement * el)
 			//insert in child
 			auto dw = this->rect.width - el->rect.width;
 			auto dh = this->rect.height - el->rect.height;
-			
+
 			if (child[0]->insert(storeNodesHere, el))
 				return true;
 			else
@@ -259,4 +263,34 @@ bool nb::tp::Node::insert(std::list<Node>& storeNodesHere, PackingElement * el)
 		}
 	}
 	return false;
+}
+
+DLL_EXPORT json::json nb::tp::PackedTexture::_debug_info()
+{
+	json::json j;
+	std::vector < json::json > vec;
+	for (const auto& el : m_generatedTextureReferences)
+	{
+		auto& ref = el.second;
+
+		json::json elj;
+		elj["id"] = ref.getId();
+
+		const void * address = static_cast<const void*>(&ref.getTexturePtr());
+		std::stringstream ss;
+		ss << address;
+		elj["ptr"] = ss.str();
+
+		auto positionOnTexture = ref.getPositionOnTexture();
+		elj["left"] = positionOnTexture.x;
+		elj["top"] = positionOnTexture.y;
+
+		auto texRect = ref.getTextureRect();
+		elj["width"] = texRect.width;
+		elj["height"] = texRect.height;
+
+		vec.push_back(elj);
+	}
+	j["TexturePackerDebugInfo"] = vec;
+	return j;
 }

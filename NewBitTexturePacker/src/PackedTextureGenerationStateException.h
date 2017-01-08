@@ -11,7 +11,7 @@ namespace nb
 			class PackedTextureGenerationStateException : public std::runtime_error
 			{
 			public:
-				PackedTextureGenerationStateException( PackedTextureId id, bool state );
+				PackedTextureGenerationStateException( bool state );
 			};
 		}
 	}
