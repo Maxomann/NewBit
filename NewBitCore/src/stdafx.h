@@ -2,6 +2,16 @@
 
 #include <iostream>
 #include <string>
+#include <unordered_map>
+#include <array>
+#include <memory>
+#include <filesystem>
+#include <algorithm>
+#include <functional>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 #include <nlohmann/json.hpp>
 
@@ -13,3 +23,5 @@
 #include <SFML/Window.hpp>
 
 #include <NewBitEntity/src/NewBitEntity.h>
+
+#define DLL_EXPORT __declspec(dllexport)

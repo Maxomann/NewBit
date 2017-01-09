@@ -3,18 +3,23 @@ using namespace std;
 
 void nb::Core::run()
 {
+	//init
+	engines.loadFromFolder( "./bin" );
+
+	//main loop
+
 	nb::entity::World world;
 
 	sf::RenderWindow window( sf::VideoMode( 200, 200 ), "SFML works!" );
 	sf::CircleShape shape( 100.f );
 	shape.setFillColor( sf::Color::Black );
 
-	while ( window.isOpen() )
+	while( window.isOpen() )
 	{
 		sf::Event event;
-		while ( window.pollEvent( event ) )
+		while( window.pollEvent( event ) )
 		{
-			if ( event.type == sf::Event::Closed )
+			if( event.type == sf::Event::Closed )
 				window.close();
 		}
 
