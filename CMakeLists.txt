@@ -46,4 +46,6 @@ else()
 
 	add_subdirectory(NewBitCore)
 
+	add_subdirectory(CoreEngines/TestEngine)
+
 endif()

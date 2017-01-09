@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <algorithm>
 #include <functional>
+#include <utility>
 
 #ifdef _WIN32
 #include <windows.h>

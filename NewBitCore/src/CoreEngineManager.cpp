@@ -16,23 +16,26 @@ namespace nb
 			if( extension == ".dll" )
 			{
 				HMODULE libraryHandle = LoadLibrary( path.string().c_str() );
-				auto connectFunctionPtr = GetProcAddress( libraryHandle, "connect" );
+				auto connectFunctionPtr = GetProcAddress( libraryHandle, "nbConnectCore" );
 				if( connectFunctionPtr )
 				{
 					std::function<connectFunctionType> connectFuntion( reinterpret_cast<connectFunctionType*>( connectFunctionPtr ) );
-					auto resultVec = connectFuntion();
-					for( auto& el : resultVec )
-					{
-						auto emplaceRetVal = m_engines.emplace( std::make_pair( el->getId(), move( el ) ) );
-						if( !emplaceRetVal.second )
-							throw exception();
-					}
+					connectFuntion( this );
 				}
 			}
 		}
 #else
 #error
 #endif
+	}
+
+	void nb::CoreEngineManager::addEngine( std::unique_ptr<CoreEngine>&& ptr )
+	{
+		auto emplaceRetVal = m_engines.emplace(
+			std::make_pair<unsigned int, unique_ptr<CoreEngine>>( ptr->getId(),
+																  move( ptr ) ) );
+		if( !emplaceRetVal.second )
+			throw exception();
 	}
 
 	CoreEngine * nb::CoreEngineManager::getEngine( const unsigned int id ) const
