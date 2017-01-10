@@ -6,7 +6,9 @@ namespace nb
 {
 	class Core
 	{
-		CoreEngineManager engines;
+		CoreEngineManager m_engines;
+
+		entity::World m_world;
 
 	public:
 		void run();

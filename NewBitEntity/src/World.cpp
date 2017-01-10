@@ -8,9 +8,5 @@ nb::entity::World::World()
 void nb::entity::World::update()
 {
 	updateSystems();
-}
-
-void nb::entity::World::afterUpdate()
-{
 	executeDeleteEntities();
 }

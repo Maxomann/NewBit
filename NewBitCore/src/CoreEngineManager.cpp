@@ -36,10 +36,26 @@ namespace nb
 																  move( ptr ) ) );
 		if( !emplaceRetVal.second )
 			throw exception();
+		m_enginesVector.push_back( emplaceRetVal.first->second.get() );
 	}
 
 	CoreEngine * nb::CoreEngineManager::getEngine( const unsigned int id ) const
 	{
 		return m_engines.at( id ).get();
+	}
+
+	void nb::CoreEngineManager::initEngines()
+	{
+		for( auto& el : m_enginesVector )
+			el->init();
+	}
+
+	bool nb::CoreEngineManager::update()
+	{
+		bool continueRunning = true;
+		for( auto& el : m_enginesVector )
+			if( !el->update() )
+				continueRunning = false;
+		return continueRunning;
 	}
 }

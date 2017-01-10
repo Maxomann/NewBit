@@ -13,7 +13,6 @@ namespace nb
 			DLL_EXPORT World();
 
 			DLL_EXPORT void update();
-			DLL_EXPORT void afterUpdate();
 		};
 	}
 }

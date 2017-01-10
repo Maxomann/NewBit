@@ -20,7 +20,6 @@ SUITE( NewBitEntity )
 		TestComponent* component = entity->getComponent<TestComponent>();
 
 		world.update();
-		world.afterUpdate();
 
 		CHECK( system->has_init );
 		CHECK( system->has_update );
@@ -33,7 +32,7 @@ SUITE( NewBitEntity )
 
 		CHECK( world.getEntityCount() == 1 );
 
-		world.afterUpdate();
+		world.update();
 
 		CHECK( world.getEntityCount() == 0 );
 
