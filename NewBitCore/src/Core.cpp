@@ -6,12 +6,13 @@ void nb::Core::run()
 	//init
 	m_engines.loadFromFolder( "./bin" );
 
-	m_engines.initEngines();
+	m_engines.initEngines( m_engines, m_gameStates, m_world );
 
 	//main loop
-	while( m_engines.update() )
+	while( m_engines.update( m_engines, m_gameStates, m_world ) )
 	{
-		//m_gameStateManager.update();
+		m_gameStates.checkDestroyGameStates( m_engines, m_gameStates, m_world );
+		m_gameStates.initNewStates( m_engines, m_gameStates, m_world );
 		m_world.update();
 	};
 }

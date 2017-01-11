@@ -1,12 +1,12 @@
 #include "EntityManager.h"
 using namespace std;
 
-void nb::entity::EntityManager::executeDeleteEntities()
+void nb::EntityManager::executeDeleteEntities()
 {
-	m_entities.remove_if( [ & ]( auto& el ) {
-		for ( auto it = m_toDelete.begin(); it != m_toDelete.end(); ++it )
+	m_entities.remove_if( [&] ( auto& el ) {
+		for( auto it = m_toDelete.begin(); it != m_toDelete.end(); ++it )
 		{
-			if ( *it == &el )
+			if( *it == &el )
 			{
 				m_toDelete.erase( remove( m_toDelete.begin(), m_toDelete.end(), &el ) );
 				el.destroy();
@@ -16,16 +16,16 @@ void nb::entity::EntityManager::executeDeleteEntities()
 		return false;
 	} );
 
-	if ( m_toDelete.size() != 0 )
+	if( m_toDelete.size() != 0 )
 	{
 		throw exception::EntityDoesNotExistException();
 	}
 }
 
-nb::entity::Entity * nb::entity::EntityManager::createEntity( std::vector<std::unique_ptr<Component>>&& components )
+nb::Entity * nb::EntityManager::createEntity( std::vector<std::unique_ptr<Component>>&& components )
 {
 	Entity entity;
-	for ( auto& el : components )
+	for( auto& el : components )
 		entity.addComponent( move( el ) );
 	entity.init();
 
@@ -33,12 +33,12 @@ nb::entity::Entity * nb::entity::EntityManager::createEntity( std::vector<std::u
 	return &m_entities.back();
 }
 
-void nb::entity::EntityManager::deleteEntity( Entity * entity )
+void nb::EntityManager::deleteEntity( Entity * entity )
 {
 	m_toDelete.push_back( entity );
 }
 
-DLL_EXPORT int nb::entity::EntityManager::getEntityCount() const
+int nb::EntityManager::getEntityCount() const
 {
 	return m_entities.size();
 }

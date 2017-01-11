@@ -1,5 +1,5 @@
 #include "EntityDoesNotExistException.h"
 
-nb::entity::exception::EntityDoesNotExistException::EntityDoesNotExistException()
+nb::exception::EntityDoesNotExistException::EntityDoesNotExistException()
 	: std::runtime_error( "EntityDoesNotExistException" )
 {}

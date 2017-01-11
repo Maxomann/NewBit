@@ -40,18 +40,16 @@ else()
 
 	add_subdirectory(NewBitEntity)
 	add_subdirectory(NewBitEntityTest)
-
 	add_dependencies(NewBitEntityTest NewBitEntity)
 
 	add_subdirectory(NewBitTexturePacker)
 	add_subdirectory(NewBitTexturePackerTest)
-
 	add_dependencies(NewBitTexturePackerTest NewBitTexturePacker)
 
 	add_subdirectory(NewBitCore)
-
 	add_dependencies(NewBitCore NewBitEntity)
 
 	add_subdirectory(CoreEngines)
+	add_dependencies(CoreEngines NewBitCore NewBitTexturePacker)
 
 endif()

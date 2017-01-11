@@ -5,14 +5,11 @@
 
 namespace nb
 {
-	namespace entity
+	class World : public EntityManager, public SystemManager
 	{
-		class World : public EntityManager, public SystemManager
-		{
-		public:
-			DLL_EXPORT World();
+	public:
+		DLL_EXPORT World();
 
-			DLL_EXPORT void update();
-		};
-	}
+		DLL_EXPORT void update();
+	};
 }

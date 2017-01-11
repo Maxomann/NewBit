@@ -35,7 +35,7 @@ namespace nb
 			std::make_pair<unsigned int, unique_ptr<CoreEngine>>( ptr->getId(),
 																  move( ptr ) ) );
 		if( !emplaceRetVal.second )
-			throw exception();
+			throw std::exception();
 		m_enginesVector.push_back( emplaceRetVal.first->second.get() );
 	}
 
@@ -44,17 +44,21 @@ namespace nb
 		return m_engines.at( id ).get();
 	}
 
-	void nb::CoreEngineManager::initEngines()
+	void nb::CoreEngineManager::initEngines( const CoreEngineManager& coreEngines,
+											 GameStateManager& gameStates,
+											 World& world )
 	{
 		for( auto& el : m_enginesVector )
-			el->init();
+			el->init( coreEngines, gameStates, world );
 	}
 
-	bool nb::CoreEngineManager::update()
+	bool nb::CoreEngineManager::update( const CoreEngineManager& coreEngines,
+										GameStateManager& gameStates,
+										World& world )
 	{
 		bool continueRunning = true;
 		for( auto& el : m_enginesVector )
-			if( !el->update() )
+			if( !el->update( coreEngines, gameStates, world ) )
 				continueRunning = false;
 		return continueRunning;
 	}

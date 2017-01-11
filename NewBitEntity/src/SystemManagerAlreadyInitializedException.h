@@ -3,15 +3,12 @@
 
 namespace nb
 {
-	namespace entity
+	namespace exception
 	{
-		namespace exception
+		class SystemManagerAlreadyInitializedException : public std::runtime_error
 		{
-			class SystemManagerAlreadyInitializedException : public std::runtime_error
-			{
-			public:
-				DLL_EXPORT SystemManagerAlreadyInitializedException();
-			};
-		}
+		public:
+			DLL_EXPORT SystemManagerAlreadyInitializedException();
+		};
 	}
 }

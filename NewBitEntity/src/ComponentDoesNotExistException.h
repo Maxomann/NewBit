@@ -3,15 +3,12 @@
 
 namespace nb
 {
-	namespace entity
+	namespace exception
 	{
-		namespace exception
+		class ComponentDoesNotExistException : public std::runtime_error
 		{
-			class ComponentDoesNotExistException : public std::runtime_error
-			{
-			public:
-				DLL_EXPORT ComponentDoesNotExistException( const std::string& componentTypeName );
-			};
-		}
+		public:
+			DLL_EXPORT ComponentDoesNotExistException( const std::string& componentTypeName );
+		};
 	}
 }

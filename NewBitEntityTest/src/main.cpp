@@ -3,7 +3,7 @@
 #include "TestComponent.h"
 
 using namespace std;
-using namespace nb::entity;
+using namespace nb;
 
 SUITE( NewBitEntity )
 {

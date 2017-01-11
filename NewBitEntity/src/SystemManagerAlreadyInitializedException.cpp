@@ -1,5 +1,5 @@
 #include "SystemManagerAlreadyInitializedException.h"
 
-nb::entity::exception::SystemManagerAlreadyInitializedException::SystemManagerAlreadyInitializedException()
+nb::exception::SystemManagerAlreadyInitializedException::SystemManagerAlreadyInitializedException()
 	: std::runtime_error( "SystemManagerAlreadyInitializedException" )
 {}

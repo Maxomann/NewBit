@@ -7,7 +7,9 @@ nb::TestEngine::TestEngine()
 	cout << "TestEngine()" << endl;
 }
 
-void nb::TestEngine::init()
+void nb::TestEngine::init( const CoreEngineManager& coreEngines,
+						   GameStateManager& gameStates,
+						   World& world )
 {
 	window.create( sf::VideoMode( 200, 200 ), "MyWindow" );
 	shape.setRadius( 100.f );
@@ -16,7 +18,9 @@ void nb::TestEngine::init()
 	return;
 }
 
-bool nb::TestEngine::update()
+bool nb::TestEngine::update( const CoreEngineManager& coreEngines,
+							 GameStateManager& gameStates,
+							 World& world )
 {
 	sf::Event event;
 	while( window.pollEvent( event ) )

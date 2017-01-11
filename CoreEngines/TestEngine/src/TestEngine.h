@@ -11,9 +11,13 @@ namespace nb
 	public:
 		DLL_EXPORT TestEngine();
 
-		DLL_EXPORT virtual void init()override;
+		DLL_EXPORT virtual void init( const CoreEngineManager& coreEngines,
+									  GameStateManager& gameStates,
+									  World& world )override;
 
-		DLL_EXPORT virtual bool update()override;
+		DLL_EXPORT virtual bool update( const CoreEngineManager& coreEngines,
+										GameStateManager& gameStates,
+										World& world )override;
 
 		DLL_EXPORT virtual unsigned int getId()const override;
 	};

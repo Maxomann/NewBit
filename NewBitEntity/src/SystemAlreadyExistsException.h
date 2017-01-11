@@ -3,16 +3,13 @@
 
 namespace nb
 {
-	namespace entity
+	namespace exception
 	{
-		namespace exception
+		class SystemAlreadyExistsException : public std::runtime_error
 		{
-			class SystemAlreadyExistsException : public std::runtime_error
-			{
-				const std::string m_message;
-			public:
-				DLL_EXPORT SystemAlreadyExistsException( const std::string& m_systemTypeName );
-			};
-		}
+			const std::string m_message;
+		public:
+			DLL_EXPORT SystemAlreadyExistsException( const std::string& m_systemTypeName );
+		};
 	}
 }

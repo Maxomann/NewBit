@@ -1,13 +1,13 @@
 #include "TestComponent.h"
 
 TestComponent::TestComponent()
-	: nb::entity::Component( this )
+	: nb::Component( this )
 {}
 
-void TestComponent::init( const nb::entity::Entity & entity )
+void TestComponent::init( const nb::Entity & entity )
 {
 	has_init = true;
 }
 
-void TestComponent::destroy( const nb::entity::Entity & entity )
+void TestComponent::destroy( const nb::Entity & entity )
 {}

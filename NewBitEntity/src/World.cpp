@@ -1,11 +1,11 @@
 #include "World.h"
 using namespace std;
 
-nb::entity::World::World()
+nb::World::World()
 	: EntityManager(), SystemManager( *( ( EntityManager* )this ) )
 {}
 
-void nb::entity::World::update()
+void nb::World::update()
 {
 	updateSystems();
 	executeDeleteEntities();

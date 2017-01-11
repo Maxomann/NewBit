@@ -3,15 +3,12 @@
 
 namespace nb
 {
-	namespace entity
+	namespace exception
 	{
-		namespace exception
+		class EntityDoesNotExistException : public std::runtime_error
 		{
-			class EntityDoesNotExistException : public std::runtime_error
-			{
-			public:
-				DLL_EXPORT EntityDoesNotExistException();
-			};
-		}
+		public:
+			DLL_EXPORT EntityDoesNotExistException();
+		};
 	}
 }

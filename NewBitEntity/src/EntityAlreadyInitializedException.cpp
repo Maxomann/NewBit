@@ -1,5 +1,5 @@
 #include "EntityAlreadyInitializedException.h"
 
-nb::entity::exception::EntityAlreadyInitializedException::EntityAlreadyInitializedException()
+nb::exception::EntityAlreadyInitializedException::EntityAlreadyInitializedException()
 	: std::runtime_error( "EntityAlreadyInitializedException" )
 {}
