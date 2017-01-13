@@ -15,8 +15,8 @@ int main()
 	catch( exception& e )
 	{
 		cout << "Error:" << e.what() << endl;
-	}
+		system( "pause" );
+}
 #endif
-	system( "pause" );
 	return 0;
 }

@@ -1,5 +1,4 @@
 #include "TestEngine.h"
-
 using namespace std;
 
 nb::TestEngine::TestEngine()
@@ -13,10 +12,6 @@ void nb::TestEngine::init( const CoreEngineManager& coreEngines,
 {
 	cout << "TestEngine init()" << endl;
 
-	window.create( sf::VideoMode( 200, 200 ), "MyWindow" );
-	shape.setRadius( 100.f );
-	shape.setFillColor( sf::Color::Black );
-
 	gameStates.pushState( make_unique<TestGameState>() );
 
 	return;
@@ -26,22 +21,11 @@ bool nb::TestEngine::update( const CoreEngineManager& coreEngines,
 							 GameStateManager& gameStates,
 							 World& world )
 {
-	sf::Event event;
-	while( window.pollEvent( event ) )
-	{
-		if( event.type == sf::Event::Closed )
-			window.close();
-	}
-
-	window.clear( sf::Color::Green );
-	window.draw( shape );
-	window.display();
-
-	return window.isOpen();
+	return true;
 }
 
 unsigned int nb::TestEngine::getId() const
 {
 	cout << "TestEngine getId()" << endl;
-	return 0;
+	return id::CORE_ENGINE::TEST;
 }

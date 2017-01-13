@@ -1,13 +1,11 @@
 #pragma once
 #include "TestGameState.h"
+#include "id.h"
 
 namespace nb
 {
 	class TestEngine : public nb::CoreEngine
 	{
-		sf::RenderWindow window;
-		sf::CircleShape shape;
-
 	public:
 		DLL_EXPORT TestEngine();
 
