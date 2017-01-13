@@ -12,11 +12,11 @@ int main()
 		core.run();
 #ifndef _DEBUG
 	}
-	catch ( exception& e )
+	catch( exception& e )
 	{
 		cout << "Error:" << e.what() << endl;
-		system( "pause" );
 	}
 #endif
+	system( "pause" );
 	return 0;
 }

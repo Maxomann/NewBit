@@ -11,9 +11,13 @@ void nb::TestEngine::init( const CoreEngineManager& coreEngines,
 						   GameStateManager& gameStates,
 						   World& world )
 {
+	cout << "TestEngine init()" << endl;
+
 	window.create( sf::VideoMode( 200, 200 ), "MyWindow" );
 	shape.setRadius( 100.f );
 	shape.setFillColor( sf::Color::Black );
+
+	gameStates.pushState( make_unique<TestGameState>() );
 
 	return;
 }
@@ -38,6 +42,6 @@ bool nb::TestEngine::update( const CoreEngineManager& coreEngines,
 
 unsigned int nb::TestEngine::getId() const
 {
-	cout << "getId()" << endl;
+	cout << "TestEngine getId()" << endl;
 	return 0;
 }

@@ -18,5 +18,9 @@ namespace nb
 		DLL_EXPORT void checkDestroyGameStates( const CoreEngineManager& coreEngines,
 												GameStateManager& gameStates,
 												World& world );
+
+		DLL_EXPORT void clear( const CoreEngineManager& coreEngines,
+							   GameStateManager& gameStates,
+							   World& world );
 	};
 }

@@ -22,6 +22,7 @@ namespace nb
 		DLL_EXPORT void initEngines( const CoreEngineManager& coreEngines,
 									 GameStateManager& gameStates,
 									 World& world );
+
 		DLL_EXPORT bool update( const CoreEngineManager& coreEngines,
 								GameStateManager& gameStates,
 								World& world );

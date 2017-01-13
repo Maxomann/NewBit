@@ -32,3 +32,10 @@ void nb::GameStateManager::checkDestroyGameStates( const CoreEngineManager & cor
 			return false;
 	} ), m_states.end() );
 }
+
+DLL_EXPORT void nb::GameStateManager::clear( const CoreEngineManager & coreEngines, GameStateManager & gameStates, World & world )
+{
+	for( auto& el : m_states )
+		el->destroy( coreEngines, gameStates, world );
+	m_states.clear();
+}

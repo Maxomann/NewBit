@@ -15,4 +15,6 @@ void nb::Core::run()
 		m_gameStates.initNewStates( m_engines, m_gameStates, m_world );
 		m_world.update();
 	};
+
+	m_gameStates.clear( m_engines, m_gameStates, m_world );
 }
