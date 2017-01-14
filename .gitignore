@@ -3,6 +3,7 @@
 /build_packages/*
 !/build_packages/CMakeLists.txt
 /NewBitTexturePackerTest/data/TexturePackerTestImages/*.png
+/CoreEngines/data/debug_CoreEngines/
 
 
 # Created by https://www.gitignore.io/api/c++,cmake,visualstudio,windows

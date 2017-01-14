@@ -6,20 +6,16 @@ nb::TestEngine::TestEngine()
 	cout << "TestEngine()" << endl;
 }
 
-void nb::TestEngine::init( const CoreEngineManager& coreEngines,
-						   GameStateManager& gameStates,
-						   World& world )
+void nb::TestEngine::init( const CoreRefs& coreRefs )
 {
 	cout << "TestEngine init()" << endl;
 
-	gameStates.pushState( make_unique<TestGameState>() );
+	coreRefs.gameStates.pushState( make_unique<TestGameState>() );
 
 	return;
 }
 
-bool nb::TestEngine::update( const CoreEngineManager& coreEngines,
-							 GameStateManager& gameStates,
-							 World& world )
+bool nb::TestEngine::update( const CoreRefs& coreRefs )
 {
 	return true;
 }

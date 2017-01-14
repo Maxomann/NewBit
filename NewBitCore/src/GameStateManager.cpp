@@ -6,26 +6,22 @@ void nb::GameStateManager::pushState( std::unique_ptr<GameState>&& ptr )
 	m_uninitializedStates.push_back( move( ptr ) );
 }
 
-void nb::GameStateManager::initNewStates( const CoreEngineManager& coreEngines,
-										  GameStateManager& gameStates,
-										  World& world )
+void nb::GameStateManager::initNewStates( const CoreRefs& coreRefs )
 {
 	for( auto& ptr : m_uninitializedStates )
 	{
-		ptr->init( coreEngines, gameStates, world );
+		ptr->init( coreRefs );
 		m_states.push_back( move( ptr ) );
 	}
 	m_uninitializedStates.clear();
 }
 
-void nb::GameStateManager::checkDestroyGameStates( const CoreEngineManager & coreEngines,
-												   GameStateManager & gameStates,
-												   World & world )
+void nb::GameStateManager::checkDestroyGameStates( const CoreRefs& coreRefs )
 {
 	m_states.erase( std::remove_if( m_states.begin(), m_states.end(), [&] ( std::unique_ptr<GameState>& el ) -> bool{
 		if( el->shouldDestroy() )
 		{
-			el->destroy( coreEngines, gameStates, world );
+			el->destroy( coreRefs );
 			return true;
 		}
 		else
@@ -33,9 +29,9 @@ void nb::GameStateManager::checkDestroyGameStates( const CoreEngineManager & cor
 	} ), m_states.end() );
 }
 
-DLL_EXPORT void nb::GameStateManager::clear( const CoreEngineManager & coreEngines, GameStateManager & gameStates, World & world )
+void nb::GameStateManager::clear( const CoreRefs& coreRefs )
 {
 	for( auto& el : m_states )
-		el->destroy( coreEngines, gameStates, world );
+		el->destroy( coreRefs );
 	m_states.clear();
 }

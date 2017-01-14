@@ -44,21 +44,17 @@ namespace nb
 		return m_engines.at( id ).get();
 	}
 
-	void nb::CoreEngineManager::initEngines( const CoreEngineManager& coreEngines,
-											 GameStateManager& gameStates,
-											 World& world )
+	void nb::CoreEngineManager::initEngines( const CoreRefs& coreRefs )
 	{
 		for( auto& el : m_enginesVector )
-			el->init( coreEngines, gameStates, world );
+			el->init( coreRefs );
 	}
 
-	bool nb::CoreEngineManager::update( const CoreEngineManager& coreEngines,
-										GameStateManager& gameStates,
-										World& world )
+	bool nb::CoreEngineManager::update( const CoreRefs& coreRefs )
 	{
 		bool continueRunning = true;
 		for( auto& el : m_enginesVector )
-			if( !el->update( coreEngines, gameStates, world ) )
+			if( !el->update( coreRefs ) )
 				continueRunning = false;
 		return continueRunning;
 	}

@@ -11,16 +11,10 @@ namespace nb
 	public:
 		DLL_EXPORT void pushState( std::unique_ptr<GameState>&& ptr );
 
-		DLL_EXPORT void initNewStates( const CoreEngineManager& coreEngines,
-									   GameStateManager& gameStates,
-									   World& world );
+		DLL_EXPORT void initNewStates( const CoreRefs& coreRefs );
 
-		DLL_EXPORT void checkDestroyGameStates( const CoreEngineManager& coreEngines,
-												GameStateManager& gameStates,
-												World& world );
+		DLL_EXPORT void checkDestroyGameStates( const CoreRefs& coreRefs );
 
-		DLL_EXPORT void clear( const CoreEngineManager& coreEngines,
-							   GameStateManager& gameStates,
-							   World& world );
+		DLL_EXPORT void clear( const CoreRefs& coreRefs );
 	};
 }

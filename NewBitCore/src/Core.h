@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "CoreEngineManager.h"
 #include "GameStateManager.h"
+#include "CoreRefs.h"
 
 namespace nb
 {

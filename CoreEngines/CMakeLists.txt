@@ -12,3 +12,9 @@ add_custom_command(
 	COMMAND ${CMAKE_COMMAND} -E copy
 			$<TARGET_FILE:${EXECUTABLE_NAME}>
 			$<TARGET_FILE_DIR:${EXECUTABLE_NAME}>/bin/${EXECUTABLE_NAME}.dll)
+
+add_custom_command(
+	TARGET ${EXECUTABLE_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${CMAKE_CURRENT_LIST_DIR}/data/
+			$<TARGET_FILE_DIR:${EXECUTABLE_NAME}>/data/)

@@ -19,12 +19,8 @@ namespace nb
 
 		// all engines must have been loaded before calling this
 		// loading engines afterwards results in undefined behaviour
-		DLL_EXPORT void initEngines( const CoreEngineManager& coreEngines,
-									 GameStateManager& gameStates,
-									 World& world );
+		DLL_EXPORT void initEngines( const CoreRefs& coreRefs );
 
-		DLL_EXPORT bool update( const CoreEngineManager& coreEngines,
-								GameStateManager& gameStates,
-								World& world );
+		DLL_EXPORT bool update( const CoreRefs& coreRefs );
 	};
 }
