@@ -19,9 +19,3 @@ bool nb::TestEngine::update( const CoreRefs& coreRefs )
 {
 	return true;
 }
-
-unsigned int nb::TestEngine::getId() const
-{
-	cout << "TestEngine getId()" << endl;
-	return id::CORE_ENGINE::TEST;
-}

@@ -12,8 +12,6 @@ namespace nb
 
 		virtual bool update( const CoreRefs& coreRefs ) override;
 
-		virtual unsigned int getId()const override;
-
-		void forwardSfEvent(const sf::Event& event);
+		void forwardSfEvent( const sf::Event& event );
 	};
 }

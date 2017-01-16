@@ -8,7 +8,7 @@ namespace nb
 		std::shared_ptr<bool> m_ref;
 
 	public:
-		std::weak_ptr<bool> getTrackablePtr()
+		std::weak_ptr<bool> getTrackablePtr()const
 		{
 			return m_ref;
 		};

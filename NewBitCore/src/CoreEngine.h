@@ -17,7 +17,5 @@ namespace nb
 
 		// return false to terminate process
 		DLL_EXPORT virtual bool update( const CoreRefs& coreRefs ) = 0;
-
-		DLL_EXPORT virtual unsigned int getId()const = 0;
 	};
 }

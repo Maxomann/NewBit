@@ -16,8 +16,6 @@ namespace nb
 
 		virtual bool update( const CoreRefs& coreRefs ) override;
 
-		virtual unsigned int getId()const override;
-
 		void drawSpriteNextFrame( sf::Sprite& sprite );
 
 		nb::Signal<void, const sf::Event&> s_onEvent;

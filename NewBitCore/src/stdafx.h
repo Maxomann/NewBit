@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <functional>
 #include <utility>
+#include <typeinfo>
+#include <typeindex>
 
 #ifdef _WIN32
 #include <windows.h>

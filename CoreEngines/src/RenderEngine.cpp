@@ -35,11 +35,6 @@ bool nb::RenderEngine::update( const CoreRefs& coreRefs )
 	return window.isOpen();
 }
 
-unsigned int nb::RenderEngine::getId() const
-{
-	return id::CORE_ENGINE::RENDER;
-}
-
 void nb::RenderEngine::drawSpriteNextFrame( sf::Sprite& sprite )
 {
 	m_toDraw.push_back( &sprite );

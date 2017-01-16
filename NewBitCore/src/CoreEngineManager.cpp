@@ -29,21 +29,6 @@ namespace nb
 #endif
 	}
 
-	void nb::CoreEngineManager::addEngine( std::unique_ptr<CoreEngine>&& ptr )
-	{
-		auto emplaceRetVal = m_engines.emplace(
-			std::make_pair<unsigned int, unique_ptr<CoreEngine>>( ptr->getId(),
-																  move( ptr ) ) );
-		if( !emplaceRetVal.second )
-			throw std::exception();
-		m_enginesVector.push_back( emplaceRetVal.first->second.get() );
-	}
-
-	CoreEngine * nb::CoreEngineManager::getEngine( const unsigned int id ) const
-	{
-		return m_engines.at( id ).get();
-	}
-
 	void nb::CoreEngineManager::initEngines( const CoreRefs& coreRefs )
 	{
 		for( auto& el : m_enginesVector )

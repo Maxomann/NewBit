@@ -11,7 +11,7 @@ namespace nb
 		std::vector<std::pair<std::function<R( Args... )>, std::weak_ptr<bool>>> m_trackedSlots;
 
 	public:
-		// slot needs to be callable
+		// slot must be callable
 		// for member functions see below or use std::bind()
 		void connect( std::function < R( Args... ) > slot )
 		{
@@ -19,17 +19,17 @@ namespace nb
 		};
 
 		// binds args to slot
-		// example usage: Signal.connect(std::mem_fn(&Foo::bar), foo))
-		template <class ... BindArgs>
-		void connect( std::function < R( Args... ) > slot,
-					  BindArgs&&... args )
+		template <class T>
+		void connect_mem_fn_auto( R( __thiscall T::* slot )( Args... ),
+								  T& instance )
 		{
-			m_slots.push_back( easy_bind( slot, args... ) );
+			std::function<R( T&, Args... )> func = slot;
+
+			m_slots.push_back( easy_bind( func, instance ) );
 		};
 
-		// slot needs to be callable
+		// slot must be callable
 		// will remove connection when foo gets destroyed
-		// example usage: Signal.connect(std::bind(std::mem_fn(&Foo::bar), &foo), foo)
 		void connect_track( std::function < R( Args... ) > slot,
 							const Trackable& foo )
 		{
@@ -40,12 +40,13 @@ namespace nb
 		// binds foo to slot
 		// foo needs to be a child of nb::Trackable
 		// will remove connection when foo gets destroyed
-		// example usage: Signal.connect(std::mem_fn(&Foo::bar), foo))
 		template<class T>
-		void connect_track_auto( std::function < R( Args... ) > slot,
-								 const T& foo )
+		void connect_mem_fn_auto_track( R( __thiscall T::* slot )( Args... ),
+										T& foo )
 		{
-			m_trackedSlots.push_back( std::make_pair( std::move( easy_bind( slot, foo ) ),
+			std::function<R( T&, Args... )> func = slot;
+
+			m_trackedSlots.push_back( std::make_pair( std::move( easy_bind( func, foo ) ),
 													  foo.getTrackablePtr() ) );
 		};
 
