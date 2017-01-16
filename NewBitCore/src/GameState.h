@@ -11,6 +11,10 @@ namespace nb
 	class GameState
 	{
 	public:
+		GameState() = default;
+		GameState( const GameState& ) = delete;
+		GameState( GameState&& ) = delete;
+
 		DLL_EXPORT virtual void init( const CoreRefs& coreRefs ) = 0;
 
 		DLL_EXPORT virtual void destroy( const CoreRefs& coreRefs ) = 0;

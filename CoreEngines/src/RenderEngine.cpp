@@ -6,6 +6,8 @@ using namespace nb;
 void nb::RenderEngine::init( const CoreRefs& coreRefs )
 {
 	window.create( sf::VideoMode( 1280, 720 ), "RenderEngine Window" );
+	window.setVerticalSyncEnabled( true );
+
 	shape.setRadius( 100.f );
 	shape.setFillColor( sf::Color::Black );
 }
@@ -28,9 +30,9 @@ bool nb::RenderEngine::update( const CoreRefs& coreRefs )
 
 	for( const auto& sprite : m_toDraw )
 		window.draw( *sprite );
-	m_toDraw.clear();
 
 	window.display();
+	m_toDraw.clear();
 
 	return window.isOpen();
 }

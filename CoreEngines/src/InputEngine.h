@@ -13,5 +13,7 @@ namespace nb
 		virtual bool update( const CoreRefs& coreRefs ) override;
 
 		void forwardSfEvent( const sf::Event& event );
+
+		Signal<void, const CoreRefs&> s_whileQPressed;
 	};
 }

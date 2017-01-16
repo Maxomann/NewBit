@@ -12,10 +12,12 @@ void nb::InputEngine::init( const CoreRefs & coreRefs )
 
 bool nb::InputEngine::update( const CoreRefs & coreRefs )
 {
+	if( sf::Keyboard::isKeyPressed( Keyboard::Key::Q ) )
+		s_whileQPressed.call( coreRefs );
+
 	return true;
 }
 
 void nb::InputEngine::forwardSfEvent( const sf::Event & event )
 {
-	cout << event.type << endl;
 }

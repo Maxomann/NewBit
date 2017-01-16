@@ -25,7 +25,7 @@ namespace nb
 		{
 			std::function<R( T&, Args... )> func = slot;
 
-			m_slots.push_back( easy_bind( func, instance ) );
+			m_slots.push_back( easy_bind( func, std::ref( instance ) ) );
 		};
 
 		// slot must be callable
@@ -42,12 +42,12 @@ namespace nb
 		// will remove connection when foo gets destroyed
 		template<class T>
 		void connect_mem_fn_auto_track( R( __thiscall T::* slot )( Args... ),
-										T& foo )
+										T& instance )
 		{
 			std::function<R( T&, Args... )> func = slot;
 
-			m_trackedSlots.push_back( std::make_pair( std::move( easy_bind( func, foo ) ),
-													  foo.getTrackablePtr() ) );
+			m_trackedSlots.push_back( std::make_pair( std::move( easy_bind( func, std::ref( instance ) ) ),
+													  instance->getTrackablePtr() ) );
 		};
 
 		void call( Args&&... args )
