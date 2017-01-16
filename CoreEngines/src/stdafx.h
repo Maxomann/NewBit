@@ -1,6 +1,8 @@
 #pragma once
 #include <NewBitCore/src/_PluginCreator.h>
 
+#include <Thor\Input.hpp>
+
 #define DLL_EXPORT __declspec(dllexport)
 
 /*

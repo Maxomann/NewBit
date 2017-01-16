@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "id.h"
+#include "RenderEngine.h"
 
 namespace nb
 {
@@ -12,5 +13,7 @@ namespace nb
 		virtual bool update( const CoreRefs& coreRefs ) override;
 
 		virtual unsigned int getId()const override;
+
+		void forwardSfEvent(const sf::Event& event);
 	};
 }

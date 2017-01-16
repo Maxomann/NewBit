@@ -12,6 +12,15 @@ function(nb_target_add_libraries TARGET_NAME)
 		target_link_libraries(${TARGET_NAME} ${SFML_LIBRARIES})
 	endif()
 
+	# Thor
+	set(CMAKE_MODULE_PATH "${PACKAGE_DIR}/thor/cmake/Modules")
+	set(THOR_ROOT "${PACKAGE_DIR}/thor")
+	find_package(THOR 2 REQUIRED)
+	if(THOR_FOUND)
+		target_include_directories(${TARGET_NAME} PUBLIC ${THOR_INCLUDE_DIR})
+		target_link_libraries(${TARGET_NAME} ${THOR_LIBRARY})
+	endif()
+
 	# json
 	target_include_directories(${TARGET_NAME} PUBLIC "${PACKAGE_DIR}/json/include")
 
