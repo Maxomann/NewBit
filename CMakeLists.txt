@@ -47,6 +47,8 @@ else()
 	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
+	add_subdirectory(NewBitPackageManager)
+
 	add_subdirectory(NewBitEntity)
 	add_subdirectory(NewBitEntityTest)
 	add_dependencies(NewBitEntityTest NewBitEntity)
@@ -59,6 +61,6 @@ else()
 	add_dependencies(NewBitCore NewBitEntity)
 
 	add_subdirectory(CoreEngines)
-	add_dependencies(CoreEngines NewBitCore NewBitTexturePacker)
+	add_dependencies(CoreEngines NewBitCore NewBitTexturePacker NewBitPackageManager)
 
 endif()

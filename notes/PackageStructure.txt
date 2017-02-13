@@ -1,0 +1,14 @@
+Packages
+	MyPackage
+		SubfolderA
+			- imageName.jpg
+			- imageName.jpg.meta
+		SubfolderB
+			- imageName.jpg //not allowed, since file names must be unique per package
+			- imageName.jpg.meta //not allowed, since file names must be unique per package
+		SubfolderC
+			- imageName.png //ok
+			- imageName.png.meta //ok
+			- imageName2.png //ok
+			- imageName2.meta //ok
+		- package.meta

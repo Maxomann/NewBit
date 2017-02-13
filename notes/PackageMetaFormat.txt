@@ -1,0 +1,6 @@
+{
+	"name":"myResourceName" //optional: for "bar.res" the name would be "bar"
+}
+
+testimage.png
+testimage.png.meta
