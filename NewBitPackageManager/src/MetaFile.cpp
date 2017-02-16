@@ -6,6 +6,14 @@ using namespace experimental;
 const std::string MetaFile::EXTENSION = ".meta";
 const std::string MetaFile::ATTR_PATH = "path";
 
+nb::MetaFile::MetaFile(std::string filepath)
+	: m_connectedFilePath(move(filepath))
+{
+	m_id = filesystem::path(m_connectedFilePath).filename().stem().string();
+
+	m_isLoaded = true;
+}
+
 void MetaFile::loadFromFile(std::string path)
 {
 	std::ifstream file;
@@ -15,7 +23,7 @@ void MetaFile::loadFromFile(std::string path)
 	file >> m_data;
 
 	filesystem::path filepath(path);
-	m_id = filepath.filename().string();
+	m_id = filepath.filename().stem().string();
 	auto parentPath = filepath.parent_path();
 
 	std::string attr_path = m_data[MetaFile::ATTR_PATH];// .get<std::string>();
@@ -27,7 +35,7 @@ void MetaFile::loadFromFile(std::string path)
 		vector<filesystem::directory_entry> possibleConnectedFiles;
 
 		for (auto& el : filesystem::recursive_directory_iterator(parentPath))
-			if (el.path().filename() == filepath.filename())
+			if (el.path().filename().stem() == filepath.filename().stem())
 				possibleConnectedFiles.push_back(el);
 
 		// if we cannot determine a single, unique connected file => abort

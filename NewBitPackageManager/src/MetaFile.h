@@ -12,6 +12,9 @@ namespace nb
 		std::string m_id;
 
 	public:
+		MetaFile() = default;
+		// use this overload for virtual meta file
+		MetaFile(std::string filepath);
 		void loadFromFile(std::string path);
 		bool isLoaded()const;
 

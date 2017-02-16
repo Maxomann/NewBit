@@ -6,6 +6,7 @@
 #include <map>
 #include <filesystem>
 #include <utility>
+#include <algorithm>
 
 #include <nlohmann/json.hpp>
 namespace json = nlohmann;
