@@ -55,8 +55,8 @@ std::pair<std::string, std::string> nb::PackageManager::splitGlobalId(std::strin
 	pair<string, string> retVal;
 	auto splitPos = globalId.find(ID_SPLIT_CHAR);
 	if (splitPos == string::npos)
-		throw std::out_of_range("globalId does not contain ID_SPLIT_CHAR");
+		throw std::out_of_range("globalId does not contain ID_SPLIT_CHAR" + ID_SPLIT_CHAR);
 	retVal.first = globalId.substr(0, splitPos);
-	retVal.second = globalId.substr(0, splitPos + 1);
+	retVal.second = globalId.substr(splitPos + 1, string::npos);
 	return retVal;
 }

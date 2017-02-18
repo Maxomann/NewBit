@@ -11,23 +11,28 @@ namespace nb
 		std::string m_connectedFilePath;
 		std::string m_id;
 
-	public:
-		MetaFile() = default;
-		// use this overload for virtual meta file
-		MetaFile(std::string filepath);
-		void loadFromFile(std::string path);
-		bool isLoaded()const;
+		std::string generateIdFromPaths( std::string pathToPackage,
+										 std::string relativePath );
 
-		const json::json& getData()const;
-		std::string getConnectedFilePath()const;
+	public:
+		DLL_EXPORT MetaFile() = default;
+		// use this overload for virtual meta file
+		DLL_EXPORT MetaFile( std::string pathToPackage,
+							 std::string relativePath );
+		DLL_EXPORT void loadFromFile( std::string pathToPackage, std::string relativePath );
+		DLL_EXPORT bool isLoaded()const;
+
+		DLL_EXPORT const json::json& getData()const;
+		DLL_EXPORT std::string getConnectedFilePath()const;
 
 		// returns local id (filename)
-		const std::string& getId()const;
+		DLL_EXPORT const std::string& getId()const;
 
-		static const std::string EXTENSION;
+		DLL_EXPORT static const std::string EXTENSION;
 
+		//---------------------------------------------
 		// Possible default attributes in meta file:
 
-		static const std::string ATTR_PATH; //connected file path
+		DLL_EXPORT static const std::string ATTR_PATH; //connected file path
 	};
 }

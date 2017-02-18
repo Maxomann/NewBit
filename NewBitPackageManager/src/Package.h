@@ -15,12 +15,12 @@ namespace nb
 	public:
 		// Example: "/foo/bar"
 		// NOT: "/foo/bar/"
-		void loadFromFolder(std::string path);
-		bool isLoaded()const;
+		DLL_EXPORT void loadFromFolder(std::string path);
+		DLL_EXPORT bool isLoaded()const;
 
-		std::string getName()const;
+		DLL_EXPORT std::string getName()const;
 
-		std::string convertLocalToGlobalId(const std::string localId)const;
-		const MetaFile* getMetaFileById(const std::string& localId)const;
+		DLL_EXPORT std::string convertLocalToGlobalId(const std::string localId)const;
+		DLL_EXPORT const MetaFile* getMetaFileById(const std::string& localId)const;
 	};
 }

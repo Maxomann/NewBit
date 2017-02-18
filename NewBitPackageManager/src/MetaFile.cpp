@@ -3,50 +3,83 @@ using namespace std;
 using namespace nb;
 using namespace experimental;
 
-const std::string MetaFile::EXTENSION = ".meta";
+const std::string MetaFile::EXTENSION = "._meta";
 const std::string MetaFile::ATTR_PATH = "path";
 
-nb::MetaFile::MetaFile(std::string filepath)
-	: m_connectedFilePath(move(filepath))
+std::string nb::MetaFile::generateIdFromPaths( std::string pathToPackage, std::string relativePath )
 {
-	m_id = filesystem::path(m_connectedFilePath).filename().stem().string();
+	string id = filesystem::path( relativePath ).replace_extension( "" ).string();
+	while (true)
+	{
+		auto it = id.find( "\\" );
+		if (it != string::npos)
+		{
+			id.replace( it, 1, ":" );
+		}
+		else
+		{
+			it = id.find( "/" );
+			if (it == string::npos)
+				break;
+			else
+			{
+				id.replace( it, 1, ":" );
+			}
+		}
+	}
+	return id.substr( 1, string::npos );
+}
+
+nb::MetaFile::MetaFile( std::string pathToPackage,
+						std::string relativePath )
+{
+	filesystem::path pathToPackagePath( pathToPackage );
+	filesystem::path relativePathPath( relativePath );
+	filesystem::path filepath = pathToPackagePath / relativePathPath;
+	m_connectedFilePath = filepath.string();
+
+	m_id = generateIdFromPaths( pathToPackage, relativePath );
 
 	m_isLoaded = true;
 }
 
-void MetaFile::loadFromFile(std::string path)
+void MetaFile::loadFromFile( std::string pathToPackage,
+							 std::string relativePath )
 {
+	filesystem::path pathToPackagePath( pathToPackage );
+	filesystem::path relativePathPath( relativePath );
+	filesystem::path filepath = pathToPackagePath / relativePathPath;
+
 	std::ifstream file;
-	file.open(path);
+	file.open( filepath.string() );
 	if (!file.is_open())
 		return;
 	file >> m_data;
 
-	filesystem::path filepath(path);
-	m_id = filepath.filename().stem().string();
-	auto parentPath = filepath.parent_path();
+	m_id = generateIdFromPaths( pathToPackage, relativePath );
 
+	auto parentPath = filepath.parent_path();
 	std::string attr_path = m_data[MetaFile::ATTR_PATH];// .get<std::string>();
 	if (attr_path != "")
-		m_connectedFilePath = parentPath.string() + attr_path;
+		m_connectedFilePath = parentPath.string() + "\\" + attr_path;
 	else
 	{
 		// find connected file
 		vector<filesystem::directory_entry> possibleConnectedFiles;
 
-		for (auto& el : filesystem::recursive_directory_iterator(parentPath))
+		for (auto& el : filesystem::directory_iterator( parentPath ))
 			if (el.path().filename().stem() == filepath.filename().stem())
-				possibleConnectedFiles.push_back(el);
+				possibleConnectedFiles.push_back( el );
 
 		// if we cannot determine a single, unique connected file => abort
 		if (possibleConnectedFiles.size() != 1)
 			throw exception();
 		else
-			m_connectedFilePath = possibleConnectedFiles.at(0).path().string();
+			m_connectedFilePath = possibleConnectedFiles.at( 0 ).path().string();
 	}
 
 	std::ifstream associatedFile;
-	associatedFile.open(m_connectedFilePath);
+	associatedFile.open( m_connectedFilePath );
 	if (!associatedFile.is_open())
 		return;
 
