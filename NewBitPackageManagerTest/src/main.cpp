@@ -84,4 +84,6 @@ int main()
 	cout << "-----------------" << endl;
 	cout << "NewBitPackageManagerTest complete" << endl;
 	system( "pause" );
+
+	packageManager.save();
 }

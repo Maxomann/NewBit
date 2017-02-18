@@ -62,6 +62,12 @@ bool nb::Package::isLoaded() const
 	return m_isLoaded;
 }
 
+void nb::Package::save()const
+{
+	for (const auto& el : m_metaFilesByLocalId)
+		el.second.saveToFile();
+}
+
 std::string nb::Package::getName() const
 {
 	return m_name;

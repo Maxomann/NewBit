@@ -4,7 +4,6 @@ using namespace nb;
 using namespace experimental;
 
 const std::string MetaFile::EXTENSION = "._meta";
-const std::string MetaFile::ATTR_PATH = "path";
 
 std::string nb::MetaFile::generateIdFromPaths( std::string pathToPackage, std::string relativePath )
 {
@@ -37,6 +36,7 @@ nb::MetaFile::MetaFile( std::string pathToPackage,
 	filesystem::path relativePathPath( relativePath );
 	filesystem::path filepath = pathToPackagePath / relativePathPath;
 	m_connectedFilePath = filepath.string();
+	m_thisFilepath = filepath.replace_extension( EXTENSION ).string();
 
 	m_id = generateIdFromPaths( pathToPackage, relativePath );
 
@@ -56,32 +56,30 @@ void MetaFile::loadFromFile( std::string pathToPackage,
 		return;
 	file >> m_data;
 
+	m_thisFilepath = filepath.string();
 	m_id = generateIdFromPaths( pathToPackage, relativePath );
 
+	// find connected file
 	auto parentPath = filepath.parent_path();
-	std::string attr_path = m_data[MetaFile::ATTR_PATH];// .get<std::string>();
-	if (attr_path != "")
-		m_connectedFilePath = parentPath.string() + "\\" + attr_path;
-	else
+	vector<filesystem::directory_entry> possibleConnectedFiles;
+	for (auto& el : filesystem::directory_iterator( parentPath ))
 	{
-		// find connected file
-		vector<filesystem::directory_entry> possibleConnectedFiles;
-
-		for (auto& el : filesystem::directory_iterator( parentPath ))
-			if (el.path().filename().stem() == filepath.filename().stem())
-				possibleConnectedFiles.push_back( el );
-
-		// if we cannot determine a single, unique connected file => abort
-		if (possibleConnectedFiles.size() != 1)
-			throw exception();
-		else
-			m_connectedFilePath = possibleConnectedFiles.at( 0 ).path().string();
+		auto first = el.path().filename().stem();
+		auto second = filepath.filename().stem();
+		auto isFile = filesystem::is_regular_file( el.path() );
+		if (isFile && first == second && el.path().extension() != EXTENSION)
+			possibleConnectedFiles.push_back( el );
 	}
+	// if we cannot determine a single, unique connected file => abort
+	if (possibleConnectedFiles.size() != 1)
+		throw exception();
+	else
+		m_connectedFilePath = possibleConnectedFiles.at( 0 ).path().string();
 
 	std::ifstream associatedFile;
 	associatedFile.open( m_connectedFilePath );
 	if (!associatedFile.is_open())
-		return;
+		throw exception();
 
 	m_isLoaded = true;
 }
@@ -89,6 +87,15 @@ void MetaFile::loadFromFile( std::string pathToPackage,
 bool nb::MetaFile::isLoaded() const
 {
 	return m_isLoaded;
+}
+
+void nb::MetaFile::saveToFile()const
+{
+	ofstream file( m_thisFilepath );
+
+	file << std::setw( 4 ) << m_data;
+
+	file.close();
 }
 
 const json::json& nb::MetaFile::getData() const
