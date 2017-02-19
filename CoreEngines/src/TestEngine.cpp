@@ -6,7 +6,7 @@ nb::TestEngine::TestEngine()
 	cout << "TestEngine()" << endl;
 }
 
-void nb::TestEngine::init( const CoreRefs& coreRefs )
+void nb::TestEngine::init( const CoreRef& coreRefs )
 {
 	cout << "TestEngine init()" << endl;
 
@@ -15,7 +15,7 @@ void nb::TestEngine::init( const CoreRefs& coreRefs )
 	return;
 }
 
-bool nb::TestEngine::update( const CoreRefs& coreRefs )
+bool nb::TestEngine::update( const CoreRef& coreRefs )
 {
 	return true;
 }

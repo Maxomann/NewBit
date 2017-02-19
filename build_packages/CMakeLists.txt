@@ -7,7 +7,7 @@ set(sfml_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${sfml_INSTALL_DIR})
 ExternalProject_Add(sfml
   PREFIX ${sfml_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/LaurentGomila/SFML.git
-  GIT_TAG b3e44568dfbd76bd81dca3ef11d6f2763446bbb7 #2.4.1
+  GIT_TAG e4ae4f9cc3c3588a3634f46f436f77c051a85325 #2.4.2
   INSTALL_DIR ${sfml_INSTALL_DIR}
   CMAKE_ARGS ${sfml_CMAKE_ARGS}
 )

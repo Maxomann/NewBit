@@ -4,7 +4,7 @@ FILE(GLOB_RECURSE HEADER_FILES *.h)
 FILE(GLOB_RECURSE SOURCE_FILES *.cpp)
 add_library(${EXECUTABLE_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
 
-target_link_libraries(${EXECUTABLE_NAME} NewBitCore)
+target_link_libraries(${EXECUTABLE_NAME} NewBitCore NewBitPackageManager)
 nb_target_add_libraries(${EXECUTABLE_NAME})
 
 add_custom_command(
@@ -18,3 +18,9 @@ add_custom_command(
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
 			${CMAKE_CURRENT_LIST_DIR}/data/
 			$<TARGET_FILE_DIR:${EXECUTABLE_NAME}>/data/)
+
+add_custom_command(
+	TARGET ${EXECUTABLE_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${CMAKE_CURRENT_LIST_DIR}/packages/
+			$<TARGET_FILE_DIR:${EXECUTABLE_NAME}>/packages/)

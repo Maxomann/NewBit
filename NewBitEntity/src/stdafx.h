@@ -12,4 +12,6 @@
 #include <stdexcept>
 #include <utility>
 
+#include <NewBitSignals\src\Signal.h>
+
 #define DLL_EXPORT __declspec(dllexport)

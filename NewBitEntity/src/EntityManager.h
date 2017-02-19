@@ -18,5 +18,8 @@ namespace nb
 		DLL_EXPORT void deleteEntity( Entity* entity );
 
 		DLL_EXPORT int getEntityCount()const;
+
+		Signal<void, Entity*> s_onEntityCreated;
+		Signal<void, const std::vector<Entity*>&> s_onDeleteEntities;
 	};
 }

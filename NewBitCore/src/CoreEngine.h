@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include "CoreRefs.h"
+#include "CoreRef.h"
 
 namespace nb
 {
@@ -13,9 +13,9 @@ namespace nb
 	public:
 		DLL_EXPORT virtual ~CoreEngine() = default;
 
-		DLL_EXPORT virtual void init( const CoreRefs& coreRefs ) = 0;
+		DLL_EXPORT virtual void init( const CoreRef& coreRefs ) = 0;
 
 		// return false to terminate process
-		DLL_EXPORT virtual bool update( const CoreRefs& coreRefs ) = 0;
+		DLL_EXPORT virtual bool update( const CoreRef& coreRefs ) = 0;
 	};
 }

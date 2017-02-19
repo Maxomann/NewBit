@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include "CoreRefs.h"
+#include "CoreRef.h"
 
 namespace nb
 {
@@ -15,9 +15,9 @@ namespace nb
 		GameState( const GameState& ) = delete;
 		GameState( GameState&& ) = delete;
 
-		DLL_EXPORT virtual void init( const CoreRefs& coreRefs ) = 0;
+		DLL_EXPORT virtual void init( const CoreRef& coreRefs ) = 0;
 
-		DLL_EXPORT virtual void destroy( const CoreRefs& coreRefs ) = 0;
+		DLL_EXPORT virtual void destroy( const CoreRef& coreRefs ) = 0;
 
 		DLL_EXPORT virtual bool shouldDestroy() = 0;
 	};

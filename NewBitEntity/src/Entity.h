@@ -19,14 +19,14 @@ namespace nb
 
 		Component* addComponent( std::unique_ptr<Component>&& component )
 		{
-			if( m_isInit )
+			if (m_isInit)
 				component->init( *this );
 			auto componentPointer = component.get();
 
 			const auto& type = component->type;
 
 			auto insertResult = m_components.insert( std::make_pair( type, std::move( component ) ) );
-			if( !insertResult.second )
+			if (!insertResult.second)
 			{
 				throw exception::ComponentAlreadyExistsException( type.name() );
 			}
@@ -36,28 +36,39 @@ namespace nb
 		template < class T >
 		T* getComponent()const
 		{
-			const auto typeIndex = std::type_index( typeid( T ) );
+			const auto typeIndex = std::type_index( typeid(T) );
 			try
 			{
-				return (T*) m_components.at( typeIndex ).get();
+				return (T*)m_components.at( typeIndex ).get();
 			}
-			catch( std::out_of_range )
+			catch (std::out_of_range)
 			{
 				throw exception::ComponentDoesNotExistException( typeIndex.name() );
 			}
 		};
 
 		template < class T >
+		T* getComponent_try()const
+		{
+			const auto typeIndex = std::type_index( typeid(T) );
+			auto result = m_components.find( typeIndex );
+			if (result != m_components.end())
+				return (T*)result->second.get();
+			else
+				return nullptr;
+		};
+
+		template < class T >
 		void removeComponent()
 		{
-			const auto typeIndex = std::type_index( typeid( T ) );
+			const auto typeIndex = std::type_index( typeid(T) );
 			try
 			{
 				auto& component = m_components.at( typeIndex );
 				component->destroy( *this );
 				m_components.erase( typeIndex );
 			}
-			catch( std::out_of_range )
+			catch (std::out_of_range)
 			{
 				throw exception::ComponentDoesNotExistException( typeIndex.name() );
 			}

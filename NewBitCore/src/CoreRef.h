@@ -7,15 +7,15 @@ namespace nb
 	class GameStateManager;
 	class World;
 
-	struct CoreRefs
+	struct CoreRef
 	{
 		const CoreEngineManager& engines;
 		GameStateManager& gameStates;
 		World& world;
 
-		CoreRefs( const CoreEngineManager& engines,
-				  GameStateManager& gameStates,
-				  World& world )
+		CoreRef( const CoreEngineManager& engines,
+				 GameStateManager& gameStates,
+				 World& world )
 			: engines( engines ),
 			gameStates( gameStates ),
 			world( world )

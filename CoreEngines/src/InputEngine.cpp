@@ -4,15 +4,15 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-void nb::InputEngine::init( const CoreRefs & coreRefs )
+void nb::InputEngine::init( const CoreRef & coreRefs )
 {
-	auto* renderEngine = coreRefs.engines.getEngine<RenderEngine>();
+	auto* renderEngine = coreRefs.engines.getEngine<GraphicsEngine>();
 	renderEngine->s_onEvent.connect_mem_fn_auto( &InputEngine::forwardSfEvent, *this );
 }
 
-bool nb::InputEngine::update( const CoreRefs & coreRefs )
+bool nb::InputEngine::update( const CoreRef & coreRefs )
 {
-	if( sf::Keyboard::isKeyPressed( Keyboard::Key::Q ) )
+	if (sf::Keyboard::isKeyPressed( Keyboard::Key::Q ))
 		s_whileQPressed.call( coreRefs );
 
 	return true;

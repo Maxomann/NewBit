@@ -93,7 +93,10 @@ void nb::MetaFile::saveToFile()const
 {
 	ofstream file( m_thisFilepath );
 
-	file << std::setw( 4 ) << m_data;
+	if (m_data.is_null())
+		file << std::setw( 4 ) << json::json::object();
+	else
+		file << std::setw( 4 ) << m_data;
 
 	file.close();
 }

@@ -6,9 +6,9 @@ void nb::GameStateManager::pushState( std::unique_ptr<GameState>&& ptr )
 	m_uninitializedStates.push_back( move( ptr ) );
 }
 
-void nb::GameStateManager::initNewStates( const CoreRefs& coreRefs )
+void nb::GameStateManager::initNewStates( const CoreRef& coreRefs )
 {
-	for( auto& ptr : m_uninitializedStates )
+	for (auto& ptr : m_uninitializedStates)
 	{
 		ptr->init( coreRefs );
 		m_states.push_back( move( ptr ) );
@@ -16,10 +16,10 @@ void nb::GameStateManager::initNewStates( const CoreRefs& coreRefs )
 	m_uninitializedStates.clear();
 }
 
-void nb::GameStateManager::checkDestroyGameStates( const CoreRefs& coreRefs )
+void nb::GameStateManager::checkDestroyGameStates( const CoreRef& coreRefs )
 {
-	m_states.erase( std::remove_if( m_states.begin(), m_states.end(), [&] ( std::unique_ptr<GameState>& el ) -> bool{
-		if( el->shouldDestroy() )
+	m_states.erase( std::remove_if( m_states.begin(), m_states.end(), [&]( std::unique_ptr<GameState>& el ) -> bool {
+		if (el->shouldDestroy())
 		{
 			el->destroy( coreRefs );
 			return true;
@@ -29,9 +29,9 @@ void nb::GameStateManager::checkDestroyGameStates( const CoreRefs& coreRefs )
 	} ), m_states.end() );
 }
 
-void nb::GameStateManager::clear( const CoreRefs& coreRefs )
+void nb::GameStateManager::clear( const CoreRef& coreRefs )
 {
-	for( auto& el : m_states )
+	for (auto& el : m_states)
 		el->destroy( coreRefs );
 	m_states.clear();
 }
