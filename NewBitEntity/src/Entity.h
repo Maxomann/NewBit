@@ -17,18 +17,24 @@ namespace nb
 		Entity( const Entity& entity ) = delete;
 		Entity( Entity&& entity ) = default;
 
-		Component* addComponent( std::unique_ptr<Component>&& component )
+		// T must inherit from Component
+		template < class T >
+		Component* addComponent( std::unique_ptr<T>&& component )
 		{
 			if (m_isInit)
 				component->init( *this );
 			auto componentPointer = component.get();
 
-			const auto& type = component->type;
+			const auto typeIndex = std::type_index( typeid(T) );
+#ifdef _DEBUG
+			if (typeIndex == std::type_index( typeid(std::unique_ptr<Component>) ))
+				throw std::exception();
+#endif // _DEBUG
 
-			auto insertResult = m_components.insert( std::make_pair( type, std::move( component ) ) );
+			auto insertResult = m_components.insert( std::make_pair( typeIndex, std::move( component ) ) );
 			if (!insertResult.second)
 			{
-				throw exception::ComponentAlreadyExistsException( type.name() );
+				throw exception::ComponentAlreadyExistsException( typeIndex.name() );
 			}
 			return insertResult.first->second.get();
 		};
@@ -74,6 +80,7 @@ namespace nb
 			}
 		};
 
+		/* init() is called by EntityManager::addEntities(). Do not call this manually! */
 		void init();
 		/* Not called on World::~World() */
 		void destroy();

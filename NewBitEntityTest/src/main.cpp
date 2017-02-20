@@ -5,44 +5,37 @@
 using namespace std;
 using namespace nb;
 
-SUITE( NewBitEntity )
-{
-	TEST( WorldTest )
-	{
-		World world;
-		TestSystem* system = world.addSystem<TestSystem>();
-
-		world.initSystems();
-
-		vector<unique_ptr<Component>> vec;
-		vec.push_back( make_unique<TestComponent>() );
-		Entity* entity = world.createEntity( move( vec ) );
-		TestComponent* component = entity->getComponent<TestComponent>();
-
-		world.update();
-
-		CHECK( system->has_init );
-		CHECK( system->has_update );
-		CHECK( world.getEntityCount() == 1 );
-		CHECK( component->has_init );
-		CHECK( system == world.getSystem<TestSystem>() );
-
-		world.update();
-		world.deleteEntity( entity );
-
-		CHECK( world.getEntityCount() == 1 );
-
-		world.update();
-
-		CHECK( world.getEntityCount() == 0 );
-
-		world.removeSystem<TestSystem>();
-	}
-}
-
 int main()
 {
-	auto retVal = UnitTest::RunAllTests();
-	system( "pause" );
-	return retVal;
+	World world;
+	TestSystem* system = world.addSystem<TestSystem>();
+
+	world.initSystems();
+
+	Entity createThisEntity;
+	createThisEntity.addComponent( make_unique<TestComponent>() );
+
+	Entity* entity = world.addEntity( move( createThisEntity ) );
+	TestComponent* component = entity->getComponent<TestComponent>();
+
+	world.update();
+
+	CHECK( system->has_init );
+	CHECK( system->has_update );
+	CHECK( world.getEntityCount() == 1 );
+	CHECK( component->has_init );
+	CHECK( system == world.getSystem<TestSystem>() );
+
+	world.update();
+	world.removeEntity( entity );
+
+	CHECK( world.getEntityCount() == 1 );
+
+	world.update();
+
+	CHECK( world.getEntityCount() == 0 );
+
+	world.removeSystem<TestSystem>();
+
+	std::system( "pause" );
 }

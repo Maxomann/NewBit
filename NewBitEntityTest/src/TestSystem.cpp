@@ -1,9 +1,5 @@
 #include "TestSystem.h"
 
-TestSystem::TestSystem()
-	: nb::System( this )
-{}
-
 void TestSystem::init( const nb::SystemManager & systemManager, const nb::EntityManager & entityManager )
 {
 	has_init = true;

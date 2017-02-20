@@ -1,9 +1,10 @@
 #include "EntityManager.h"
 using namespace std;
+using namespace nb;
 
-void nb::EntityManager::executeDeleteEntities()
+void nb::EntityManager::executeRemoveEntities()
 {
-	s_onDeleteEntities.call( m_toDelete );
+	s_onEntitiesRemoved.call( m_toDelete );
 
 	m_entities.remove_if( [&]( auto& el ) {
 		for (auto it = m_toDelete.begin(); it != m_toDelete.end(); ++it)
@@ -24,21 +25,17 @@ void nb::EntityManager::executeDeleteEntities()
 	}
 }
 
-nb::Entity * nb::EntityManager::createEntity( std::vector<std::unique_ptr<Component>>&& components )
+Entity * nb::EntityManager::addEntity( Entity&& entity )
 {
-	Entity entity;
-	for (auto& el : components)
-		entity.addComponent( move( el ) );
-	entity.init();
-
-	m_entities.push_back( move( entity ) );
+	m_entities.push_back( std::move( entity ) );
 
 	Entity* en = &m_entities.back();
-	s_onEntityCreated.call( en );
+	en->init();
+	s_onEntityAdded.call( en );
 	return en;
 }
 
-void nb::EntityManager::deleteEntity( Entity * entity )
+void nb::EntityManager::removeEntity( Entity * entity )
 {
 	m_toDelete.push_back( entity );
 }

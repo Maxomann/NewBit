@@ -11,7 +11,7 @@ void nb::GraphicsEngine::onEntityAdded( Entity * entity )
 		m_spriteComponentsToDraw.push_back( spriteComponent );
 }
 
-void nb::GraphicsEngine::onEntitiesRemoved( const std::vector<Entity*> entities )
+void nb::GraphicsEngine::onEntitiesRemoved( const std::vector<Entity*>& entities )
 {
 	std::vector<const SpriteComponent*> toRemove;
 
@@ -25,15 +25,18 @@ void nb::GraphicsEngine::onEntitiesRemoved( const std::vector<Entity*> entities 
 
 	m_spriteComponentsToDraw.erase(
 		std::remove_if( m_spriteComponentsToDraw.begin(),
-						m_spriteComponentsToDraw.end(), [&]( const SpriteComponent* el ) {
-		return std::any_of( toRemove.begin(), toRemove.end(), [&]( const SpriteComponent* el2 ) {
-			return el == el2;
+						m_spriteComponentsToDraw.end(), [&]( const SpriteComponent* el ) -> bool {
+		return std::any_of( toRemove.begin(), toRemove.end(), [&]( const SpriteComponent* el2 ) -> bool {
+			return (el == el2);
 		} );
-	} ) );
+	} ), m_spriteComponentsToDraw.end() );
 }
 
-void nb::GraphicsEngine::init( const CoreRef& coreRefs )
+void nb::GraphicsEngine::init( const CoreRef& core )
 {
+	core.world.s_onEntityAdded.connect_mem_fn_auto( &GraphicsEngine::onEntityAdded, *this );
+	core.world.s_onEntitiesRemoved.connect_mem_fn_auto( &GraphicsEngine::onEntitiesRemoved, *this );
+
 	window.create( sf::VideoMode( 1280, 720 ), "GraphicsEngine Window" );
 	window.setVerticalSyncEnabled( true );
 
@@ -41,7 +44,7 @@ void nb::GraphicsEngine::init( const CoreRef& coreRefs )
 	shape.setFillColor( sf::Color::Black );
 }
 
-bool nb::GraphicsEngine::update( const CoreRef& coreRefs )
+bool nb::GraphicsEngine::update( const CoreRef& core )
 {
 	// events
 	sf::Event event;

@@ -32,17 +32,17 @@ namespace nb
 		{
 			auto system = std::make_unique<T>();
 
-			if( m_isInit )
+			if (m_isInit)
 				system->init( *this, *r_entityManager );
 
-			const auto& type = system->type;
+			const auto typeIndex = std::type_index( typeid(T) );
 
-			auto insertResult = m_systems.insert( std::make_pair( type, std::move( system ) ) );
-			if( !insertResult.second )
+			auto insertResult = m_systems.insert( std::make_pair( typeIndex, std::move( system ) ) );
+			if (!insertResult.second)
 			{
-				throw exception::SystemAlreadyExistsException( type.name() );
+				throw exception::SystemAlreadyExistsException( typeIndex.name() );
 			}
-			auto systemPointer = (T*) insertResult.first->second.get();
+			auto systemPointer = (T*)insertResult.first->second.get();
 
 			m_systemsByUpdateOrder.push_back( systemPointer );
 			m_isSorted = false;
@@ -52,12 +52,12 @@ namespace nb
 		template < class T >
 		T* getSystem()const
 		{
-			const auto typeIndex = std::type_index( typeid( T ) );
+			const auto typeIndex = std::type_index( typeid(T) );
 			try
 			{
-				return (T*) m_systems.at( typeIndex ).get();
+				return (T*)m_systems.at( typeIndex ).get();
 			}
-			catch( std::out_of_range )
+			catch (std::out_of_range)
 			{
 				throw exception::SystemDoesNotExistException( typeIndex.name() );
 			}
@@ -66,7 +66,7 @@ namespace nb
 		template < class T >
 		void removeSystem()
 		{
-			const auto typeIndex = std::type_index( typeid( T ) );
+			const auto typeIndex = std::type_index( typeid(T) );
 			try
 			{
 				auto& system = m_systems.at( typeIndex );
@@ -78,7 +78,7 @@ namespace nb
 				);
 				m_systems.erase( typeIndex );
 			}
-			catch( std::out_of_range )
+			catch (std::out_of_range)
 			{
 				throw exception::SystemDoesNotExistException( typeIndex.name() );
 			}

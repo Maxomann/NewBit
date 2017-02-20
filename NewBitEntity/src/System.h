@@ -9,21 +9,18 @@ namespace nb
 
 	class System
 	{
+		const UpdateOrder m_updateOrder;
+
 	public:
-		System() = delete;
-		template < class DerivedType >
-		System( DerivedType* derived, UpdateOrder updateOrder = 0 )
-			: type( typeid( DerivedType ) ),
-			updateOrder( updateOrder )
-		{};
-		System( const System& system ) = delete;
-		System( System&& system ) = default;
-		const std::type_index type;
-		const UpdateOrder updateOrder;
+		DLL_EXPORT System( UpdateOrder updateOrder = 0 );
+		DLL_EXPORT System( const System& system ) = delete;
+		DLL_EXPORT System( System&& system ) = default;
 
 		virtual void init( const SystemManager& systemManager, const EntityManager& entityManager ) = 0;
 		virtual void update( const SystemManager& systemManager, const EntityManager& entityManager ) = 0;
 		/* Not called on World::~World() */
 		virtual void destroy( const SystemManager& systemManager, const EntityManager& entityManager ) = 0;
+
+		DLL_EXPORT virtual UpdateOrder getUpdateOrder()const;
 	};
 }

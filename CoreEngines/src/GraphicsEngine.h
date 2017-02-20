@@ -14,12 +14,12 @@ namespace nb
 		std::vector<sf::Sprite*> m_toDrawNextFrame;
 
 		void onEntityAdded( Entity* entity );
-		void onEntitiesRemoved( const std::vector<Entity*> entities );
+		void onEntitiesRemoved( const std::vector<Entity*>& entities );
 
 	public:
-		virtual void init( const CoreRef& coreRefs ) override;
+		virtual void init( const CoreRef& core ) override;
 
-		virtual bool update( const CoreRef& coreRefs ) override;
+		virtual bool update( const CoreRef& core ) override;
 
 		void drawSpriteNextFrame( sf::Sprite& sprite );
 

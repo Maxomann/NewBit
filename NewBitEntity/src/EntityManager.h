@@ -11,15 +11,16 @@ namespace nb
 		std::vector<Entity*> m_toDelete;
 
 	protected:
-		void executeDeleteEntities();
+		void executeRemoveEntities();
 
 	public:
-		DLL_EXPORT Entity* createEntity( std::vector<std::unique_ptr<Component>>&& components );
-		DLL_EXPORT void deleteEntity( Entity* entity );
+		DLL_EXPORT Entity* addEntity( Entity&& entity );
+
+		DLL_EXPORT void removeEntity( Entity* entity );
 
 		DLL_EXPORT int getEntityCount()const;
 
-		Signal<void, Entity*> s_onEntityCreated;
-		Signal<void, const std::vector<Entity*>&> s_onDeleteEntities;
+		Signal<void, Entity*> s_onEntityAdded;
+		Signal<void, const std::vector<Entity*>&> s_onEntitiesRemoved;
 	};
 }

@@ -18,10 +18,12 @@ void TestGameState::init( const CoreRef& core )
 	m_sprite.setTexture( m_texture );
 
 	// create debug entity
-	auto spriteComponent = make_unique<SpriteComponent>();
+	Entity debugEntityToCreate;
+	debugEntityToCreate.addComponent( make_unique<SpriteComponent>() );
+	auto spriteComponent = debugEntityToCreate.getComponent<SpriteComponent>();
 	spriteComponent->sprite.setTexture( m_texture2 );
 	spriteComponent->sprite.setPosition( 100, 100 );
-	auto debugEntity = core.world.createEntity( { move( spriteComponent ) } );
+	auto debugEntity = core.world.addEntity( move( debugEntityToCreate ) );
 
 	return;
 }
