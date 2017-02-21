@@ -10,18 +10,19 @@ namespace nb
 	{
 		RenderSystem* r_renderSystem;
 
-		sf::RenderWindow window;
-		sf::CircleShape shape;
+		sf::RenderWindow m_window;
 
-		std::vector<sf::Sprite*> m_toDrawNextFrame;
+		std::vector<sf::Drawable*> m_toDrawNextFrame;
 
 	public:
 		virtual void init( const CoreRef& core ) override;
 
 		virtual bool update( const CoreRef& core ) override;
 
-		void drawSpriteNextFrame( sf::Sprite& sprite );
+		void drawNextFrame( sf::Drawable& drawable );
 
 		nb::Signal<void, const sf::Event&> s_onEvent;
+
+		const sf::RenderWindow& getWindow()const;
 	};
 }
