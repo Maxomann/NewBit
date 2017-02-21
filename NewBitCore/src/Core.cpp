@@ -9,6 +9,7 @@ void nb::Core::run()
 	m_engines.loadFromFolder( "./bin" );
 
 	m_engines.initEngines( coreRef );
+	m_world.initSystems();
 
 	//main loop
 	while (m_engines.update( coreRef ))

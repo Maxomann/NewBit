@@ -2,7 +2,7 @@
 using namespace std;
 
 nb::World::World()
-	: EntityManager(), SystemManager( *((EntityManager*)this) )
+	: EntityManager(), SystemManager( *this )
 {}
 
 void nb::World::update()

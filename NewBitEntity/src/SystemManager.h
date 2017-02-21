@@ -7,11 +7,11 @@
 
 namespace nb
 {
-	class EntityManager;
+	class World;
 
 	class SystemManager
 	{
-		EntityManager* r_entityManager;
+		World* r_world;
 
 		std::unordered_map<std::type_index, std::unique_ptr<System>> m_systems;
 		std::vector<System*> m_systemsByUpdateOrder;
@@ -25,7 +25,7 @@ namespace nb
 		void updateSystems();
 
 	public:
-		SystemManager( EntityManager& entityManager );
+		SystemManager( World& world );
 
 		template < class T >
 		T* addSystem()
@@ -33,7 +33,7 @@ namespace nb
 			auto system = std::make_unique<T>();
 
 			if (m_isInit)
-				system->init( *this, *r_entityManager );
+				system->init( *r_world );
 
 			const auto typeIndex = std::type_index( typeid(T) );
 
@@ -70,7 +70,7 @@ namespace nb
 			try
 			{
 				auto& system = m_systems.at( typeIndex );
-				system->destroy( *this, *r_entityManager );
+				system->destroy( *r_world );
 				m_systemsByUpdateOrder.erase(
 					std::remove( m_systemsByUpdateOrder.begin(),
 								 m_systemsByUpdateOrder.end(),

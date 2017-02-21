@@ -27,7 +27,7 @@ namespace nb
 
 			const auto typeIndex = std::type_index( typeid(T) );
 #ifdef _DEBUG
-			if (typeIndex == std::type_index( typeid(std::unique_ptr<Component>) ))
+			if (typeIndex == std::type_index( typeid(Component) ))
 				throw std::exception();
 #endif // _DEBUG
 

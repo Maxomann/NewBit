@@ -11,6 +11,7 @@ namespace nb
 		sf::Texture m_texture2;
 
 		sf::Sprite m_sprite;
+		Entity* m_debugEntity;
 
 	public:
 		DLL_EXPORT virtual void init( const CoreRef& coreRefs ) override;

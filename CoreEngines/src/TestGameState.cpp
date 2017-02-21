@@ -17,13 +17,10 @@ void TestGameState::init( const CoreRef& core )
 
 	m_sprite.setTexture( m_texture );
 
-	// create debug entity
-	Entity debugEntityToCreate;
-	debugEntityToCreate.addComponent( make_unique<SpriteComponent>() );
-	auto spriteComponent = debugEntityToCreate.getComponent<SpriteComponent>();
+	m_debugEntity = core.world.createEntity<SpriteComponent>();
+	auto spriteComponent = m_debugEntity->getComponent<SpriteComponent>();
 	spriteComponent->sprite.setTexture( m_texture2 );
 	spriteComponent->sprite.setPosition( 100, 100 );
-	auto debugEntity = core.world.addEntity( move( debugEntityToCreate ) );
 
 	return;
 }
@@ -41,4 +38,5 @@ bool TestGameState::shouldDestroy()
 void nb::TestGameState::drawTestsprite( const CoreRef & core )
 {
 	core.engines.getEngine<GraphicsEngine>()->drawSpriteNextFrame( m_sprite );
+	m_debugEntity->getComponent<SpriteComponent>()->sprite.move( 1, 0 );
 }

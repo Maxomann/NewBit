@@ -1,5 +1,9 @@
 #include "SystemManager.h"
 
+nb::SystemManager::SystemManager( World& world )
+	: r_world( &world )
+{}
+
 void nb::SystemManager::sortSystemsByUpdateOrder()
 {
 	if (!m_isSorted)
@@ -15,12 +19,8 @@ void nb::SystemManager::updateSystems()
 {
 	sortSystemsByUpdateOrder();
 	for (auto& el : m_systemsByUpdateOrder)
-		el->update( *this, *r_entityManager );
+		el->update( *r_world );
 }
-
-nb::SystemManager::SystemManager( EntityManager & entityManager )
-	:r_entityManager( &entityManager )
-{}
 
 void nb::SystemManager::initSystems()
 {
@@ -30,7 +30,7 @@ void nb::SystemManager::initSystems()
 	}
 	for (auto& el : m_systems)
 	{
-		el.second->init( *this, *r_entityManager );
+		el.second->init( *r_world );
 	}
 	m_isInit = true;
 }

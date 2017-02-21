@@ -2,19 +2,18 @@
 #include "stdafx.h"
 #include "id.h"
 #include "SpriteComponent.h"
+#include "RenderSystem.h"
 
 namespace nb
 {
 	class GraphicsEngine : public CoreEngine
 	{
+		RenderSystem* r_renderSystem;
+
 		sf::RenderWindow window;
 		sf::CircleShape shape;
 
-		std::vector<SpriteComponent*> m_spriteComponentsToDraw;
 		std::vector<sf::Sprite*> m_toDrawNextFrame;
-
-		void onEntityAdded( Entity* entity );
-		void onEntitiesRemoved( const std::vector<Entity*>& entities );
 
 	public:
 		virtual void init( const CoreRef& core ) override;
