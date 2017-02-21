@@ -47,7 +47,7 @@ namespace nb
 			std::function<R( T&, Args... )> func = slot;
 
 			m_trackedSlots.push_back( std::make_pair( std::move( easy_bind( func, std::ref( instance ) ) ),
-													  instance->getTrackablePtr() ) );
+													  instance.getTrackablePtr() ) );
 		};
 
 		void call( Args&... args )

@@ -8,7 +8,7 @@
 
 namespace nb
 {
-	class TestGameState : public nb::GameState
+	class TestGameState : public nb::GameState, public Trackable
 	{
 		GraphicsEngine* r_graphicsEngine;
 		InputEngine* r_inputEngine;
@@ -28,6 +28,6 @@ namespace nb
 
 		DLL_EXPORT virtual bool shouldDestroy() override;
 
-		void drawTestsprite( const CoreRef& core );
+		void drawTestsprite();
 	};
 }

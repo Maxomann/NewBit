@@ -13,6 +13,8 @@ void nb::GraphicsEngine::init( const CoreRef& core )
 
 bool nb::GraphicsEngine::update( const CoreRef& core )
 {
+	m_frameTime = m_clock.restart();
+
 	// events
 	sf::Event event;
 	while (m_window.pollEvent( event ))
@@ -52,4 +54,9 @@ void nb::GraphicsEngine::drawNextFrame( sf::Drawable& drawable )
 const sf::RenderWindow & nb::GraphicsEngine::getWindow() const
 {
 	return m_window;
+}
+
+const sf::Time & nb::GraphicsEngine::getFrameTime() const
+{
+	return m_frameTime;
 }

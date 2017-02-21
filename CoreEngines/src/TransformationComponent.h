@@ -16,15 +16,29 @@ namespace nb
 
 		virtual void destroy( const Entity& entity )override;
 
+		//
+
 		const sf::Vector2i& getPosition()const;
+
 		const int& getLayer()const;
+
 		const sf::Vector2u& getSize()const;
+
 		const float& getRotation()const;
 
+		//
+
 		void setPosition( sf::Vector2i position );
+		void move( sf::Vector2i offset );
+
 		void setLayer( int layer );
+
 		void setSize( sf::Vector2u size );
+
 		void setRotation( float rotation );
+		void rotate( float offset );
+
+		//
 
 		Signal<void, const TransformationComponent&> s_positionChanged;
 		Signal<void, const TransformationComponent&> s_layerChanged;

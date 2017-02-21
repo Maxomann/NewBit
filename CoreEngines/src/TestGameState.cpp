@@ -10,7 +10,30 @@ void TestGameState::init( const CoreRef& core )
 	r_inputEngine = core.engines.getEngine<InputEngine>();
 	r_resourceEngine = core.engines.getEngine<ResourceEngine>();
 
-	r_inputEngine->s_whileQPressed.connect_mem_fn_auto( &TestGameState::drawTestsprite, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::T].connect_mem_fn_auto_track( &TestGameState::drawTestsprite, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( [&]() {
+		m_camera->getComponent<TransformationComponent>()->move( Vector2i( 0, -1 * r_graphicsEngine->getFrameTime().asMilliseconds() ) );
+	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::S].connect_track( [&]() {
+		m_camera->getComponent<TransformationComponent>()->move( Vector2i( 0, r_graphicsEngine->getFrameTime().asMilliseconds() ) );
+	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::A].connect_track( [&]() {
+		m_camera->getComponent<TransformationComponent>()->move( Vector2i( -1 * r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
+	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::D].connect_track( [&]() {
+		m_camera->getComponent<TransformationComponent>()->move( Vector2i( r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
+	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Q].connect_track( [&]() {
+		m_camera->getComponent<TransformationComponent>()->rotate( -1 * r_graphicsEngine->getFrameTime().asMilliseconds() );
+	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::E].connect_track( [&]() {
+		m_camera->getComponent<TransformationComponent>()->rotate( r_graphicsEngine->getFrameTime().asMilliseconds() );
+	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( [&]() {
+		auto transform = m_camera->getComponent<TransformationComponent>();
+		transform->setPosition( { 0,0 } );
+		transform->setRotation( 0 );
+	}, *this );
 
 	auto testimage_file = r_resourceEngine->packages.getMetaFileById( "default:testimage" )->getConnectedFilePath();
 	if (!m_texture.loadFromFile( testimage_file ))
@@ -48,9 +71,9 @@ bool TestGameState::shouldDestroy()
 	return false;
 }
 
-void nb::TestGameState::drawTestsprite( const CoreRef & core )
+void nb::TestGameState::drawTestsprite()
 {
-	core.engines.getEngine<GraphicsEngine>()->drawNextFrame( m_sprite );
+	r_graphicsEngine->drawNextFrame( m_sprite );
 
 	auto transform = m_debugEntity->getComponent<TransformationComponent>();
 	transform->setPosition( Vector2i( transform->getPosition().x + 1, transform->getPosition().y ) );

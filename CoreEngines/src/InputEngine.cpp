@@ -7,17 +7,18 @@ using namespace nb;
 void nb::InputEngine::init( const CoreRef & coreRefs )
 {
 	auto* renderEngine = coreRefs.engines.getEngine<GraphicsEngine>();
-	renderEngine->s_onEvent.connect_mem_fn_auto( &InputEngine::forwardSfEvent, *this );
+	renderEngine->s_onEvent.connect_mem_fn_auto( &InputEngine::onSfEvent, *this );
 }
 
 bool nb::InputEngine::update( const CoreRef & coreRefs )
 {
-	if (sf::Keyboard::isKeyPressed( Keyboard::Key::Q ))
-		s_whileQPressed.call( coreRefs );
+	for (auto& el : s_whileKeyPressed)
+		if (Keyboard::isKeyPressed( el.first ))
+			el.second.call();
 
 	return true;
 }
 
-void nb::InputEngine::forwardSfEvent( const sf::Event & event )
+void nb::InputEngine::onSfEvent( const sf::Event & event )
 {
 }

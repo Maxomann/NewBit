@@ -12,8 +12,8 @@ namespace nb
 
 		virtual bool update( const CoreRef& coreRefs ) override;
 
-		void forwardSfEvent( const sf::Event& event );
+		void onSfEvent( const sf::Event& event );
 
-		Signal<void, const CoreRef&> s_whileQPressed;
+		std::map<sf::Keyboard::Key, Signal<void>> s_whileKeyPressed;
 	};
 }

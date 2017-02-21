@@ -37,6 +37,11 @@ void nb::TransformationComponent::setPosition( sf::Vector2i position )
 	s_positionChanged.call( *this );
 }
 
+void nb::TransformationComponent::move( sf::Vector2i offset )
+{
+	setPosition( Vector2i( m_position.x + offset.x, m_position.y + offset.y ) );
+}
+
 void nb::TransformationComponent::setLayer( int layer )
 {
 	m_layer = layer;
@@ -53,4 +58,9 @@ void nb::TransformationComponent::setRotation( float rotation )
 {
 	m_rotation = rotation;
 	s_rotationChanged.call( *this );
+}
+
+void nb::TransformationComponent::rotate( float offset )
+{
+	setRotation( m_rotation + offset );
 }
