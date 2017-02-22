@@ -17,9 +17,9 @@ namespace nb
 		std::vector<sf::Drawable*> m_toDrawNextFrame;
 
 	public:
-		virtual void init( const CoreRef& core ) override;
+		virtual void init() override;
 
-		virtual bool update( const CoreRef& core ) override;
+		virtual bool update() override;
 
 		void drawNextFrame( sf::Drawable& drawable );
 

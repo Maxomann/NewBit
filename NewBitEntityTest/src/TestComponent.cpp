@@ -1,9 +1,13 @@
 #include "TestComponent.h"
+using namespace std;
 
-void TestComponent::init( const nb::Entity & entity )
+void TestComponent::init()
 {
+	cout << "init:" << (void*)getEntity() << endl;
 	has_init = true;
 }
 
-void TestComponent::destroy( const nb::Entity & entity )
-{}
+void TestComponent::destroy()
+{
+	cout << "destroy:" << (void*)getEntity() << endl;
+}

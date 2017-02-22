@@ -8,16 +8,16 @@ namespace nb
 	class GameStateManager;
 	class World;
 
-	class GameState
+	class GameState : public CoreRefContainer
 	{
 	public:
 		GameState() = default;
 		GameState( const GameState& ) = delete;
 		GameState( GameState&& ) = delete;
 
-		DLL_EXPORT virtual void init( const CoreRef& coreRefs ) = 0;
+		DLL_EXPORT virtual void init() = 0;
 
-		DLL_EXPORT virtual void destroy( const CoreRef& coreRefs ) = 0;
+		DLL_EXPORT virtual void destroy() = 0;
 
 		DLL_EXPORT virtual bool shouldDestroy() = 0;
 	};

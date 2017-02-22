@@ -12,15 +12,20 @@ namespace nb
 	{
 		const UpdateOrder m_updateOrder;
 
+		World* r_world;
+
 	public:
 		DLL_EXPORT System( UpdateOrder updateOrder = 0 );
 		DLL_EXPORT System( const System& system ) = delete;
 		DLL_EXPORT System( System&& system ) = default;
 
-		virtual void init( World& world ) = 0;
-		virtual void update( World& world ) = 0;
+		DLL_EXPORT void linkToWorld( World* world );
+		DLL_EXPORT World* getWorld()const;
+
+		virtual void init() = 0;
+		virtual void update() = 0;
 		/* Not called on World::~World() */
-		virtual void destroy( World& world ) = 0;
+		virtual void destroy() = 0;
 
 		DLL_EXPORT virtual UpdateOrder getUpdateOrder()const;
 	};

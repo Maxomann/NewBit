@@ -7,6 +7,15 @@ nb::System::System( UpdateOrder updateOrder )
 {
 }
 
+void System::linkToWorld( World* world )
+{
+	r_world = world;
+};
+World* System::getWorld()const
+{
+	return r_world;
+};
+
 UpdateOrder nb::System::getUpdateOrder() const
 {
 	return m_updateOrder;

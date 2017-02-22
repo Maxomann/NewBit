@@ -3,8 +3,8 @@
 class TestComponent : public nb::Component
 {
 public:
-	virtual void init( const nb::Entity& entity ) override;
-	virtual void destroy( const nb::Entity& entity ) override;
+	virtual void init() override;
+	virtual void destroy() override;
 
 	bool has_init = false;
 };

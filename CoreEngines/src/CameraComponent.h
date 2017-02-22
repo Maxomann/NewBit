@@ -14,7 +14,7 @@ namespace nb
 	public:
 		const sf::View& getView()const;
 
-		virtual void init( const Entity& entity ) override;
-		virtual void destroy( const Entity& entity ) override;
+		virtual void init() override;
+		virtual void destroy() override;
 	};
 }

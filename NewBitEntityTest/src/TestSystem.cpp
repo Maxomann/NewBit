@@ -1,14 +1,14 @@
 #include "TestSystem.h"
 
-void TestSystem::init( nb::World& world )
+void TestSystem::init()
 {
 	has_init = true;
 }
 
-void TestSystem::update( nb::World& world )
+void TestSystem::update()
 {
 	has_update = true;
 }
 
-void TestSystem::destroy( nb::World& world )
+void TestSystem::destroy()
 {}

@@ -3,30 +3,37 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-void nb::TransformationComponent::init( const Entity & entity )
+void nb::TransformationComponent::init()
 {
 }
 
-void nb::TransformationComponent::destroy( const Entity & entity )
+void nb::TransformationComponent::destroy()
 {
 }
 
-const sf::Vector2i& nb::TransformationComponent::getPosition() const
+sf::Vector3i nb::TransformationComponent::getPosition() const
+{
+	return Vector3i( m_position.x,
+					 m_position.y,
+					 m_layer );
+}
+
+sf::Vector2i nb::TransformationComponent::getPositionXY() const
 {
 	return m_position;
 }
 
-const int& nb::TransformationComponent::getLayer() const
+int nb::TransformationComponent::getLayer() const
 {
 	return m_layer;
 }
 
-const sf::Vector2u& nb::TransformationComponent::getSize() const
+sf::Vector2u nb::TransformationComponent::getSize() const
 {
 	return m_size;
 }
 
-const float& nb::TransformationComponent::getRotation() const
+float nb::TransformationComponent::getRotation() const
 {
 	return m_rotation;
 }
@@ -52,6 +59,11 @@ void nb::TransformationComponent::setSize( sf::Vector2u size )
 {
 	m_size = size;
 	s_sizeChanged.call( *this );
+}
+
+void nb::TransformationComponent::scale( float factor )
+{
+	setSize( Vector2u( ((float)m_size.x)*factor, ((float)m_size.y)*factor ) );
 }
 
 void nb::TransformationComponent::setRotation( float rotation )

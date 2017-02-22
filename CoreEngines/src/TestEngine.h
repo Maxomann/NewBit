@@ -9,8 +9,8 @@ namespace nb
 	public:
 		DLL_EXPORT TestEngine();
 
-		DLL_EXPORT virtual void init( const CoreRef& core )override;
+		DLL_EXPORT virtual void init()override;
 
-		DLL_EXPORT virtual bool update( const CoreRef& core )override;
+		DLL_EXPORT virtual bool update()override;
 	};
 }

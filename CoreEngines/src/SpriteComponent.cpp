@@ -5,7 +5,7 @@ using namespace nb;
 
 void nb::SpriteComponent::onPositionChanged( const TransformationComponent & transform )
 {
-	m_sprite.setPosition( Vector2f( transform.getPosition() ) );
+	m_sprite.setPosition( Vector2f( transform.getPositionXY() ) );
 }
 
 void nb::SpriteComponent::onSizeChanged( const TransformationComponent & transform )
@@ -21,15 +21,15 @@ void nb::SpriteComponent::onRotationChanged( const TransformationComponent & tra
 	m_sprite.setRotation( transform.getRotation() );
 }
 
-void nb::SpriteComponent::init( const Entity & entity )
+void nb::SpriteComponent::init()
 {
-	auto transform = entity.getComponent<TransformationComponent>();
+	auto transform = getEntity()->getComponent<TransformationComponent>();
 	transform->s_positionChanged.connect_mem_fn_auto( &SpriteComponent::onPositionChanged, *this );
 	transform->s_sizeChanged.connect_mem_fn_auto( &SpriteComponent::onSizeChanged, *this );
 	transform->s_rotationChanged.connect_mem_fn_auto( &SpriteComponent::onRotationChanged, *this );
 }
 
-void nb::SpriteComponent::destroy( const Entity & entity )
+void nb::SpriteComponent::destroy()
 {
 }
 

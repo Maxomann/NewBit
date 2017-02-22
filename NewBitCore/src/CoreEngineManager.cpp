@@ -29,17 +29,20 @@ namespace nb
 #endif
 	}
 
-	void nb::CoreEngineManager::initEngines( const CoreRef& coreRefs )
+	void nb::CoreEngineManager::initEngines( const CoreRef& core )
 	{
 		for (auto& el : m_enginesVector)
-			el->init( coreRefs );
+		{
+			el->linkToCore( &core );
+			el->init();
+		}
 	}
 
-	bool nb::CoreEngineManager::update( const CoreRef& coreRefs )
+	bool nb::CoreEngineManager::update()
 	{
 		bool continueRunning = true;
 		for (auto& el : m_enginesVector)
-			if (!el->update( coreRefs ))
+			if (!el->update())
 				continueRunning = false;
 		return continueRunning;
 	}

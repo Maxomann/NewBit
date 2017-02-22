@@ -8,14 +8,14 @@ namespace nb
 	class GameStateManager;
 	class World;
 
-	class CoreEngine
+	class CoreEngine : public CoreRefContainer
 	{
 	public:
 		DLL_EXPORT virtual ~CoreEngine() = default;
 
-		DLL_EXPORT virtual void init( const CoreRef& coreRefs ) = 0;
+		DLL_EXPORT virtual void init() = 0;
 
 		// return false to terminate process
-		DLL_EXPORT virtual bool update( const CoreRef& coreRefs ) = 0;
+		DLL_EXPORT virtual bool update() = 0;
 	};
 }

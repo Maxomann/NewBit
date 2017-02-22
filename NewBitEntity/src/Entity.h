@@ -13,16 +13,18 @@ namespace nb
 		bool m_isInit = false;
 
 	public:
-		Entity() = default;
-		Entity( const Entity& entity ) = delete;
-		Entity( Entity&& entity ) = default;
+		DLL_EXPORT Entity() = default;
+		DLL_EXPORT Entity( const Entity& entity ) = delete;
+		DLL_EXPORT Entity( Entity&& entity );
 
 		// T must inherit from Component
 		template < class T >
 		Component* addComponent( std::unique_ptr<T>&& component )
 		{
+			component->linkToEntity( this );
 			if (m_isInit)
-				component->init( *this );
+				component->init();
+
 			auto componentPointer = component.get();
 
 			const auto typeIndex = std::type_index( typeid(T) );
@@ -71,7 +73,7 @@ namespace nb
 			try
 			{
 				auto& component = m_components.at( typeIndex );
-				component->destroy( *this );
+				component->destroy();
 				m_components.erase( typeIndex );
 			}
 			catch (std::out_of_range)

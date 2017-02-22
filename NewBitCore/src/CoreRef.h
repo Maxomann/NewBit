@@ -21,4 +21,19 @@ namespace nb
 			world( world )
 		{};
 	};
+
+	class CoreRefContainer
+	{
+		const CoreRef* r_core;
+
+	public:
+		void linkToCore( const CoreRef* core )
+		{
+			r_core = core;
+		};
+		const CoreRef* getCore()
+		{
+			return r_core;
+		};
+	};
 }

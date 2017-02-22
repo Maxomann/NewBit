@@ -3,15 +3,15 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-void nb::GraphicsEngine::init( const CoreRef& core )
+void nb::GraphicsEngine::init()
 {
 	m_window.create( sf::VideoMode( 1280, 720 ), "GraphicsEngine Window" );
 	m_window.setVerticalSyncEnabled( true );
 
-	r_renderSystem = core.world.addSystem<RenderSystem>();
+	r_renderSystem = getCore()->world.addSystem<RenderSystem>();
 }
 
-bool nb::GraphicsEngine::update( const CoreRef& core )
+bool nb::GraphicsEngine::update()
 {
 	m_frameTime = m_clock.restart();
 

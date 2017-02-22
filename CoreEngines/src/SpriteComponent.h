@@ -15,9 +15,9 @@ namespace nb
 		void onRotationChanged( const TransformationComponent& transform );
 	public:
 
-		DLL_EXPORT virtual void init( const Entity& entity )override;
+		DLL_EXPORT virtual void init()override;
 
-		DLL_EXPORT virtual void destroy( const Entity& entity )override;
+		DLL_EXPORT virtual void destroy()override;
 
 		int getZValue()const;
 		void setZValue( int zValue );

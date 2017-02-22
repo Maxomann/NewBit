@@ -32,8 +32,9 @@ namespace nb
 		{
 			auto system = std::make_unique<T>();
 
+			system->linkToWorld( r_world );
 			if (m_isInit)
-				system->init( *r_world );
+				system->init();
 
 			const auto typeIndex = std::type_index( typeid(T) );
 
@@ -70,7 +71,7 @@ namespace nb
 			try
 			{
 				auto& system = m_systems.at( typeIndex );
-				system->destroy( *r_world );
+				system->destroy();
 				m_systemsByUpdateOrder.erase(
 					std::remove( m_systemsByUpdateOrder.begin(),
 								 m_systemsByUpdateOrder.end(),

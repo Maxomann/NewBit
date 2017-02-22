@@ -38,9 +38,9 @@ namespace nb
 		// loading engines afterwards results in undefined behaviour
 		// especially beacause elements in m_enginesVector are not expected to be moved after initEngines()
 		// engines are initilaized in the order they are added
-		DLL_EXPORT void initEngines( const CoreRef& coreRefs );
+		DLL_EXPORT void initEngines( const CoreRef& core );
 
 		// engines are updated in the order they are added
-		DLL_EXPORT bool update( const CoreRef& coreRefs );
+		DLL_EXPORT bool update();
 	};
 }

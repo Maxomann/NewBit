@@ -5,13 +5,13 @@ using namespace nb;
 
 const std::string ResourceEngine::PATH_PACKAGES = "./Packages";
 
-void nb::ResourceEngine::init( const CoreRef & coreRefs )
+void nb::ResourceEngine::init()
 {
 	packages.initFromFolder( PATH_PACKAGES );
 	packages.save();
 }
 
-bool nb::ResourceEngine::update( const CoreRef & coreRefs )
+bool nb::ResourceEngine::update()
 {
 	return true;
 }

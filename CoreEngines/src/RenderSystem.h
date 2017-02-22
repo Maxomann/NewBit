@@ -19,9 +19,9 @@ namespace nb
 		void onEntitiesRemoved( const std::vector<Entity*>& entities );
 	public:
 
-		virtual void init( World& world ) override;
-		virtual void update( World& world ) override;
-		virtual void destroy( World& world ) override;
+		virtual void init() override;
+		virtual void update() override;
+		virtual void destroy() override;
 
 		void setCamerasForDrawing( std::vector<Entity*> cameras );
 

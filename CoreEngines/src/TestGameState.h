@@ -16,15 +16,19 @@ namespace nb
 
 		sf::Texture m_texture;
 		sf::Texture m_texture2;
+		sf::Texture m_texture_grass;
+		sf::Texture m_texture_sand;
 
 		sf::Sprite m_sprite;
 		Entity* m_debugEntity;
 		Entity* m_camera;
 
-	public:
-		DLL_EXPORT virtual void init( const CoreRef& coreRefs ) override;
+		void addALotOfEntities( const CoreRef& core );
 
-		DLL_EXPORT virtual void destroy( const CoreRef& coreRefs ) override;
+	public:
+		DLL_EXPORT virtual void init() override;
+
+		DLL_EXPORT virtual void destroy() override;
 
 		DLL_EXPORT virtual bool shouldDestroy() override;
 

@@ -19,7 +19,7 @@ void nb::SystemManager::updateSystems()
 {
 	sortSystemsByUpdateOrder();
 	for (auto& el : m_systemsByUpdateOrder)
-		el->update( *r_world );
+		el->update();
 }
 
 void nb::SystemManager::initSystems()
@@ -30,7 +30,7 @@ void nb::SystemManager::initSystems()
 	}
 	for (auto& el : m_systems)
 	{
-		el.second->init( *r_world );
+		el.second->init();
 	}
 	m_isInit = true;
 }

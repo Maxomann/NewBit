@@ -12,12 +12,12 @@ void nb::Core::run()
 	m_world.initSystems();
 
 	//main loop
-	while (m_engines.update( coreRef ))
+	while (m_engines.update())
 	{
-		m_gameStates.checkDestroyGameStates( coreRef );
+		m_gameStates.checkDestroyGameStates();
 		m_gameStates.initNewStates( coreRef );
 		m_world.update();
 	};
 
-	m_gameStates.clear( coreRef );
+	m_gameStates.clear();
 }

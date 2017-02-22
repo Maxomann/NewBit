@@ -32,13 +32,14 @@ void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 	} ), m_entitiesToDraw.end() );
 }
 
-void RenderSystem::init( World& world )
+void RenderSystem::init()
 {
-	world.s_onEntityAdded.connect_mem_fn_auto( &RenderSystem::onEntityAdded, *this );
-	world.s_onEntitiesRemoved.connect_mem_fn_auto( &RenderSystem::onEntitiesRemoved, *this );
+	auto world = getWorld();
+	world->s_onEntityAdded.connect_mem_fn_auto( &RenderSystem::onEntityAdded, *this );
+	world->s_onEntitiesRemoved.connect_mem_fn_auto( &RenderSystem::onEntitiesRemoved, *this );
 };
 
-void RenderSystem::update( World& world )
+void RenderSystem::update()
 {
 	// sort sprites?
 
@@ -54,7 +55,7 @@ void RenderSystem::update( World& world )
 	}
 };
 
-void RenderSystem::destroy( World& world )
+void RenderSystem::destroy()
 {
 };
 

@@ -12,19 +12,20 @@ namespace nb
 
 	public:
 
-		virtual void init( const Entity& entity )override;
+		virtual void init()override;
 
-		virtual void destroy( const Entity& entity )override;
+		virtual void destroy()override;
 
 		//
 
-		const sf::Vector2i& getPosition()const;
+		sf::Vector3i getPosition()const;
+		sf::Vector2i getPositionXY()const;
 
-		const int& getLayer()const;
+		int getLayer()const;
 
-		const sf::Vector2u& getSize()const;
+		sf::Vector2u getSize()const;
 
-		const float& getRotation()const;
+		float getRotation()const;
 
 		//
 
@@ -34,6 +35,7 @@ namespace nb
 		void setLayer( int layer );
 
 		void setSize( sf::Vector2u size );
+		void scale( float factor );
 
 		void setRotation( float rotation );
 		void rotate( float offset );
