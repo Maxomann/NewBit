@@ -21,4 +21,8 @@ bool nb::InputEngine::update()
 
 void nb::InputEngine::onSfEvent( const sf::Event & event )
 {
+	if (event.type == sf::Event::KeyPressed)
+		s_onKeyPressed[event.key.code].call();
+	if (event.type == sf::Event::KeyReleased)
+		s_onKeyReleased[event.key.code].call();
 }

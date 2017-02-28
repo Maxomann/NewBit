@@ -8,9 +8,9 @@ namespace nb
 	{
 		sf::View m_view;
 
-		void onPositionChanged( const TransformationComponent& transform );
-		void onSizeChanged( const TransformationComponent& transform );
-		void onRotationChanged( const TransformationComponent& transform );
+		void onPositionXYChanged( const TransformationComponent*const transform, sf::Vector2i oldPositionXY );
+		void onSizeChanged( const TransformationComponent*const transform, sf::Vector2u oldSize );
+		void onRotationChanged( const TransformationComponent*const transform, float oldRotation );
 	public:
 		const sf::View& getView()const;
 

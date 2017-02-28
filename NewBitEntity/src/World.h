@@ -9,6 +9,8 @@ namespace nb
 	{
 	public:
 		DLL_EXPORT World();
+		World( const World& world ) = delete;
+		World( World&& world ) = delete;
 
 		DLL_EXPORT void update();
 	};

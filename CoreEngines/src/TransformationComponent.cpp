@@ -38,27 +38,34 @@ float nb::TransformationComponent::getRotation() const
 	return m_rotation;
 }
 
-void nb::TransformationComponent::setPosition( sf::Vector2i position )
+void nb::TransformationComponent::setPositionXY( sf::Vector2i position )
 {
+	auto oldPosition = getPosition();
+	auto oldPositionXY = getPositionXY();
 	m_position = position;
-	s_positionChanged.call( *this );
+	s_positionChanged.call( this, oldPosition );
+	s_positionXYChanged.call( this, oldPositionXY );
 }
 
-void nb::TransformationComponent::move( sf::Vector2i offset )
+void nb::TransformationComponent::moveXY( sf::Vector2i offset )
 {
-	setPosition( Vector2i( m_position.x + offset.x, m_position.y + offset.y ) );
+	setPositionXY( Vector2i( m_position.x + offset.x, m_position.y + offset.y ) );
 }
 
 void nb::TransformationComponent::setLayer( int layer )
 {
+	auto oldPosition = getPosition();
+	auto oldLayer = m_layer;
 	m_layer = layer;
-	s_layerChanged.call( *this );
+	s_positionChanged.call( this, oldPosition );
+	s_layerChanged.call( this, oldLayer );
 }
 
 void nb::TransformationComponent::setSize( sf::Vector2u size )
 {
+	auto oldSize = m_size;
 	m_size = size;
-	s_sizeChanged.call( *this );
+	s_sizeChanged.call( this, oldSize );
 }
 
 void nb::TransformationComponent::scale( float factor )
@@ -68,8 +75,9 @@ void nb::TransformationComponent::scale( float factor )
 
 void nb::TransformationComponent::setRotation( float rotation )
 {
+	auto oldRotation = m_rotation;
 	m_rotation = rotation;
-	s_rotationChanged.call( *this );
+	s_rotationChanged.call( this, oldRotation );
 }
 
 void nb::TransformationComponent::rotate( float offset )

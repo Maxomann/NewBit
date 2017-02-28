@@ -10,9 +10,9 @@ namespace nb
 
 		sf::Sprite m_sprite;
 
-		void onPositionChanged( const TransformationComponent& transform );
-		void onSizeChanged( const TransformationComponent& transform );
-		void onRotationChanged( const TransformationComponent& transform );
+		void onPositionXYChanged( const TransformationComponent*const transform, sf::Vector2i oldPositionXY );
+		void onSizeChanged( const TransformationComponent*const transform, sf::Vector2u oldSize );
+		void onRotationChanged( const TransformationComponent*const transform, float oldRotation );
 	public:
 
 		DLL_EXPORT virtual void init()override;

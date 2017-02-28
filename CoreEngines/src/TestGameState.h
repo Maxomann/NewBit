@@ -5,10 +5,11 @@
 #include "CameraComponent.h"
 #include "GraphicsEngine.h"
 #include "TransformationComponent.h"
+#include "ChunkSystem.h"
 
 namespace nb
 {
-	class TestGameState : public nb::GameState, public Trackable
+	class TestGameState : public nb::GameState
 	{
 		GraphicsEngine* r_graphicsEngine;
 		InputEngine* r_inputEngine;

@@ -26,5 +26,6 @@
 #include <SFML/Window.hpp>
 
 #include <NewBitEntity/src/NewBitEntity.h>
+#include <NewBitSignals\src\Signal.h>
 
 #define DLL_EXPORT __declspec(dllexport)

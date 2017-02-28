@@ -5,7 +5,7 @@ using namespace nb;
 
 void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 {
-	int max = 20;
+	int max = 40;
 
 	bool b = true;
 
@@ -21,7 +21,7 @@ void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 				spriteComponent->setTexture( m_texture_sand );
 			b = !b;
 			auto transformationComponent = ent->getComponent<TransformationComponent>();
-			transformationComponent->setPosition( Vector2i( x * 32, y * 32 ) );
+			transformationComponent->setPositionXY( Vector2i( x * 32, y * 32 ) );
 			transformationComponent->setSize( Vector2u( 32, 32 ) );
 			transformationComponent->setRotation( 0.f );
 		}
@@ -39,16 +39,16 @@ void TestGameState::init()
 
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::T].connect_mem_fn_auto_track( &TestGameState::drawTestsprite, *this );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( [&]() {
-		m_camera->getComponent<TransformationComponent>()->move( Vector2i( 0, -1 * r_graphicsEngine->getFrameTime().asMilliseconds() ) );
+		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, -1 * r_graphicsEngine->getFrameTime().asMilliseconds() ) );
 	}, *this );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::S].connect_track( [&]() {
-		m_camera->getComponent<TransformationComponent>()->move( Vector2i( 0, r_graphicsEngine->getFrameTime().asMilliseconds() ) );
+		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, r_graphicsEngine->getFrameTime().asMilliseconds() ) );
 	}, *this );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::A].connect_track( [&]() {
-		m_camera->getComponent<TransformationComponent>()->move( Vector2i( -1 * r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
+		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( -1 * r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
 	}, *this );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::D].connect_track( [&]() {
-		m_camera->getComponent<TransformationComponent>()->move( Vector2i( r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
+		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
 	}, *this );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Q].connect_track( [&]() {
 		m_camera->getComponent<TransformationComponent>()->rotate( -1 * r_graphicsEngine->getFrameTime().asMilliseconds() );
@@ -68,7 +68,7 @@ void TestGameState::init()
 	}, *this );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( [&]() {
 		auto transform = m_camera->getComponent<TransformationComponent>();
-		transform->setPosition( { 0,0 } );
+		transform->setPositionXY( { 0,0 } );
 		transform->setRotation( 0 );
 		transform->setSize( r_graphicsEngine->getWindow().getSize() );
 	}, *this );
@@ -92,14 +92,14 @@ void TestGameState::init()
 	auto spriteComponent = m_debugEntity->getComponent<SpriteComponent>();
 	spriteComponent->setTexture( m_texture2 );
 	auto transformationComponent = m_debugEntity->getComponent<TransformationComponent>();
-	transformationComponent->setPosition( Vector2i( 0, 0 ) );
+	transformationComponent->setPositionXY( Vector2i( 0, 0 ) );
 	transformationComponent->setSize( Vector2u( 182 * 2, 337 * 2 ) );
 	transformationComponent->setRotation( 20.f );
 
 	m_camera = core->world.createEntity<TransformationComponent, CameraComponent>();
 	auto transformationComponent2 = m_camera->getComponent<TransformationComponent>();
 	transformationComponent2->setSize( r_graphicsEngine->getWindow().getSize() );
-	transformationComponent2->setPosition( Vector2i( 0, 0 ) );
+	transformationComponent2->setPositionXY( Vector2i( 0, 0 ) );
 	core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
 	addALotOfEntities( *core );
@@ -122,5 +122,5 @@ void nb::TestGameState::drawTestsprite()
 	r_graphicsEngine->drawNextFrame( m_sprite );
 
 	auto transform = m_debugEntity->getComponent<TransformationComponent>();
-	transform->setPosition( Vector2i( transform->getPositionXY().x + 1, transform->getPositionXY().y ) );
+	transform->setPositionXY( Vector2i( transform->getPositionXY().x + 1, transform->getPositionXY().y ) );
 }

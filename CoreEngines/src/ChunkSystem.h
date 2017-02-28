@@ -1,5 +1,8 @@
 #pragma once
 #include "stdafx.h"
+#include "TransformationComponent.h"
+#include "SpriteComponent.h"
+#include "sfmlExtensions.h"
 
 namespace nb
 {
@@ -7,12 +10,9 @@ namespace nb
 	{
 		World* r_world;
 
-		std::map<sf::Vector3i, std::vector<Entity*>> m_loadedChunks;
+		std::unordered_map<sf::Vector3i, std::vector<Entity*>> m_entitiesByChunk;
 
-		void generateChunk( sf::Vector3i chunkPosition );
-		void removeChunk( sf::Vector3i chunkPosition );
-
-		void onEntityPositionChanged();
+		void onEntityPositionChanged( const TransformationComponent*const transform, sf::Vector3i oldPosition );
 		void onEntityAdded( Entity* entity );
 		void onEntitiesRemoved( const std::vector<Entity*>& entities );
 
@@ -21,11 +21,12 @@ namespace nb
 		virtual void update() override;
 		virtual void destroy() override;
 
-		std::vector<Entity*> getEntitiesInChunk( sf::Vector3i chunkPosition );
+		std::vector<Entity*> getEntitiesInChunk( sf::Vector3i chunkPosition )const;
 
-		void ensureChunkLoadedForChunkPosition( sf::Vector3i chunkPosition );
-		void ensureChunkLoadedForPixelPosition( sf::Vector3i pixelPosition );
+		void removeEntitiesInChunk( sf::Vector3i chunkPosition );
 
 		static const int CHUNK_SIZE_IN_PIXEL;
+
+		static sf::Vector3i calculateChunkPositionForPixelPosition( const sf::Vector3i& pixelPosition );
 	};
 }

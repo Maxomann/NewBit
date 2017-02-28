@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "ChunkSystem.h"
 
 namespace nb
 {
