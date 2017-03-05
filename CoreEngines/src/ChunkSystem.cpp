@@ -36,14 +36,14 @@ void nb::ChunkSystem::onEntityAdded( Entity * entity )
 
 void nb::ChunkSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 {
-	std::unordered_map<sf::Vector3i, std::vector<Entity*>> toRemoveByChunk;
+	std::map<sf::Vector3i, std::vector<Entity*>> toRemoveByChunk;
 
 	for (const auto& el : entities)
 	{
 		auto transform = el->getComponent_try<TransformationComponent>();
 		if (transform)
 		{
-			auto chunkPosition = transform->getPosition();
+			auto chunkPosition = calculateChunkPositionForPixelPosition( transform->getPosition() );
 			toRemoveByChunk[chunkPosition].push_back( el );
 		}
 	}
@@ -94,11 +94,14 @@ void nb::ChunkSystem::removeEntitiesInChunk( sf::Vector3i chunkPosition )
 
 sf::Vector3i nb::ChunkSystem::calculateChunkPositionForPixelPosition( const sf::Vector3i & pixelPosition )
 {
-	auto modx = pixelPosition.x % CHUNK_SIZE_IN_PIXEL;
-	auto mody = pixelPosition.y % CHUNK_SIZE_IN_PIXEL;
+	auto x = pixelPosition.x / CHUNK_SIZE_IN_PIXEL;
+	auto y = pixelPosition.y / CHUNK_SIZE_IN_PIXEL;
 
-	auto x = (pixelPosition.x - modx) / CHUNK_SIZE_IN_PIXEL;
-	auto y = (pixelPosition.y - modx) / CHUNK_SIZE_IN_PIXEL;
+	if (pixelPosition.x < 0)
+		x -= 1;
+
+	if (pixelPosition.y < 0)
+		y -= 1;
 
 	return Vector3i( x, y, pixelPosition.z );
 }

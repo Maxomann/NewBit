@@ -11,6 +11,7 @@ namespace nb
 {
 	class TestGameState : public nb::GameState
 	{
+		const CoreRef* r_core;
 		GraphicsEngine* r_graphicsEngine;
 		InputEngine* r_inputEngine;
 		ResourceEngine* r_resourceEngine;

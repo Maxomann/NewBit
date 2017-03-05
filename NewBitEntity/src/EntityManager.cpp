@@ -4,7 +4,8 @@ using namespace nb;
 
 void nb::EntityManager::executeRemoveEntities()
 {
-	s_onEntitiesRemoved.call( m_toDelete );
+	if (m_toDelete.size() > 0)
+		s_onEntitiesRemoved.call( m_toDelete );
 
 	m_entities.remove_if( [&]( auto& el ) {
 		for (auto it = m_toDelete.begin(); it != m_toDelete.end(); ++it)

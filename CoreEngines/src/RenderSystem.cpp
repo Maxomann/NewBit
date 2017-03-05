@@ -9,6 +9,8 @@ void nb::RenderSystem::onEntityAdded( Entity * entity )
 
 	if (spriteComponent)
 		m_entitiesToDraw.push_back( entity );
+
+	m_drawingDataIsValid = false;
 }
 
 void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
@@ -30,6 +32,24 @@ void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 			return (el == el2);
 		} );
 	} ), m_entitiesToDraw.end() );
+
+	m_drawingDataIsValid = false;
+}
+
+void nb::RenderSystem::generateDrawingData()
+{
+	// generate drawingData
+	m_drawingData.clear();
+	for (const auto& cam : m_camerasForDrawing)
+	{
+		std::vector<const sf::Drawable*> toDraw;
+		for (const auto& el : m_entitiesToDraw)
+			if (cam->getComponent<TransformationComponent>()->getLayer() == el->getComponent<TransformationComponent>()->getLayer())
+				toDraw.push_back( &el->getComponent<SpriteComponent>()->getSprite() );
+		m_drawingData.push_back( make_pair( &cam->getComponent<CameraComponent>()->getView(), move( toDraw ) ) );
+	}
+
+	m_drawingDataIsValid = true;
 }
 
 void RenderSystem::init()
@@ -43,16 +63,7 @@ void RenderSystem::update()
 {
 	// sort sprites?
 
-	// generate drawingData
-	m_drawingData.clear();
-	for (const auto& cam : m_camerasForDrawing)
-	{
-		std::vector<const sf::Drawable*> toDraw;
-		for (const auto& el : m_entitiesToDraw)
-			if (cam->getComponent<TransformationComponent>()->getLayer() == el->getComponent<TransformationComponent>()->getLayer())
-				toDraw.push_back( &el->getComponent<SpriteComponent>()->getSprite() );
-		m_drawingData.push_back( make_pair( &cam->getComponent<CameraComponent>()->getView(), move( toDraw ) ) );
-	}
+	m_drawingDataIsValid = false;
 };
 
 void RenderSystem::destroy()
@@ -64,7 +75,10 @@ void nb::RenderSystem::setCamerasForDrawing( std::vector<Entity*> cameras )
 	m_camerasForDrawing = cameras;
 }
 
-const RenderSystem::DrawingData & nb::RenderSystem::getCurrentDrawingData() const
+const RenderSystem::DrawingData & nb::RenderSystem::getCurrentDrawingData()
 {
+	if (!m_drawingDataIsValid)
+		generateDrawingData();
+
 	return m_drawingData;
 }

@@ -10,7 +10,7 @@ namespace nb
 	{
 		World* r_world;
 
-		std::unordered_map<sf::Vector3i, std::vector<Entity*>> m_entitiesByChunk;
+		std::map<sf::Vector3i, std::vector<Entity*>> m_entitiesByChunk;
 
 		void onEntityPositionChanged( const TransformationComponent*const transform, sf::Vector3i oldPosition );
 		void onEntityAdded( Entity* entity );
@@ -24,6 +24,16 @@ namespace nb
 		std::vector<Entity*> getEntitiesInChunk( sf::Vector3i chunkPosition )const;
 
 		void removeEntitiesInChunk( sf::Vector3i chunkPosition );
+
+		template<class UnaryPredicate>
+		void removeEntitiesInChunk_if( sf::Vector3i chunkPosition, const UnaryPredicate& pred )
+		{
+			for (const auto& el : m_entitiesByChunk[chunkPosition])
+			{
+				if (pred( el ))
+					r_world->removeEntity( el );
+			}
+		};
 
 		static const int CHUNK_SIZE_IN_PIXEL;
 

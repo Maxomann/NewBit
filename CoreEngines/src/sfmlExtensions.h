@@ -8,11 +8,18 @@ namespace sf
 	{
 		if (lhs.z < rhs.z)
 			return true;
-		else if (lhs.y < rhs.y)
-			return true;
-		else if (lhs.x < rhs.x)
-			return true;
-		else
+		if (rhs.z < lhs.z)
 			return false;
+
+		// a1==b1: continue with element 2
+		if (lhs.y < rhs.y)
+			return true;
+		if (rhs.y < lhs.y)
+			return false;
+
+		// a2 == b2: continue with element 3
+		if (lhs.x < rhs.x)
+			return true;
+		return false; // early out
 	}
 }

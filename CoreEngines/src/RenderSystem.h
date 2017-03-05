@@ -14,9 +14,12 @@ namespace nb
 		std::vector<Entity*> m_entitiesToDraw;
 
 		DrawingData m_drawingData;
+		bool m_drawingDataIsValid = false;
 
 		void onEntityAdded( Entity* entity );
 		void onEntitiesRemoved( const std::vector<Entity*>& entities );
+
+		void generateDrawingData();
 	public:
 
 		virtual void init() override;
@@ -25,6 +28,6 @@ namespace nb
 
 		void setCamerasForDrawing( std::vector<Entity*> cameras );
 
-		const DrawingData& getCurrentDrawingData()const;
+		const DrawingData& getCurrentDrawingData();
 	};
 }

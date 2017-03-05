@@ -5,13 +5,14 @@ using namespace nb;
 
 void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 {
+	int min = -20;
 	int max = 40;
 
 	bool b = true;
 
-	for (int x = 0; x < max; x++)
+	for (int x = min; x < max; x++)
 	{
-		for (int y = 0; y < max; y++)
+		for (int y = min; y < max; y++)
 		{
 			auto ent = core.world.createEntity<TransformationComponent, SpriteComponent>();
 			auto spriteComponent = ent->getComponent<SpriteComponent>();
@@ -31,6 +32,7 @@ void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 void TestGameState::init()
 {
 	auto core = getCore();
+	r_core = core;
 
 	cout << "TestGameState init()" << endl;
 	r_graphicsEngine = core->engines.getEngine<GraphicsEngine>();
@@ -71,6 +73,18 @@ void TestGameState::init()
 		transform->setPositionXY( { 0,0 } );
 		transform->setRotation( 0 );
 		transform->setSize( r_graphicsEngine->getWindow().getSize() );
+
+		transform = m_debugEntity->getComponent<TransformationComponent>();
+		transform->setPositionXY( { 0,0 } );
+	}, *this );
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::T].connect_track( [&]() {
+		auto chunkSystem = r_core->world.getSystem<ChunkSystem>();
+		chunkSystem->removeEntitiesInChunk_if( { 0,0,0 }, [&]( const Entity* entity ) {
+			if (entity != m_debugEntity && entity != m_camera)
+				return true;
+			else
+				return false;
+		} );
 	}, *this );
 
 	auto testimage_file = r_resourceEngine->packages.getMetaFileById( "default:testimage" )->getConnectedFilePath();
