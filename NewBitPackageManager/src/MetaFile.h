@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "PackageId.h"
 
 namespace nb
 {
@@ -10,10 +11,10 @@ namespace nb
 
 		std::string m_thisFilepath = "-1";
 		std::string m_connectedFilePath = "-1";
-		std::string m_id = "-1";
+		LocalId m_id = "-1";
 
-		std::string generateIdFromPaths( std::string pathToPackage,
-										 std::string relativePath );
+		LocalId generateIdFromPaths( std::string pathToPackage,
+									 std::string relativePath );
 
 	public:
 		DLL_EXPORT MetaFile() = default;
@@ -28,14 +29,10 @@ namespace nb
 		DLL_EXPORT const json::json& getData()const;
 		DLL_EXPORT std::string getConnectedFilePath()const;
 
-		// returns local id (filename)
-		DLL_EXPORT const std::string& getId()const;
+		// returns local id (folder0:folder1:...:folderN:filename)
+		// filename without extension
+		DLL_EXPORT const LocalId& getId()const;
 
 		DLL_EXPORT static const std::string EXTENSION;
-
-		//---------------------------------------------
-		// Possible default attributes in meta file:
-
-		DLL_EXPORT static const std::string ATTR_PATH; //connected file path
 	};
 }

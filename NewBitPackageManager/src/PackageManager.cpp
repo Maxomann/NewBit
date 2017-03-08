@@ -3,8 +3,6 @@ using namespace std;
 using namespace nb;
 using namespace experimental;
 
-const char PackageManager::ID_SPLIT_CHAR = ':';
-
 void nb::PackageManager::initFromFolder( std::string path )
 {
 	filesystem::path p( path );
@@ -15,27 +13,28 @@ void nb::PackageManager::initFromFolder( std::string path )
 			Package package;
 			package.loadFromFolder( el.path().string() );
 
-			m_packagesByName[package.getName()] = move( package );
+			m_packages.push_back( move( package ) );
+			m_packagesByName[package.getName()] = &m_packages.back();
 		}
 	}
 }
 
 void nb::PackageManager::save() const
 {
-	for (const auto& el : m_packagesByName)
-		el.second.save();
+	for (const auto& el : m_packages)
+		el.save();
 }
 
-const std::map<std::string, Package>& nb::PackageManager::getPackagesByName() const
+const std::list<Package>& nb::PackageManager::getLoadedPackages() const
 {
-	return m_packagesByName;
+	return m_packages;
 }
 
 const Package* nb::PackageManager::getPackageByName( const std::string& name ) const
 {
 	try
 	{
-		return &m_packagesByName.at( name );
+		return m_packagesByName.at( name );
 	}
 	catch (std::exception e)
 	{
@@ -43,12 +42,11 @@ const Package* nb::PackageManager::getPackageByName( const std::string& name ) c
 	}
 }
 
-const MetaFile* nb::PackageManager::getMetaFileById( const std::string & globalId ) const
+const MetaFile* nb::PackageManager::getMetaFileById( const GlobalId& globalId ) const
 {
 	try
 	{
-		auto ids = splitGlobalId( globalId );
-		return m_packagesByName.at( ids.first ).getMetaFileById( ids.second );
+		return m_packagesByName.at( globalId.getPackageName() )->getMetaFileById( globalId.local );
 	}
 	catch (std::exception e)
 	{
@@ -56,7 +54,7 @@ const MetaFile* nb::PackageManager::getMetaFileById( const std::string & globalI
 	}
 }
 
-std::pair<std::string, std::string> nb::PackageManager::splitGlobalId( std::string globalId )
+/*std::pair<std::string, std::string> nb::PackageManager::splitGlobalId( std::string globalId )
 {
 	pair<string, string> retVal;
 	auto splitPos = globalId.find( ID_SPLIT_CHAR );
@@ -66,3 +64,4 @@ std::pair<std::string, std::string> nb::PackageManager::splitGlobalId( std::stri
 	retVal.second = globalId.substr( splitPos + 1, string::npos );
 	return retVal;
 }
+*/

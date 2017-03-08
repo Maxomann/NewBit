@@ -19,4 +19,6 @@ namespace nb
 			LAST_ELEMENT
 		};*/
 	}
+
+	const std::string META_ATTR_TYPE = "type";
 }

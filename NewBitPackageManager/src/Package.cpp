@@ -23,7 +23,10 @@ void nb::Package::loadFromFolder( std::string path )
 			metaFile.loadFromFile( path, relativePath );
 
 			if (metaFile.isLoaded())
-				m_metaFilesByLocalId[metaFile.getId()] = std::move( metaFile );
+			{
+				m_metaFiles.push_back( move( metaFile ) );
+				m_metaFileRefsByLocalId[m_metaFiles.back().getId()] = &m_metaFiles.back();
+			}
 			else
 				throw std::exception();
 		}
@@ -33,10 +36,10 @@ void nb::Package::loadFromFolder( std::string path )
 	}
 
 	// remove files connected to a meta file from the list
-	for (const auto& el : m_metaFilesByLocalId)
+	for (const auto& el : m_metaFiles)
 	{
 		listOfFilesInPackage.erase( remove_if( listOfFilesInPackage.begin(), listOfFilesInPackage.end(), [&]( const filesystem::path& vecEl ) {
-			if (el.first == vecEl.filename().stem())
+			if (el.getConnectedFilePath() == vecEl.string())
 				return true;
 			else
 				return false;
@@ -49,7 +52,10 @@ void nb::Package::loadFromFolder( std::string path )
 
 		MetaFile virtualMetaFile( path, relativePath );
 		if (virtualMetaFile.isLoaded())
-			m_metaFilesByLocalId[virtualMetaFile.getId()] = std::move( virtualMetaFile );
+		{
+			m_metaFiles.push_back( move( virtualMetaFile ) );
+			m_metaFileRefsByLocalId[m_metaFiles.back().getId()] = &m_metaFiles.back();
+		}
 		else
 			throw std::exception();
 	}
@@ -64,8 +70,8 @@ bool nb::Package::isLoaded() const
 
 void nb::Package::save()const
 {
-	for (const auto& el : m_metaFilesByLocalId)
-		el.second.saveToFile();
+	for (const auto& el : m_metaFiles)
+		el.saveToFile();
 }
 
 std::string nb::Package::getName() const
@@ -73,17 +79,22 @@ std::string nb::Package::getName() const
 	return m_name;
 }
 
-std::string nb::Package::convertLocalToGlobalId( const std::string localId ) const
+GlobalId nb::Package::convertLocalToGlobalId( const LocalId& localId ) const
 {
-	return m_name + ":" + localId;
+	return GlobalId( m_name, localId );
 }
 
-const MetaFile * nb::Package::getMetaFileById( const std::string& localId ) const
+const MetaFile * nb::Package::getMetaFileById( const LocalId& localId ) const
 {
 	try {
-		return &m_metaFilesByLocalId.at( localId );
+		return m_metaFileRefsByLocalId.at( localId );
 	}
 	catch (std::exception e) {
 		return nullptr;
 	}
+}
+
+const std::list<MetaFile>& nb::Package::getLoadedMetaFiles() const
+{
+	return m_metaFiles;
 }

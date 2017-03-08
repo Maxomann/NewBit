@@ -7,7 +7,7 @@ int main()
 	PackageManager packageManager;
 	packageManager.initFromFolder( "./data/debug_packageManager" );
 
-	const std::map<std::string, Package>& pkgsByName = packageManager.getPackagesByName();
+	const std::list<Package>& pkgsByName = packageManager.getLoadedPackages();
 
 	const Package* newPackage = packageManager.getPackageByName( "NewPackage" );
 	const Package* testpackage = packageManager.getPackageByName( "Testpackage" );

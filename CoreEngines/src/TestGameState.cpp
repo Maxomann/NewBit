@@ -6,7 +6,7 @@ using namespace nb;
 void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 {
 	int min = -20;
-	int max = 40;
+	int max = 20;
 
 	bool b = true;
 

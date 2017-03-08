@@ -5,7 +5,7 @@ using namespace experimental;
 
 const std::string MetaFile::EXTENSION = "._meta";
 
-std::string nb::MetaFile::generateIdFromPaths( std::string pathToPackage, std::string relativePath )
+LocalId nb::MetaFile::generateIdFromPaths( std::string pathToPackage, std::string relativePath )
 {
 	string id = filesystem::path( relativePath ).replace_extension( "" ).string();
 	while (true)
@@ -26,7 +26,7 @@ std::string nb::MetaFile::generateIdFromPaths( std::string pathToPackage, std::s
 			}
 		}
 	}
-	return id.substr( 1, string::npos );
+	return LocalId( id.substr( 1, string::npos ) );
 }
 
 nb::MetaFile::MetaFile( std::string pathToPackage,
@@ -111,7 +111,7 @@ std::string nb::MetaFile::getConnectedFilePath() const
 	return m_connectedFilePath;
 }
 
-const std::string& nb::MetaFile::getId() const
+const LocalId& nb::MetaFile::getId() const
 {
 	return m_id;
 }

@@ -10,7 +10,8 @@ namespace nb
 
 		std::string m_name = "-1";
 
-		std::map<std::string, MetaFile> m_metaFilesByLocalId;
+		std::list<MetaFile> m_metaFiles;
+		std::map<std::string, MetaFile*> m_metaFileRefsByLocalId;
 
 	public:
 		// Example: "/foo/bar"
@@ -21,7 +22,8 @@ namespace nb
 
 		DLL_EXPORT std::string getName()const;
 
-		DLL_EXPORT std::string convertLocalToGlobalId( const std::string localId )const;
-		DLL_EXPORT const MetaFile* getMetaFileById( const std::string& localId )const;
+		DLL_EXPORT GlobalId convertLocalToGlobalId( const LocalId& localId )const;
+		DLL_EXPORT const MetaFile* getMetaFileById( const LocalId& localId )const;
+		DLL_EXPORT const std::list<MetaFile>& getLoadedMetaFiles()const;
 	};
 }
