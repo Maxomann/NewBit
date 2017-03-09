@@ -19,6 +19,8 @@ namespace nb
 		const sf::Texture& getTexture()const;
 		const sf::IntRect& getDefaultTextureRect()const;
 
+		const void applyTextureAndDefaultTextureRectToSprite( sf::Sprite& sprite )const;
+
 		TextureReference& operator=( const TextureReference& rhs ) = default;
 		TextureReference& operator=( TextureReference&& rhs ) = default;
 	};

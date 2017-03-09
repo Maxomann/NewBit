@@ -107,7 +107,7 @@ nb::GlobalId::GlobalId( std::string package, LocalId localId )
 	: local( move( localId ) )
 {
 	m_package = move( package );
-	m_globalStringRepresentation = m_package + LocalId::SPLIT_CHAR + localId.toString();
+	m_globalStringRepresentation = m_package + LocalId::SPLIT_CHAR + local.toString();
 }
 
 const std::string & nb::GlobalId::getPackageName() const

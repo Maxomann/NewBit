@@ -16,11 +16,6 @@ namespace nb
 		InputEngine* r_inputEngine;
 		ResourceEngine* r_resourceEngine;
 
-		sf::Texture m_texture;
-		sf::Texture m_texture2;
-		sf::Texture m_texture_grass;
-		sf::Texture m_texture_sand;
-
 		sf::Sprite m_sprite;
 		Entity* m_debugEntity;
 		Entity* m_camera;

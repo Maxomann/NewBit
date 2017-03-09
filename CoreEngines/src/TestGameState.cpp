@@ -17,9 +17,15 @@ void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 			auto ent = core.world.createEntity<TransformationComponent, SpriteComponent>();
 			auto spriteComponent = ent->getComponent<SpriteComponent>();
 			if (b)
-				spriteComponent->setTexture( m_texture_grass );
+			{
+				auto texRef = r_resourceEngine->textures.getTextureReference( "default:texture:field_grass" );
+				spriteComponent->setTexture( *texRef );
+			}
 			else
-				spriteComponent->setTexture( m_texture_sand );
+			{
+				auto texRef = r_resourceEngine->textures.getTextureReference( "default:texture:field_sand" );
+				spriteComponent->setTexture( *texRef );
+			}
 			b = !b;
 			auto transformationComponent = ent->getComponent<TransformationComponent>();
 			transformationComponent->setPositionXY( Vector2i( x * 32, y * 32 ) );
@@ -39,7 +45,7 @@ void TestGameState::init()
 	r_inputEngine = core->engines.getEngine<InputEngine>();
 	r_resourceEngine = core->engines.getEngine<ResourceEngine>();
 
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::T].connect_mem_fn_auto_track( &TestGameState::drawTestsprite, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_mem_fn_auto_track( &TestGameState::drawTestsprite, *this );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, -1 * r_graphicsEngine->getFrameTime().asMilliseconds() ) );
 	}, *this );
@@ -74,8 +80,8 @@ void TestGameState::init()
 		transform->setRotation( 0 );
 		transform->setSize( r_graphicsEngine->getWindow().getSize() );
 
-		transform = m_debugEntity->getComponent<TransformationComponent>();
-		transform->setPositionXY( { 0,0 } );
+		/*transform = m_debugEntity->getComponent<TransformationComponent>();
+		transform->setPositionXY( { 0,0 } );*/
 	}, *this );
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::T].connect_track( [&]() {
 		auto chunkSystem = r_core->world.getSystem<ChunkSystem>();
@@ -87,28 +93,17 @@ void TestGameState::init()
 		} );
 	}, *this );
 
-	auto testimage_file = r_resourceEngine->packages.getMetaFileById( "default:testimage" )->getConnectedFilePath();
-	if (!m_texture.loadFromFile( testimage_file ))
-		throw std::exception();
-	auto testimage2_file = r_resourceEngine->packages.getMetaFileById( "default:testimage2" )->getConnectedFilePath();
-	if (!m_texture2.loadFromFile( testimage2_file ))
-		throw std::exception();
-	auto grass_file = r_resourceEngine->packages.getMetaFileById( "default:field_grass" )->getConnectedFilePath();
-	if (!m_texture_grass.loadFromFile( grass_file ))
-		throw std::exception();
-	auto sand_file = r_resourceEngine->packages.getMetaFileById( "default:field_sand" )->getConnectedFilePath();
-	if (!m_texture_sand.loadFromFile( sand_file ))
-		throw std::exception();
+	r_resourceEngine->textures.getTextureReference( "default:texture:crosshair" )->applyTextureAndDefaultTextureRectToSprite( m_sprite );
+	m_sprite.setOrigin( 8, 8 );
+	m_sprite.setPosition( 1280.f / 2.f, 720.f / 2.f );
 
-	m_sprite.setTexture( m_texture );
-
-	m_debugEntity = core->world.createEntity<TransformationComponent, SpriteComponent>();
+	/*m_debugEntity = core->world.createEntity<TransformationComponent, SpriteComponent>();
 	auto spriteComponent = m_debugEntity->getComponent<SpriteComponent>();
-	spriteComponent->setTexture( m_texture2 );
+	spriteComponent->setTexture( *r_resourceEngine->textures.getTextureReference( "default:testimage2" ) );
 	auto transformationComponent = m_debugEntity->getComponent<TransformationComponent>();
-	transformationComponent->setPositionXY( Vector2i( 0, 0 ) );
 	transformationComponent->setSize( Vector2u( 182 * 2, 337 * 2 ) );
-	transformationComponent->setRotation( 20.f );
+	transformationComponent->setPositionXY( Vector2i( 0, 0 ) );*/
+	//transformationComponent->setRotation( 20.f );
 
 	m_camera = core->world.createEntity<TransformationComponent, CameraComponent>();
 	auto transformationComponent2 = m_camera->getComponent<TransformationComponent>();
@@ -117,6 +112,15 @@ void TestGameState::init()
 	core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
 	addALotOfEntities( *core );
+
+	/*auto ent = core->world.createEntity<TransformationComponent, SpriteComponent>();
+	auto spriteComponent = ent->getComponent<SpriteComponent>();
+	auto texRef = r_resourceEngine->textures.getTextureReference( "default:texture:field_grass" );
+	spriteComponent->setTexture( *texRef );
+	auto transformationComponent = ent->getComponent<TransformationComponent>();
+	transformationComponent->setPositionXY( Vector2i( 0, 0 ) );
+	transformationComponent->setSize( Vector2u( 32, 32 ) );
+	transformationComponent->setRotation( 0.f );*/
 
 	return;
 }
@@ -135,6 +139,6 @@ void nb::TestGameState::drawTestsprite()
 {
 	r_graphicsEngine->drawNextFrame( m_sprite );
 
-	auto transform = m_debugEntity->getComponent<TransformationComponent>();
-	transform->setPositionXY( Vector2i( transform->getPositionXY().x + 1, transform->getPositionXY().y ) );
+	//auto transform = m_debugEntity->getComponent<TransformationComponent>();
+	//transform->setPositionXY( Vector2i( transform->getPositionXY().x + 1, transform->getPositionXY().y ) );
 }

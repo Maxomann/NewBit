@@ -12,6 +12,7 @@ namespace nb
 		virtual bool update()override;
 
 		PackageManager packages;
+		TextureManager textures;
 
 		static const std::string PATH_PACKAGES;
 	};

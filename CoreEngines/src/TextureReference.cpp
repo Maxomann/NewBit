@@ -20,3 +20,9 @@ const sf::IntRect& nb::TextureReference::getDefaultTextureRect()const
 {
 	return m_defaultTextureRect;
 };
+
+const void nb::TextureReference::applyTextureAndDefaultTextureRectToSprite( sf::Sprite & sprite )const
+{
+	sprite.setTexture( getTexture() );
+	sprite.setTextureRect( getDefaultTextureRect() );
+}

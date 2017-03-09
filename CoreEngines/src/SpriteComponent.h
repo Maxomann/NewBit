@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "TransformationComponent.h"
+#include "TextureReference.h"
 
 namespace nb
 {
@@ -23,6 +24,7 @@ namespace nb
 		void setZValue( int zValue );
 
 		void setTexture( const sf::Texture& texture );
+		void setTexture( const TextureReference& texture );
 
 		const sf::Sprite& getSprite()const;
 	};

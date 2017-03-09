@@ -45,7 +45,17 @@ void nb::SpriteComponent::setZValue( int zValue )
 
 void nb::SpriteComponent::setTexture( const sf::Texture & texture )
 {
-	m_sprite.setTexture( texture );
+	m_sprite.setTexture( texture, true );
+	auto& size = texture.getSize();
+	m_sprite.setOrigin( static_cast<float>(size.x) / 2.f, static_cast<float>(size.y) );
+}
+
+void nb::SpriteComponent::setTexture( const TextureReference & texture )
+{
+	texture.applyTextureAndDefaultTextureRectToSprite( m_sprite );
+	auto& defaultRect = texture.getDefaultTextureRect();
+	m_sprite.setOrigin( static_cast<float>(defaultRect.width) / 2.f,
+						static_cast<float>(defaultRect.height) );
 }
 
 const sf::Sprite & nb::SpriteComponent::getSprite() const

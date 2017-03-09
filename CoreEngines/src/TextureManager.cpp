@@ -18,20 +18,26 @@ void nb::TextureManager::init( PackageManager& packages )
 			} );
 			if (!shouldLoad)
 			{
-				auto& typeAttributes = file.getData()[META_ATTR_TYPE];
-				shouldLoad = any_of( typeAttributes.begin(), typeAttributes.end(), [&]( const std::string& el ) {
-					return el == META_ATTR_TYPE_VALUE_TEXTURE;
-				} );
+				auto& data = file.getData();
+				auto typeAttributes = data.find( META_ATTR_TYPE );
+				if (typeAttributes != data.end())
+				{
+					shouldLoad = any_of( typeAttributes->begin(), typeAttributes->end(), [&]( const std::string& el ) {
+						return el == META_ATTR_TYPE_VALUE_TEXTURE;
+					} );
+				}
 			}
 			if (shouldLoad)
 			{
 				auto& path = file.getConnectedFilePath();
 				sf::Texture tex;
-				tex.loadFromFile( path );
+				if (!tex.loadFromFile( path ))
+					throw std::exception();
 				m_textureCache.push_back( move( tex ) );
 				sf::IntRect defaultTexRect( { 0,0 }, sf::Vector2i( m_textureCache.back().getSize() ) );
 				TextureReference ref( id, m_textureCache.back(), defaultTexRect );
-				m_textureReferencesByGlobalId.emplace( make_pair( id.toString(), move( ref ) ) );
+				auto idString = id.toString();
+				m_textureReferencesByGlobalId.emplace( make_pair( move( idString ), move( ref ) ) );
 			}
 		}
 	}

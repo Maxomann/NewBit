@@ -38,6 +38,28 @@ void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 
 void nb::RenderSystem::generateDrawingData()
 {
+	// sort entitiesToDraw
+	std::sort( m_entitiesToDraw.begin(), m_entitiesToDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
+		// order: z^-1,y,x
+		auto posLhs = lhs->getComponent<TransformationComponent>()->getPositionXY();
+		auto posRhs = rhs->getComponent<TransformationComponent>()->getPositionXY();
+		auto zVlaueLhs = lhs->getComponent<SpriteComponent>()->getZValue();
+		auto zVlaueRhs = lhs->getComponent<SpriteComponent>()->getZValue();
+
+		if (zVlaueRhs > zVlaueLhs)
+			return true;
+		else if (zVlaueRhs < zVlaueLhs)
+			return false;
+		else if (posRhs.y > posLhs.y)
+			return true;
+		else if (posRhs.y < posLhs.y)
+			return false;
+		else if (posRhs.x > posLhs.x)
+			return true;
+		else
+			return false;
+	} );
+
 	// generate drawingData
 	m_drawingData.clear();
 	for (const auto& cam : m_camerasForDrawing)
