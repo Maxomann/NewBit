@@ -1,8 +1,8 @@
 #pragma once
 #include "stdafx.h"
-#include "SpriteComponent.h"
 #include "CameraComponent.h"
 #include "TransformationComponent.h"
+#include "RenderComponent.h"
 
 namespace nb
 {

@@ -14,7 +14,9 @@ void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 	{
 		for (int y = min; y < max; y++)
 		{
-			auto ent = core.world.createEntity<TransformationComponent, SpriteComponent>();
+			auto ent = core.world.createEntity<TransformationComponent, RenderComponent, SpriteComponent>();
+			auto renderComponent = ent->getComponent<RenderComponent>();
+			renderComponent->setZValue( -10 );
 			auto spriteComponent = ent->getComponent<SpriteComponent>();
 			if (b)
 			{
@@ -37,13 +39,12 @@ void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 
 void TestGameState::init()
 {
-	auto core = getCore();
-	r_core = core;
-
 	cout << "TestGameState init()" << endl;
-	r_graphicsEngine = core->engines.getEngine<GraphicsEngine>();
-	r_inputEngine = core->engines.getEngine<InputEngine>();
-	r_resourceEngine = core->engines.getEngine<ResourceEngine>();
+
+	r_core = getCore();
+	r_graphicsEngine = r_core->engines.getEngine<GraphicsEngine>();
+	r_inputEngine = r_core->engines.getEngine<InputEngine>();
+	r_resourceEngine = r_core->engines.getEngine<ResourceEngine>();
 
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_mem_fn_auto_track( &TestGameState::drawTestsprite, *this );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( [&]() {
@@ -79,9 +80,6 @@ void TestGameState::init()
 		transform->setPositionXY( { 0,0 } );
 		transform->setRotation( 0 );
 		transform->setSize( r_graphicsEngine->getWindow().getSize() );
-
-		/*transform = m_debugEntity->getComponent<TransformationComponent>();
-		transform->setPositionXY( { 0,0 } );*/
 	}, *this );
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::T].connect_track( [&]() {
 		auto chunkSystem = r_core->world.getSystem<ChunkSystem>();
@@ -92,26 +90,51 @@ void TestGameState::init()
 				return false;
 		} );
 	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Up].connect_track( [&]() {
+		if (!m_debugEntity)
+			return;
+		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		transform->setPositionXY( Vector2i( transform->getPositionXY().x, transform->getPositionXY().y - (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()) ) );
+	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( [&]() {
+		if (!m_debugEntity)
+			return;
+		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		transform->setPositionXY( Vector2i( transform->getPositionXY().x, transform->getPositionXY().y + (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()) ) );
+	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( [&]() {
+		if (!m_debugEntity)
+			return;
+		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		transform->setPositionXY( Vector2i( transform->getPositionXY().x - (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()), transform->getPositionXY().y ) );
+	}, *this );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( [&]() {
+		if (!m_debugEntity)
+			return;
+		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		transform->setPositionXY( Vector2i( transform->getPositionXY().x + (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()), transform->getPositionXY().y ) );
+	}, *this );
+
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( [&]() {
+		m_debugEntity = r_core->world.createEntity<TransformationComponent, RenderComponent, SpriteComponent>();
+		auto spriteComponent = m_debugEntity->getComponent<SpriteComponent>();
+		spriteComponent->setTexture( *r_resourceEngine->textures.getTextureReference( "default:testimage3" ) );
+		auto transformationComponent = m_debugEntity->getComponent<TransformationComponent>();
+		transformationComponent->setSize( Vector2u( 32, 64 ) );
+		transformationComponent->setPositionXY( Vector2i( 0, 0 ) );
+	}, *this );
 
 	r_resourceEngine->textures.getTextureReference( "default:texture:crosshair" )->applyTextureAndDefaultTextureRectToSprite( m_sprite );
 	m_sprite.setOrigin( 8, 8 );
 	m_sprite.setPosition( 1280.f / 2.f, 720.f / 2.f );
 
-	/*m_debugEntity = core->world.createEntity<TransformationComponent, SpriteComponent>();
-	auto spriteComponent = m_debugEntity->getComponent<SpriteComponent>();
-	spriteComponent->setTexture( *r_resourceEngine->textures.getTextureReference( "default:testimage2" ) );
-	auto transformationComponent = m_debugEntity->getComponent<TransformationComponent>();
-	transformationComponent->setSize( Vector2u( 182 * 2, 337 * 2 ) );
-	transformationComponent->setPositionXY( Vector2i( 0, 0 ) );*/
-	//transformationComponent->setRotation( 20.f );
-
-	m_camera = core->world.createEntity<TransformationComponent, CameraComponent>();
+	m_camera = r_core->world.createEntity<TransformationComponent, CameraComponent>();
 	auto transformationComponent2 = m_camera->getComponent<TransformationComponent>();
 	transformationComponent2->setSize( r_graphicsEngine->getWindow().getSize() );
 	transformationComponent2->setPositionXY( Vector2i( 0, 0 ) );
-	core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
+	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
-	addALotOfEntities( *core );
+	addALotOfEntities( *r_core );
 
 	/*auto ent = core->world.createEntity<TransformationComponent, SpriteComponent>();
 	auto spriteComponent = ent->getComponent<SpriteComponent>();
@@ -138,7 +161,4 @@ bool TestGameState::shouldDestroy()
 void nb::TestGameState::drawTestsprite()
 {
 	r_graphicsEngine->drawNextFrame( m_sprite );
-
-	//auto transform = m_debugEntity->getComponent<TransformationComponent>();
-	//transform->setPositionXY( Vector2i( transform->getPositionXY().x + 1, transform->getPositionXY().y ) );
 }

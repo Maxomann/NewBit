@@ -23,24 +23,19 @@ void nb::SpriteComponent::onRotationChanged( const TransformationComponent*const
 
 void nb::SpriteComponent::init()
 {
-	auto transform = getEntity()->getComponent<TransformationComponent>();
+	auto entity = getEntity();
+
+	auto transform = entity->getComponent<TransformationComponent>();
 	transform->s_positionXYChanged.connect_mem_fn_auto( &SpriteComponent::onPositionXYChanged, *this );
 	transform->s_sizeChanged.connect_mem_fn_auto( &SpriteComponent::onSizeChanged, *this );
 	transform->s_rotationChanged.connect_mem_fn_auto( &SpriteComponent::onRotationChanged, *this );
+
+	auto render = entity->getComponent<RenderComponent>();
+	render->addDrawable( &m_sprite );
 }
 
 void nb::SpriteComponent::destroy()
 {
-}
-
-int nb::SpriteComponent::getZValue() const
-{
-	return m_zValue;
-}
-
-void nb::SpriteComponent::setZValue( int zValue )
-{
-	m_zValue = zValue;
 }
 
 void nb::SpriteComponent::setTexture( const sf::Texture & texture )

@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 #include "TransformationComponent.h"
-#include "SpriteComponent.h"
 #include "sfmlExtensions.h"
 
 namespace nb

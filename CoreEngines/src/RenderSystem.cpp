@@ -5,9 +5,9 @@ using namespace nb;
 
 void nb::RenderSystem::onEntityAdded( Entity * entity )
 {
-	auto spriteComponent = entity->getComponent_try<SpriteComponent>();
+	auto renderComponent = entity->getComponent_try<RenderComponent>();
 
-	if (spriteComponent)
+	if (renderComponent)
 		m_entitiesToDraw.push_back( entity );
 
 	m_drawingDataIsValid = false;
@@ -19,9 +19,9 @@ void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 
 	for (const auto& entity : entities)
 	{
-		auto spriteComponent = entity->getComponent_try<SpriteComponent>();
+		auto renderComponent = entity->getComponent_try<RenderComponent>();
 
-		if (spriteComponent)
+		if (renderComponent)
 			toRemove.push_back( entity );
 	}
 
@@ -43,8 +43,8 @@ void nb::RenderSystem::generateDrawingData()
 		// order: z^-1,y,x
 		auto posLhs = lhs->getComponent<TransformationComponent>()->getPositionXY();
 		auto posRhs = rhs->getComponent<TransformationComponent>()->getPositionXY();
-		auto zVlaueLhs = lhs->getComponent<SpriteComponent>()->getZValue();
-		auto zVlaueRhs = lhs->getComponent<SpriteComponent>()->getZValue();
+		auto zVlaueLhs = lhs->getComponent<RenderComponent>()->getZValue();
+		auto zVlaueRhs = rhs->getComponent<RenderComponent>()->getZValue();
 
 		if (zVlaueRhs > zVlaueLhs)
 			return true;
@@ -67,7 +67,10 @@ void nb::RenderSystem::generateDrawingData()
 		std::vector<const sf::Drawable*> toDraw;
 		for (const auto& el : m_entitiesToDraw)
 			if (cam->getComponent<TransformationComponent>()->getLayer() == el->getComponent<TransformationComponent>()->getLayer())
-				toDraw.push_back( &el->getComponent<SpriteComponent>()->getSprite() );
+			{
+				const auto& renderComponentDrawingData = el->getComponent<RenderComponent>()->getDrawingData();
+				toDraw.insert( toDraw.end(), renderComponentDrawingData.begin(), renderComponentDrawingData.end() );
+			}
 		m_drawingData.push_back( make_pair( &cam->getComponent<CameraComponent>()->getView(), move( toDraw ) ) );
 	}
 
@@ -83,8 +86,6 @@ void RenderSystem::init()
 
 void RenderSystem::update()
 {
-	// sort sprites?
-
 	m_drawingDataIsValid = false;
 };
 
