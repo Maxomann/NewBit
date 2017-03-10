@@ -3,7 +3,7 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-void nb::TestGameState::addALotOfEntities( const CoreRef & core )
+void nb::TestGameState::addALotOfEntities()
 {
 	int min = -20;
 	int max = 20;
@@ -14,7 +14,7 @@ void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 	{
 		for (int y = min; y < max; y++)
 		{
-			auto ent = core.world.createEntity<TransformationComponent, RenderComponent, SpriteComponent>();
+			auto ent = r_core->world.createEntity<TransformationComponent, RenderComponent, SpriteComponent>();
 			auto renderComponent = ent->getComponent<RenderComponent>();
 			renderComponent->setZValue( -10 );
 			auto spriteComponent = ent->getComponent<SpriteComponent>();
@@ -33,6 +33,30 @@ void nb::TestGameState::addALotOfEntities( const CoreRef & core )
 			transformationComponent->setPositionXY( Vector2i( x * 32, y * 32 ) );
 			transformationComponent->setSize( Vector2u( 32, 32 ) );
 			transformationComponent->setRotation( 0.f );
+		}
+	}
+}
+
+void nb::TestGameState::addSomeTerrain()
+{
+	int min = -4;
+	int max = 4;
+
+	for (int x = min; x < max; x++)
+	{
+		for (int y = min; y < max; y++)
+		{
+			auto ent = r_core->world.createEntity<TransformationComponent, RenderComponent, TerrainComponent>();
+			auto renderComponent = ent->getComponent<RenderComponent>();
+			renderComponent->setZValue( -10 );
+			auto terrain = ent->getComponent<TerrainComponent>();
+			auto texRef = r_resourceEngine->textures.getTextureReference( "default:testterrain" );
+			terrain->setDebugTexture( *texRef );
+			auto transformationComponent = ent->getComponent<TransformationComponent>();
+			transformationComponent->setPositionXY( Vector2i( ChunkSystem::CHUNK_SIZE_IN_PIXEL * x,
+															  ChunkSystem::CHUNK_SIZE_IN_PIXEL * y ) );
+			transformationComponent->setSize( Vector2u( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
+														ChunkSystem::CHUNK_SIZE_IN_PIXEL ) );
 		}
 	}
 }
@@ -126,7 +150,8 @@ void TestGameState::init()
 
 	r_resourceEngine->textures.getTextureReference( "default:texture:crosshair" )->applyTextureAndDefaultTextureRectToSprite( m_sprite );
 	m_sprite.setOrigin( 8, 8 );
-	m_sprite.setPosition( 1280.f / 2.f, 720.f / 2.f );
+	auto windowSize = r_graphicsEngine->getWindow().getSize();
+	m_sprite.setPosition( windowSize.x / 2.f, windowSize.y / 2.f );
 
 	m_camera = r_core->world.createEntity<TransformationComponent, CameraComponent>();
 	auto transformationComponent2 = m_camera->getComponent<TransformationComponent>();
@@ -134,7 +159,8 @@ void TestGameState::init()
 	transformationComponent2->setPositionXY( Vector2i( 0, 0 ) );
 	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
-	addALotOfEntities( *r_core );
+	//addALotOfEntities();
+	addSomeTerrain();
 
 	/*auto ent = core->world.createEntity<TransformationComponent, SpriteComponent>();
 	auto spriteComponent = ent->getComponent<SpriteComponent>();

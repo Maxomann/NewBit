@@ -6,19 +6,23 @@ namespace nb
 	class CoreEngineManager;
 	class GameStateManager;
 	class World;
+	class MultithreadingManager;
 
 	struct CoreRef
 	{
 		const CoreEngineManager& engines;
 		GameStateManager& gameStates;
 		World& world;
+		MultithreadingManager& multithreading;
 
 		CoreRef( const CoreEngineManager& engines,
 				 GameStateManager& gameStates,
-				 World& world )
+				 World& world,
+				 MultithreadingManager& multithreading )
 			: engines( engines ),
 			gameStates( gameStates ),
-			world( world )
+			world( world ),
+			multithreading( multithreading )
 		{};
 	};
 

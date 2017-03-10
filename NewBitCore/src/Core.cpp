@@ -3,7 +3,7 @@ using namespace std;
 
 void nb::Core::run()
 {
-	const CoreRef coreRef( m_engines, m_gameStates, m_world );
+	const CoreRef coreRef( m_engines, m_gameStates, m_world, m_multithreadingManager );
 
 	//init
 	m_engines.loadFromFolder( "./bin" );
@@ -16,6 +16,7 @@ void nb::Core::run()
 	{
 		m_gameStates.checkDestroyGameStates();
 		m_gameStates.initNewStates( coreRef );
+		m_multithreadingManager.tick();
 		m_world.update();
 	};
 

@@ -5,6 +5,7 @@
 #include <type_traits>
 #include <utility>
 #include <memory>
+#include <mutex>
 
 #include "easy_bind.h"
 

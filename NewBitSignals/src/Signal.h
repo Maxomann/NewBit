@@ -67,5 +67,75 @@ namespace nb
 				return false;
 			} ), m_trackedSlots.end() );
 		}
+
+		void clear()
+		{
+			m_slots.clear();
+			m_trackedSlots.clear();
+		}
+	};
+
+	template <class R, class... Args>
+	class ThreadSafeSignal
+	{
+		std::mutex m_mutex;
+		Signal<R, Args...> m_signal;
+
+	public:
+		// slot must be callable
+		// for member functions see below or use std::bind()
+		void connect( std::function < R( Args... ) > slot )
+		{
+			std::lock_guard<std::mutex> lock( m_mutex );
+			m_signal.connect( slot );
+		};
+
+		// binds args to slot
+		template <class T>
+		void connect_mem_fn_auto( R( __thiscall T::* slot )(Args...),
+								  T& instance )
+		{
+			std::lock_guard<std::mutex> lock( m_mutex );
+			m_signal.connect_mem_fn_auto( slot, instance );
+		};
+
+		// slot must be callable
+		// will remove connection when foo gets destroyed
+		void connect_track( std::function < R( Args... ) > slot,
+							const Trackable& foo )
+		{
+			std::lock_guard<std::mutex> lock( m_mutex );
+			m_signal.connect_track( slot, foo );
+		};
+
+		// binds foo to slot
+		// foo needs to be a child of nb::Trackable
+		// will remove connection when foo gets destroyed
+		template<class T>
+		void connect_mem_fn_auto_track( R( __thiscall T::* slot )(Args...),
+										T& instance )
+		{
+			std::lock_guard<std::mutex> lock( m_mutex );
+			m_signal.connect_mem_fn_auto_track( slot, instance );
+		};
+
+		void call( Args&... args )
+		{
+			std::lock_guard<std::mutex> lock( m_mutex );
+			m_signal.call( args... );
+		}
+
+		void clear()
+		{
+			std::lock_guard<std::mutex> lock( m_mutex );
+			m_signal.clear();
+		}
+
+		void call_and_clear( Args&... args )
+		{
+			std::lock_guard<std::mutex> lock( m_mutex );
+			m_signal.call( args... );
+			m_signal.clear();
+		}
 	};
 }

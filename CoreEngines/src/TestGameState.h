@@ -6,6 +6,8 @@
 #include "GraphicsEngine.h"
 #include "TransformationComponent.h"
 #include "ChunkSystem.h"
+#include "TerrainComponent.h"
+#include "WorldLoadingGameState.h"
 
 namespace nb
 {
@@ -20,7 +22,8 @@ namespace nb
 		Entity* m_debugEntity;
 		Entity* m_camera;
 
-		void addALotOfEntities( const CoreRef& core );
+		void addALotOfEntities();
+		void addSomeTerrain();
 
 	public:
 		DLL_EXPORT virtual void init() override;

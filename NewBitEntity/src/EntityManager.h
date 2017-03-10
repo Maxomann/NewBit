@@ -26,18 +26,28 @@ namespace nb
 		void executeRemoveEntities();
 
 	public:
+		// not thread safe
 		DLL_EXPORT Entity* addEntity( Entity&& entity );
+		// thread safe
 		template< class ... ComponentTypes >
-		Entity* createEntity()
+		Entity constructEntity()
 		{
 			Entity entity;
 			addComponentsToEntity<ComponentTypes...>( &entity );
 
-			return addEntity( move( entity ) );
+			return entity;
+		};
+		// not thread safe
+		template< class ... ComponentTypes >
+		Entity* createEntity()
+		{
+			return addEntity( constructEntity<ComponentTypes...>() );
 		};
 
+		// not thread safe
 		DLL_EXPORT void removeEntity( Entity* entity );
 
+		// not thread safe
 		DLL_EXPORT int getEntityCount()const;
 
 		Signal<void, Entity*> s_onEntityAdded;
