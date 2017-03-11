@@ -96,6 +96,12 @@ void RenderSystem::destroy()
 void nb::RenderSystem::setCamerasForDrawing( std::vector<Entity*> cameras )
 {
 	m_camerasForDrawing = cameras;
+	s_camerasForDrawingChanged.call( m_camerasForDrawing );
+}
+
+const std::vector<Entity*>& nb::RenderSystem::getCamerasForDrawing() const
+{
+	return m_camerasForDrawing;
 }
 
 const RenderSystem::DrawingData & nb::RenderSystem::getCurrentDrawingData()

@@ -171,6 +171,8 @@ void TestGameState::init()
 	transformationComponent->setSize( Vector2u( 32, 32 ) );
 	transformationComponent->setRotation( 0.f );*/
 
+	r_worldLoadingGameState = r_core->gameStates.pushState( make_unique<WorldLoadingGameState>() );
+
 	return;
 }
 

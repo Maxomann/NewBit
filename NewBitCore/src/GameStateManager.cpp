@@ -1,20 +1,16 @@
 #include "GameStateManager.h"
 using namespace nb;
 
-void nb::GameStateManager::pushState( std::unique_ptr<GameState>&& ptr )
-{
-	m_uninitializedStates.push_back( move( ptr ) );
-}
-
 void nb::GameStateManager::initNewStates( const CoreRef& core )
 {
-	for (auto& ptr : m_uninitializedStates)
+	while (m_uninitializedStates.size() > 0)
 	{
-		ptr->linkToCore( &core );
-		ptr->init();
-		m_states.push_back( move( ptr ) );
+		auto& el = m_uninitializedStates.front();
+		el->linkToCore( &core );
+		el->init();
+		m_states.push_back( move( el ) );
+		m_uninitializedStates.pop();
 	}
-	m_uninitializedStates.clear();
 }
 
 void nb::GameStateManager::checkDestroyGameStates()
@@ -30,7 +26,7 @@ void nb::GameStateManager::checkDestroyGameStates()
 	} ), m_states.end() );
 }
 
-void nb::GameStateManager::clear()
+void nb::GameStateManager::destroy_all()
 {
 	for (auto& el : m_states)
 		el->destroy();

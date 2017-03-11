@@ -19,5 +19,5 @@ void nb::Core::run()
 		m_world.update();
 	};
 
-	m_gameStates.clear();
+	m_gameStates.destroy_all();
 }

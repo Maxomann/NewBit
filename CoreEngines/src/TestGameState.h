@@ -22,6 +22,8 @@ namespace nb
 		Entity* m_debugEntity;
 		Entity* m_camera;
 
+		WorldLoadingGameState* r_worldLoadingGameState;
+
 		void addALotOfEntities();
 		void addSomeTerrain();
 

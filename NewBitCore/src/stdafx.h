@@ -12,6 +12,7 @@
 #include <typeinfo>
 #include <typeindex>
 #include <mutex>
+#include <queue>
 
 #ifdef _WIN32
 #include <windows.h>

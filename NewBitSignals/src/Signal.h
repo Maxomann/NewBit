@@ -50,7 +50,7 @@ namespace nb
 													  instance.getTrackablePtr() ) );
 		};
 
-		void call( Args&... args )
+		void call( const Args&... args )
 		{
 			for (auto& func : m_slots)
 			{

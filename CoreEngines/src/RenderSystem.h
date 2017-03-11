@@ -27,7 +27,10 @@ namespace nb
 		virtual void destroy() override;
 
 		void setCamerasForDrawing( std::vector<Entity*> cameras );
+		const std::vector<Entity*>& getCamerasForDrawing()const;
 
 		const DrawingData& getCurrentDrawingData();
+
+		Signal<void, const std::vector<Entity*>&> s_camerasForDrawingChanged;
 	};
 }
