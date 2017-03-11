@@ -160,7 +160,7 @@ void TestGameState::init()
 	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
 	//addALotOfEntities();
-	addSomeTerrain();
+	//addSomeTerrain();
 
 	/*auto ent = core->world.createEntity<TransformationComponent, SpriteComponent>();
 	auto spriteComponent = ent->getComponent<SpriteComponent>();

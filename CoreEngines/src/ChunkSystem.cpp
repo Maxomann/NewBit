@@ -94,13 +94,16 @@ void nb::ChunkSystem::removeEntitiesInChunk( sf::Vector3i chunkPosition )
 
 sf::Vector3i nb::ChunkSystem::calculateChunkPositionForPixelPosition( const sf::Vector3i & pixelPosition )
 {
-	auto x = pixelPosition.x / CHUNK_SIZE_IN_PIXEL;
-	auto y = pixelPosition.y / CHUNK_SIZE_IN_PIXEL;
+	auto remainX = pixelPosition.x % CHUNK_SIZE_IN_PIXEL;
+	auto remainY = pixelPosition.y % CHUNK_SIZE_IN_PIXEL;
 
-	if (pixelPosition.x < 0)
+	auto x = (pixelPosition.x - remainX) / CHUNK_SIZE_IN_PIXEL;
+	auto y = (pixelPosition.y - remainY) / CHUNK_SIZE_IN_PIXEL;
+
+	if (pixelPosition.x < 0 && remainX != 0)
 		x -= 1;
 
-	if (pixelPosition.y < 0)
+	if (pixelPosition.y < 0 && remainY != 0)
 		y -= 1;
 
 	return Vector3i( x, y, pixelPosition.z );

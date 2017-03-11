@@ -10,6 +10,7 @@ namespace nb
 	{
 		const CoreRef* r_core;
 		WorldGenerationEngine* r_worldGenerationEngine;
+		ChunkSystem* r_chunkSystem;
 
 		// cameraChunkPositions
 		std::map<sf::Vector3i, int> m_cameraChunkPositionCounts;
