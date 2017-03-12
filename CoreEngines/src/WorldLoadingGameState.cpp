@@ -66,34 +66,26 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 	chunksThatShouldBeLoaded.erase( unique( chunksThatShouldBeLoaded.begin(), chunksThatShouldBeLoaded.end() ), chunksThatShouldBeLoaded.end() );
 
 	//unload
-	vector<Vector3i> toRemoveFromLoadedChunks;
-
-	for (const auto& el : m_loadedChunks)
+	auto loadedChunksCopy = r_worldLoadStateEngine->getLoadedChunks();
+	for (const auto& el : loadedChunksCopy)
 	{
 		auto it = find( chunksThatShouldBeLoaded.begin(), chunksThatShouldBeLoaded.end(), el );
 		if (it == chunksThatShouldBeLoaded.end())
 		{
 			r_chunkSystem->removeEntitiesInChunk( el );
-			toRemoveFromLoadedChunks.push_back( el );
+			r_worldLoadStateEngine->setChunkLoaded( el, false );
 		}
 	}
-
-	m_loadedChunks.erase( remove_if( m_loadedChunks.begin(), m_loadedChunks.end(), [&]( const Vector3i& el ) {
-		return any_of( toRemoveFromLoadedChunks.begin(), toRemoveFromLoadedChunks.end(), [&]( const Vector3i el2 )
-		{
-			return el == el2;
-		} );
-	} ), m_loadedChunks.end() );
 
 	//load
 	for (const auto& el : chunksThatShouldBeLoaded)
 	{
 		//is not loaded
-		if (find( m_loadedChunks.begin(), m_loadedChunks.end(), el ) == m_loadedChunks.end())
+		if (!r_worldLoadStateEngine->isChunkLoaded( el ))
 		{
 			//load
 			r_worldGenerationEngine->generateChunk( el );
-			m_loadedChunks.push_back( el );
+			r_worldLoadStateEngine->setChunkLoaded( el, true );
 		}
 	}
 }
@@ -101,6 +93,7 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 void nb::WorldLoadingGameState::init()
 {
 	r_core = getCore();
+	r_worldLoadStateEngine = r_core->engines.getEngine<WorldLoadStateEngine>();
 	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
 	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
 

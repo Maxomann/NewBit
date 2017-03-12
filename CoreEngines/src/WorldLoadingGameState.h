@@ -3,12 +3,14 @@
 #include "RenderSystem.h"
 #include "ChunkSystem.h"
 #include "WorldGenerationEngine.h"
+#include "WorldLoadStateEngine.h"
 
 namespace nb
 {
 	class WorldLoadingGameState : public GameState
 	{
 		const CoreRef* r_core;
+		WorldLoadStateEngine* r_worldLoadStateEngine;
 		WorldGenerationEngine* r_worldGenerationEngine;
 		ChunkSystem* r_chunkSystem;
 
@@ -19,9 +21,6 @@ namespace nb
 									  sf::Vector3i oldPosition );
 
 		void connectCams( const std::vector<Entity*>& cams );
-
-		// loadedChunks
-		std::vector<sf::Vector3i> m_loadedChunks;
 
 		void loadAndUnloadChunks();
 

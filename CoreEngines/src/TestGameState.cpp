@@ -69,6 +69,8 @@ void TestGameState::init()
 	r_graphicsEngine = r_core->engines.getEngine<GraphicsEngine>();
 	r_inputEngine = r_core->engines.getEngine<InputEngine>();
 	r_resourceEngine = r_core->engines.getEngine<ResourceEngine>();
+	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
+	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
 
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_mem_fn_auto_track( &TestGameState::drawTestsprite, *this );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( [&]() {
@@ -172,6 +174,7 @@ void TestGameState::init()
 	transformationComponent->setRotation( 0.f );*/
 
 	r_worldLoadingGameState = r_core->gameStates.pushState( make_unique<WorldLoadingGameState>() );
+	r_worldGenerationEngine->generateChunk( { 10,10,0 } );
 
 	return;
 }

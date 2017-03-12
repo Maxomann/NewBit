@@ -29,6 +29,7 @@ namespace nb
 
 		//
 
+		void setPosition( sf::Vector3i position );
 		void setPositionXY( sf::Vector2i position );
 		void moveXY( sf::Vector2i offset );
 

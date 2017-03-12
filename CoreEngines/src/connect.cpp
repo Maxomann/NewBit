@@ -4,6 +4,7 @@
 #include "ResourceEngine.h"
 #include "InitEngine.h"
 #include "WorldGenerationEngine.h"
+#include "WorldLoadStateEngine.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ extern "C" {
 		manager->addEngine<nb::GraphicsEngine>();
 		manager->addEngine<nb::InputEngine>();
 
+		manager->addEngine<nb::WorldLoadStateEngine>();
 		manager->addEngine<nb::WorldGenerationEngine>();
 	}
 }

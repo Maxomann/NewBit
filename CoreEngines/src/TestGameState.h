@@ -8,6 +8,7 @@
 #include "ChunkSystem.h"
 #include "TerrainComponent.h"
 #include "WorldLoadingGameState.h"
+#include "PositionTrackerComponent.h"
 
 namespace nb
 {
@@ -17,6 +18,8 @@ namespace nb
 		GraphicsEngine* r_graphicsEngine;
 		InputEngine* r_inputEngine;
 		ResourceEngine* r_resourceEngine;
+		ChunkSystem* r_chunkSystem;
+		WorldGenerationEngine* r_worldGenerationEngine;
 
 		sf::Sprite m_sprite;
 		Entity* m_debugEntity;
