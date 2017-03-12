@@ -3,6 +3,10 @@ project(NewBit)
 
 function(nb_target_add_libraries TARGET_NAME)
 
+	# signals-cpp
+	target_include_directories(${TARGET_NAME} PUBLIC "${PACKAGE_DIR}/signalscpp/src/signals")
+	MESSAGE("${PACKAGE_DIR}/signalscpp/src/signals")
+
 	# SFML
 	set(CMAKE_MODULE_PATH "${PACKAGE_DIR}/sfml/cmake/Modules")
 	set(SFML_ROOT "${PACKAGE_DIR}/sfml")

@@ -19,6 +19,7 @@
 #endif
 
 #include <nlohmann/json.hpp>
+#include <signals-cpp/signals.hpp>
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
