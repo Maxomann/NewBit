@@ -11,6 +11,8 @@ namespace nb
 		void onPositionXYChanged( const TransformationComponent*const transform, sf::Vector2i oldPositionXY );
 		void onSizeChanged( const TransformationComponent*const transform, sf::Vector2u oldSize );
 		void onRotationChanged( const TransformationComponent*const transform, float oldRotation );
+
+		Connections m_connections;
 	public:
 		const sf::View& getView()const;
 

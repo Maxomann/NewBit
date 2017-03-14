@@ -5,7 +5,7 @@ using namespace nb;
 void nb::EntityManager::executeRemoveEntities()
 {
 	if (m_toDelete.size() > 0)
-		s_onEntitiesRemoved.call( m_toDelete );
+		s_onEntitiesRemoved.fire( m_toDelete );
 
 	m_entities.remove_if( [&]( auto& el ) {
 		for (auto it = m_toDelete.begin(); it != m_toDelete.end(); ++it)
@@ -32,7 +32,7 @@ Entity * nb::EntityManager::addEntity( Entity&& entity )
 
 	Entity* en = &m_entities.back();
 	en->init();
-	s_onEntityAdded.call( en );
+	s_onEntityAdded.fire( en );
 	return en;
 }
 

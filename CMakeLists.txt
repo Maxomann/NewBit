@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 3.6.0)
 project(NewBit)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
 function(nb_target_add_libraries TARGET_NAME)
 

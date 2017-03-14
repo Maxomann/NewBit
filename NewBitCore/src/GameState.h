@@ -8,7 +8,7 @@ namespace nb
 	class GameStateManager;
 	class World;
 
-	class GameState : public CoreRefContainer, public Trackable
+	class GameState : public CoreRefContainer
 	{
 	public:
 		GameState() = default;

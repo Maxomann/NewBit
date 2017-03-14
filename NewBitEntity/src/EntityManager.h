@@ -50,7 +50,7 @@ namespace nb
 		// not thread safe
 		DLL_EXPORT int getEntityCount()const;
 
-		Signal<void, Entity*> s_onEntityAdded;
-		Signal<void, const std::vector<Entity*>&> s_onEntitiesRemoved;
+		Signal<void( Entity* )> s_onEntityAdded;
+		Signal<void( const std::vector<Entity*>& )> s_onEntitiesRemoved;
 	};
 }
