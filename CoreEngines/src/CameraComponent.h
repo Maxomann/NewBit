@@ -12,7 +12,7 @@ namespace nb
 		void onSizeChanged( const TransformationComponent*const transform, sf::Vector2u oldSize );
 		void onRotationChanged( const TransformationComponent*const transform, float oldRotation );
 
-		Connections m_connections;
+		std::vector<Connection> m_connections;
 	public:
 		const sf::View& getView()const;
 

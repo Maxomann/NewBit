@@ -6,7 +6,6 @@
 #include <utility>
 #include <memory>
 #include <mutex>
-
-#include "easy_bind.h"
+#include <algorithm>
 
 #define DLL_EXPORT __declspec(dllexport)
