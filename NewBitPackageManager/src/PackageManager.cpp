@@ -14,7 +14,7 @@ void nb::PackageManager::initFromFolder( std::string path )
 			package.loadFromFolder( el.path().string() );
 
 			m_packages.push_back( move( package ) );
-			m_packagesByName[package.getName()] = &m_packages.back();
+			m_packagesByName[m_packages.back().getName()] = &m_packages.back();
 		}
 	}
 }

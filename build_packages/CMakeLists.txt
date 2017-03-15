@@ -1,17 +1,5 @@
 include(ExternalProject)
 
-# signals-cpp
-set(signals_INSTALL_DIR ${PACKAGE_DIR}/signalscpp)
-set(signals_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${signals_INSTALL_DIR})
-
-ExternalProject_Add(signals
-  PREFIX ${signals_INSTALL_DIR}
-  GIT_REPOSITORY https://github.com/Kosta-Github/signals-cpp.git
-  GIT_TAG a816a4e006678bd04bd4940acbcd6a0c30afe980 #master (12.03.17)
-  INSTALL_DIR ${signals_INSTALL_DIR}
-  CMAKE_ARGS ${signals_CMAKE_ARGS}
-)
-
 # SFML
 set(sfml_INSTALL_DIR ${PACKAGE_DIR}/sfml)
 set(sfml_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${sfml_INSTALL_DIR})

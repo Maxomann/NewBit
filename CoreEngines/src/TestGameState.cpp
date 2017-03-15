@@ -102,9 +102,15 @@ void TestGameState::init()
 			m_camera->getComponent<TransformationComponent>()->scale( 1.f + (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( m_connections, [&]() {
-		auto transform = m_debugEntity->getComponent<TransformationComponent>();
-		transform->setPositionXY( { 0,0 } );
-		transform->setRotation( 0 );
+		auto cameraTransform = m_camera->getComponent<TransformationComponent>();
+		cameraTransform->setPositionXY( { 0,0 } );
+		cameraTransform->setRotation( 0 );
+		if (m_debugEntity)
+		{
+			auto playerTransform = m_debugEntity->getComponent<TransformationComponent>();
+			playerTransform->setPositionXY( { 0,0 } );
+			playerTransform->setRotation( 0 );
+		}
 	} );
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::T].connect_track( m_connections, [&]() {
 		auto chunkSystem = r_core->world.getSystem<ChunkSystem>();
