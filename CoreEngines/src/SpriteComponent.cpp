@@ -12,8 +12,13 @@ void nb::SpriteComponent::onSizeChanged( const TransformationComponent*const tra
 {
 	auto& texrect = m_sprite.getTextureRect();
 	auto& scale = m_sprite.getScale();
-	auto& newSize = transform->getSize();
-	m_sprite.setScale( newSize.x / (texrect.width*scale.x), newSize.y / (texrect.height*scale.y) );
+
+	Vector2f spritesOldSize;
+	spritesOldSize.x = (static_cast<float>(texrect.width)*scale.x);
+	spritesOldSize.y = (static_cast<float>(texrect.height)*scale.y);
+
+	auto& newSize = Vector2f( transform->getSize() );
+	m_sprite.setScale( newSize.x / spritesOldSize.x, newSize.y / spritesOldSize.y );
 }
 
 void nb::SpriteComponent::onRotationChanged( const TransformationComponent*const transform, float oldRotation )

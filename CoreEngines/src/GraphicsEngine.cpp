@@ -40,6 +40,8 @@ bool nb::GraphicsEngine::update()
 	for (const auto& drawable : m_toDrawNextFrame)
 		m_window.draw( *drawable );
 
+	s_beforeDisplay.call( m_window );
+
 	m_window.display();
 	m_toDrawNextFrame.clear();
 
@@ -49,6 +51,11 @@ bool nb::GraphicsEngine::update()
 void nb::GraphicsEngine::drawNextFrame( sf::Drawable& drawable )
 {
 	m_toDrawNextFrame.push_back( &drawable );
+}
+
+sf::RenderWindow & nb::GraphicsEngine::getWindow()
+{
+	return m_window;
 }
 
 const sf::RenderWindow & nb::GraphicsEngine::getWindow() const

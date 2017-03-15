@@ -24,7 +24,9 @@ namespace nb
 		void drawNextFrame( sf::Drawable& drawable );
 
 		nb::Signal<void( const sf::Event& )> s_onEvent;
+		nb::Signal<void( sf::RenderWindow& )> s_beforeDisplay;
 
+		sf::RenderWindow& getWindow();
 		const sf::RenderWindow& getWindow()const;
 
 		const sf::Time& getFrameTime()const;

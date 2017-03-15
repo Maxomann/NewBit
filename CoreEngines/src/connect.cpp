@@ -5,6 +5,7 @@
 #include "InitEngine.h"
 #include "WorldGenerationEngine.h"
 #include "WorldLoadStateEngine.h"
+#include "GuiEngine.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ extern "C" {
 		manager->addEngine<nb::TestEngine>();
 		manager->addEngine<nb::GraphicsEngine>();
 		manager->addEngine<nb::InputEngine>();
+		manager->addEngine<nb::GuiEngine>();
 
 		manager->addEngine<nb::WorldLoadStateEngine>();
 		manager->addEngine<nb::WorldGenerationEngine>();
