@@ -105,6 +105,7 @@ void TestGameState::init()
 		auto cameraTransform = m_camera->getComponent<TransformationComponent>();
 		cameraTransform->setPositionXY( { 0,0 } );
 		cameraTransform->setRotation( 0 );
+		cameraTransform->setSize( { 1280,720 } );
 		if (m_debugEntity)
 		{
 			auto playerTransform = m_debugEntity->getComponent<TransformationComponent>();
@@ -126,36 +127,28 @@ void TestGameState::init()
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
-		cout << offset << ":";
 		transform->moveXY( Vector2i( 0, -offset ) );
-		cout << "up" << endl;
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
-		cout << offset << ":";
 		transform->moveXY( Vector2i( 0, offset ) );
-		cout << "down" << endl;
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
-		cout << offset << ":";
 		transform->moveXY( Vector2i( -offset, 0 ) );
-		cout << "left" << endl;
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
-		cout << offset << ":";
 		transform->moveXY( Vector2i( offset, 0 ) );
-		cout << "right" << endl;
 	} );
 
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( m_connections, [&]() {
@@ -164,11 +157,12 @@ void TestGameState::init()
 			RenderComponent,
 			SpriteComponent>();
 		auto spriteComponent = m_debugEntity->getComponent<SpriteComponent>();
-		spriteComponent->setTexture( *r_resourceEngine->textures.getTextureReference( "default:testimage3" ) );
+		spriteComponent->setTexture( *r_resourceEngine->textures.getTextureReference( "default:texture:player" ) );
 		auto transformationComponent = m_debugEntity->getComponent<TransformationComponent>();
 		transformationComponent->setSize( Vector2u( 32, 64 ) );
 		transformationComponent->setPositionXY( Vector2i( 0, 0 ) );
 		auto cameraPositionTracker = m_camera->getComponent<PositionTrackerComponent>();
+		cameraPositionTracker->setOffsetXY( { 0, -32 } );
 		cameraPositionTracker->trackEntity( m_debugEntity );
 	} );
 
@@ -179,7 +173,7 @@ void TestGameState::init()
 
 	m_camera = r_core->world.createEntity<TransformationComponent, CameraComponent, PositionTrackerComponent>();
 	auto transformationComponent2 = m_camera->getComponent<TransformationComponent>();
-	transformationComponent2->setSize( r_graphicsEngine->getWindow().getSize() );
+	transformationComponent2->setSize( { 1280,720 } );
 	transformationComponent2->setPositionXY( Vector2i( 0, 0 ) );
 	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
@@ -198,6 +192,11 @@ void TestGameState::init()
 	r_worldLoadingGameState = r_core->gameStates.pushState( make_unique<WorldLoadingGameState>() );
 	r_worldGenerationEngine->generateChunk( { 10,10,0 } );
 
+	return;
+}
+
+void nb::TestGameState::update()
+{
 	return;
 }
 

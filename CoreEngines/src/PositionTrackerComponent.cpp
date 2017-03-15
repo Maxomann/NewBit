@@ -6,7 +6,17 @@ using namespace nb;
 void nb::PositionTrackerComponent::onTrackedPositionChanged( const TransformationComponent * transform,
 															 sf::Vector3i oldPosition )
 {
-	r_transformation->setPosition( transform->getPosition() );
+	applyPositionWithOffset( transform->getPosition() );
+}
+
+void nb::PositionTrackerComponent::applyPositionWithOffset( const sf::Vector3i & positionWithoutOffset )
+{
+	Vector3i finalPosition;
+	finalPosition.x = positionWithoutOffset.x + m_offset.x;
+	finalPosition.y = positionWithoutOffset.y + m_offset.y;
+	finalPosition.z = positionWithoutOffset.z;
+
+	r_transformation->setPosition( finalPosition );
 }
 
 void nb::PositionTrackerComponent::init()
@@ -21,13 +31,24 @@ void nb::PositionTrackerComponent::destroy()
 void nb::PositionTrackerComponent::trackEntity( nb::Entity * entity )
 {
 	m_connections.clear();
-	auto track = entity->getComponent_try<TransformationComponent>();
-
-	if (track)
+	if (entity)
 	{
-		r_transformation->setPosition( track->getPosition() );
-		track->s_positionChanged.connect_track( m_connections,
-												this,
-												&PositionTrackerComponent::onTrackedPositionChanged );
+		r_track = entity->getComponent_try<TransformationComponent>();
+		if (r_track)
+		{
+			applyPositionWithOffset( r_track->getPosition() );
+			r_track->s_positionChanged.connect_track( m_connections,
+													  this,
+													  &PositionTrackerComponent::onTrackedPositionChanged );
+		}
 	}
+	else
+		r_track = nullptr;
+}
+
+void nb::PositionTrackerComponent::setOffsetXY( sf::Vector2i offset )
+{
+	m_offset = move( offset );
+	if (r_track)
+		applyPositionWithOffset( r_track->getPosition() );
 }

@@ -17,6 +17,8 @@ namespace nb
 
 		DLL_EXPORT virtual void init() = 0;
 
+		DLL_EXPORT virtual void update() = 0;
+
 		DLL_EXPORT virtual void destroy() = 0;
 
 		DLL_EXPORT virtual bool shouldDestroy() = 0;

@@ -26,6 +26,12 @@ void nb::GameStateManager::checkDestroyGameStates()
 	} ), m_states.end() );
 }
 
+void nb::GameStateManager::update()
+{
+	for (auto& el : m_states)
+		el->update();
+}
+
 void nb::GameStateManager::destroy_all()
 {
 	for (auto& el : m_states)

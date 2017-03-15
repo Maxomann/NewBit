@@ -17,10 +17,12 @@ namespace nb
 			return static_cast<T*>(m_uninitializedStates.back().get());
 		}
 
-		DLL_EXPORT void initNewStates( const CoreRef& core );
+		void initNewStates( const CoreRef& core );
 
-		DLL_EXPORT void checkDestroyGameStates();
+		void checkDestroyGameStates();
 
-		DLL_EXPORT void destroy_all();
+		void update();
+
+		void destroy_all();
 	};
 }

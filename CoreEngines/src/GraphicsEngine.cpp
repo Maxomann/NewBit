@@ -5,7 +5,7 @@ using namespace nb;
 
 void nb::GraphicsEngine::init()
 {
-	m_window.create( sf::VideoMode( 1280, 720 ), "GraphicsEngine Window" );
+	m_window.create( sf::VideoMode( 1280, 720 ), "GraphicsEngine Window", Style::Titlebar | Style::Close );
 	m_window.setVerticalSyncEnabled( true );
 
 	r_renderSystem = getCore()->world.addSystem<RenderSystem>();

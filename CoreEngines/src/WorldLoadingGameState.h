@@ -29,6 +29,8 @@ namespace nb
 	public:
 		virtual void init() override;
 
+		virtual void update() override;
+
 		virtual void destroy() override;
 
 		virtual bool shouldDestroy() override;

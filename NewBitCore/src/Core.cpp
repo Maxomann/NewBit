@@ -16,6 +16,7 @@ void nb::Core::run()
 	{
 		m_gameStates.checkDestroyGameStates();
 		m_gameStates.initNewStates( coreRef );
+		m_gameStates.update();
 		m_world.update();
 	};
 

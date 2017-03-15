@@ -35,6 +35,8 @@ namespace nb
 	public:
 		DLL_EXPORT virtual void init() override;
 
+		DLL_EXPORT virtual void update() override;
+
 		DLL_EXPORT virtual void destroy() override;
 
 		DLL_EXPORT virtual bool shouldDestroy() override;
