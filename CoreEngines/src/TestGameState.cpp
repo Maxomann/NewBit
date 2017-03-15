@@ -125,25 +125,37 @@ void TestGameState::init()
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
-		transform->setPositionXY( Vector2i( transform->getPositionXY().x, transform->getPositionXY().y - (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()) ) );
+		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
+		cout << offset << ":";
+		transform->moveXY( Vector2i( 0, -offset ) );
+		cout << "up" << endl;
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
-		transform->setPositionXY( Vector2i( transform->getPositionXY().x, transform->getPositionXY().y + (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()) ) );
+		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
+		cout << offset << ":";
+		transform->moveXY( Vector2i( 0, offset ) );
+		cout << "down" << endl;
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
-		transform->setPositionXY( Vector2i( transform->getPositionXY().x - (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()), transform->getPositionXY().y ) );
+		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
+		cout << offset << ":";
+		transform->moveXY( Vector2i( -offset, 0 ) );
+		cout << "left" << endl;
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
-		transform->setPositionXY( Vector2i( transform->getPositionXY().x + (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()), transform->getPositionXY().y ) );
+		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
+		cout << offset << ":";
+		transform->moveXY( Vector2i( offset, 0 ) );
+		cout << "right" << endl;
 	} );
 
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( m_connections, [&]() {

@@ -12,7 +12,7 @@ void nb::EntityManager::executeRemoveEntities()
 		{
 			if (*it == &el)
 			{
-				m_toDelete.erase( remove( m_toDelete.begin(), m_toDelete.end(), &el ) );
+				m_toDelete.erase( remove( m_toDelete.begin(), m_toDelete.end(), &el ), m_toDelete.end() );
 				el.destroy();
 				return true;
 			}
