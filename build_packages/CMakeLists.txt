@@ -26,6 +26,20 @@ ExternalProject_Add(thor
 
 add_dependencies(thor sfml)
 
+# tgui
+set(tgui_INSTALL_DIR ${PACKAGE_DIR}/tgui)
+set(tgui_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${tgui_INSTALL_DIR} -DSFML_ROOT=${PACKAGE_DIR}/sfml )
+
+ExternalProject_Add(tgui
+  PREFIX ${tgui_INSTALL_DIR}
+  GIT_REPOSITORY https://github.com/texus/TGUI.git
+  GIT_TAG 07b99df5f3b04f089d5a17ea9d00429c7ec0b0ce #15.03.17
+  INSTALL_DIR ${tgui_INSTALL_DIR}
+  CMAKE_ARGS ${tgui_CMAKE_ARGS}
+)
+
+add_dependencies(tgui sfml)
+
 # json
 set(json_INSTALL_DIR ${PACKAGE_DIR}/json)
 set(json_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${json_INSTALL_DIR})

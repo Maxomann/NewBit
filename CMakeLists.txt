@@ -22,6 +22,15 @@ function(nb_target_add_libraries TARGET_NAME)
 		target_link_libraries(${TARGET_NAME} ${THOR_LIBRARY})
 	endif()
 
+	# tgui
+	set(CMAKE_MODULE_PATH "${PACKAGE_DIR}/tgui/cmake/Modules")
+	set(TGUI_ROOT "${PACKAGE_DIR}/tgui")
+	find_package(TGUI REQUIRED)
+	if(TGUI_FOUND)
+		target_include_directories(${TARGET_NAME} PUBLIC ${TGUI_INCLUDE_DIR})
+		target_link_libraries(${TARGET_NAME} ${TGUI_LIBRARY})
+	endif()
+
 	# json
 	target_include_directories(${TARGET_NAME} PUBLIC "${PACKAGE_DIR}/json/include")
 

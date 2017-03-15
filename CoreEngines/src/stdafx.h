@@ -4,4 +4,6 @@
 
 #include <Thor\Input.hpp>
 
+#include <TGUI\TGUI.hpp>
+
 #define DLL_EXPORT __declspec(dllexport)
