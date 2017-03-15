@@ -24,6 +24,8 @@ namespace nb
 
 		void loadAndUnloadChunks();
 
+		Connections m_connections;
+
 	public:
 		virtual void init() override;
 

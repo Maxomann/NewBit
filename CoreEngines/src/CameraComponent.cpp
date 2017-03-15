@@ -21,9 +21,9 @@ void nb::CameraComponent::onRotationChanged( const TransformationComponent*const
 void nb::CameraComponent::init()
 {
 	auto transform = getEntity()->getComponent<TransformationComponent>();
-	m_connections.push_back( transform->s_positionXYChanged.connect( this, &onPositionXYChanged ) );
-	m_connections.connect( transform->s_sizeChanged, this, &onSizeChanged );
-	m_connections.connect( transform->s_rotationChanged, this, &onRotationChanged );
+	transform->s_positionXYChanged.connect( this, &CameraComponent::onPositionXYChanged );
+	transform->s_sizeChanged.connect( this, &CameraComponent::onSizeChanged );
+	transform->s_rotationChanged.connect( this, &CameraComponent::onRotationChanged );
 }
 
 void nb::CameraComponent::destroy()

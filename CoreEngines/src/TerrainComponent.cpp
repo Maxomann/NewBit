@@ -28,9 +28,9 @@ void TerrainComponent::init()
 	auto entity = getEntity();
 
 	auto transform = entity->getComponent<TransformationComponent>();
-	transform->s_positionXYChanged.connect_mem_fn_auto( &TerrainComponent::onPositionXYChanged, *this );
-	transform->s_sizeChanged.connect_mem_fn_auto( &TerrainComponent::onSizeChanged, *this );
-	transform->s_rotationChanged.connect_mem_fn_auto( &TerrainComponent::onRotationChanged, *this );
+	transform->s_positionXYChanged.connect( this, &TerrainComponent::onPositionXYChanged );
+	transform->s_sizeChanged.connect( this, &TerrainComponent::onSizeChanged );
+	transform->s_rotationChanged.connect( this, &TerrainComponent::onRotationChanged );
 
 	auto render = entity->getComponent<RenderComponent>();
 	render->addDrawable( &m_debugSprite );

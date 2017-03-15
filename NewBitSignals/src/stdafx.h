@@ -7,5 +7,7 @@
 #include <memory>
 #include <mutex>
 #include <algorithm>
+#include <tuple>
+#include <optional>
 
 #define DLL_EXPORT __declspec(dllexport)

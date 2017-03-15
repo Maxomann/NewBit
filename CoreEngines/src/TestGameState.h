@@ -30,6 +30,8 @@ namespace nb
 		void addALotOfEntities();
 		void addSomeTerrain();
 
+		Connections m_connections;
+
 	public:
 		DLL_EXPORT virtual void init() override;
 

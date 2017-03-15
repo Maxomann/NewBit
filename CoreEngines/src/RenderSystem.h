@@ -31,6 +31,6 @@ namespace nb
 
 		const DrawingData& getCurrentDrawingData();
 
-		Signal<void, const std::vector<Entity*>&> s_camerasForDrawingChanged;
+		Signal<void( const std::vector<Entity*>& )> s_camerasForDrawingChanged;
 	};
 }

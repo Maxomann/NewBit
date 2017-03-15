@@ -9,12 +9,25 @@ void nb::PositionTrackerComponent::onTrackedPositionChanged( const Transformatio
 	r_transformation->setPosition( transform->getPosition() );
 }
 
+void nb::PositionTrackerComponent::init()
+{
+	r_transformation = getEntity()->getComponent<TransformationComponent>();
+}
+
+void nb::PositionTrackerComponent::destroy()
+{
+}
+
 void nb::PositionTrackerComponent::trackEntity( nb::Entity * entity )
 {
+	m_connections.clear();
 	auto track = entity->getComponent_try<TransformationComponent>();
 
 	if (track)
 	{
-		track->s_positionChanged.connect_mem_fn_auto_track( &PositionTrackerComponent::onTrackedPositionChanged, *this );
+		r_transformation->setPosition( track->getPosition() );
+		track->s_positionChanged.connect_track( m_connections,
+												this,
+												&PositionTrackerComponent::onTrackedPositionChanged );
 	}
 }

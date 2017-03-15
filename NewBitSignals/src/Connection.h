@@ -19,4 +19,6 @@ namespace nb
 		DLL_EXPORT Connection& operator=( const Connection& ) = delete;
 		DLL_EXPORT Connection& operator=( Connection&& ) = default;
 	};
+
+	using Connections = std::vector<Connection>;
 }

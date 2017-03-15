@@ -72,42 +72,41 @@ void TestGameState::init()
 	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
 	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
 
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_mem_fn_auto_track( &TestGameState::drawTestsprite, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_track( m_connections, this, &TestGameState::drawTestsprite );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, -1 * r_graphicsEngine->getFrameTime().asMilliseconds() ) );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::S].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::S].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, r_graphicsEngine->getFrameTime().asMilliseconds() ) );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::A].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::A].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( -1 * r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::D].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::D].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Q].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Q].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->rotate( -1 * r_graphicsEngine->getFrameTime().asMilliseconds() );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::E].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::E].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->rotate( r_graphicsEngine->getFrameTime().asMilliseconds() );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Add].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Add].connect_track( m_connections, [&]() {
 		auto size = m_camera->getComponent<TransformationComponent>()->getSize();
 		if (size.x > 200 && size.y > 200)
 			m_camera->getComponent<TransformationComponent>()->scale( 1.f - (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Subtract].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Subtract].connect_track( m_connections, [&]() {
 		auto size = m_camera->getComponent<TransformationComponent>()->getSize();
 		if (size.x < 10000 && size.y < 10000)
 			m_camera->getComponent<TransformationComponent>()->scale( 1.f + (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( [&]() {
-		auto transform = m_camera->getComponent<TransformationComponent>();
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( m_connections, [&]() {
+		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		transform->setPositionXY( { 0,0 } );
 		transform->setRotation( 0 );
-		transform->setSize( r_graphicsEngine->getWindow().getSize() );
-	}, *this );
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::T].connect_track( [&]() {
+	} );
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::T].connect_track( m_connections, [&]() {
 		auto chunkSystem = r_core->world.getSystem<ChunkSystem>();
 		chunkSystem->removeEntitiesInChunk_if( { 0,0,0 }, [&]( const Entity* entity ) {
 			if (entity != m_debugEntity && entity != m_camera)
@@ -115,47 +114,52 @@ void TestGameState::init()
 			else
 				return false;
 		} );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Up].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Up].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		transform->setPositionXY( Vector2i( transform->getPositionXY().x, transform->getPositionXY().y - (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()) ) );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		transform->setPositionXY( Vector2i( transform->getPositionXY().x, transform->getPositionXY().y + (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()) ) );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		transform->setPositionXY( Vector2i( transform->getPositionXY().x - (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()), transform->getPositionXY().y ) );
-	}, *this );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( [&]() {
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		transform->setPositionXY( Vector2i( transform->getPositionXY().x + (0.5f * r_graphicsEngine->getFrameTime().asMilliseconds()), transform->getPositionXY().y ) );
-	}, *this );
+	} );
 
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( [&]() {
-		m_debugEntity = r_core->world.createEntity<TransformationComponent, RenderComponent, SpriteComponent>();
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( m_connections, [&]() {
+		m_debugEntity = r_core->world.createEntity<
+			TransformationComponent,
+			RenderComponent,
+			SpriteComponent>();
 		auto spriteComponent = m_debugEntity->getComponent<SpriteComponent>();
 		spriteComponent->setTexture( *r_resourceEngine->textures.getTextureReference( "default:testimage3" ) );
 		auto transformationComponent = m_debugEntity->getComponent<TransformationComponent>();
 		transformationComponent->setSize( Vector2u( 32, 64 ) );
 		transformationComponent->setPositionXY( Vector2i( 0, 0 ) );
-	}, *this );
+		auto cameraPositionTracker = m_camera->getComponent<PositionTrackerComponent>();
+		cameraPositionTracker->trackEntity( m_debugEntity );
+	} );
 
 	r_resourceEngine->textures.getTextureReference( "default:texture:crosshair" )->applyTextureAndDefaultTextureRectToSprite( m_sprite );
 	m_sprite.setOrigin( 8, 8 );
 	auto windowSize = r_graphicsEngine->getWindow().getSize();
 	m_sprite.setPosition( windowSize.x / 2.f, windowSize.y / 2.f );
 
-	m_camera = r_core->world.createEntity<TransformationComponent, CameraComponent>();
+	m_camera = r_core->world.createEntity<TransformationComponent, CameraComponent, PositionTrackerComponent>();
 	auto transformationComponent2 = m_camera->getComponent<TransformationComponent>();
 	transformationComponent2->setSize( r_graphicsEngine->getWindow().getSize() );
 	transformationComponent2->setPositionXY( Vector2i( 0, 0 ) );

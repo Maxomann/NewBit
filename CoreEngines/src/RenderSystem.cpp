@@ -80,8 +80,8 @@ void nb::RenderSystem::generateDrawingData()
 void RenderSystem::init()
 {
 	auto world = getWorld();
-	world->s_onEntityAdded.connect_mem_fn_auto( &RenderSystem::onEntityAdded, *this );
-	world->s_onEntitiesRemoved.connect_mem_fn_auto( &RenderSystem::onEntitiesRemoved, *this );
+	world->s_onEntityAdded.connect( this, &RenderSystem::onEntityAdded );
+	world->s_onEntitiesRemoved.connect( this, &RenderSystem::onEntitiesRemoved );
 };
 
 void RenderSystem::update()

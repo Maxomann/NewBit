@@ -14,8 +14,8 @@ namespace nb
 
 		void onSfEvent( const sf::Event& event );
 
-		std::map<sf::Keyboard::Key, Signal<void>> s_whileKeyPressed; // called every frame
-		std::map<sf::Keyboard::Key, Signal<void>> s_onKeyPressed; // NOT called every frame
-		std::map<sf::Keyboard::Key, Signal<void>> s_onKeyReleased;
+		std::map<sf::Keyboard::Key, Signal<void()>> s_whileKeyPressed; // called every frame
+		std::map<sf::Keyboard::Key, Signal<void()>> s_onKeyPressed; // NOT called every frame
+		std::map<sf::Keyboard::Key, Signal<void()>> s_onKeyReleased;
 	};
 }

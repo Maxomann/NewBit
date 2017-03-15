@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 3.6.0)
 project(NewBit)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/std:c++latest>)
 
 function(nb_target_add_libraries TARGET_NAME)
 
@@ -35,7 +36,6 @@ function(nb_target_add_libraries TARGET_NAME)
 	if(UnitTest++_FOUND)
 		target_include_directories(${TARGET_NAME} PUBLIC ${UTPP_INCLUDE_DIRS})
 		target_link_libraries(${TARGET_NAME} "${PACKAGE_DIR}/unittest/lib/UnitTest++.lib")
-
 	endif()
 
 endfunction()

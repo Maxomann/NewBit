@@ -30,8 +30,9 @@ void nb::WorldLoadingGameState::connectCams( const std::vector<Entity*>& cams )
 	for (const auto& el : cams)
 	{
 		auto transform = el->getComponent<TransformationComponent>();
-		transform->s_positionChanged.connect_mem_fn_auto_track( &WorldLoadingGameState::onCameraPositionChanged,
-																*this );
+		transform->s_positionChanged.connect_track( m_connections,
+													this,
+													&WorldLoadingGameState::onCameraPositionChanged );
 
 		// first time init m_cameraChunkPositionCounts
 		auto chunkPosition = ChunkSystem::calculateChunkPositionForPixelPosition( transform->getPosition() );
@@ -98,8 +99,9 @@ void nb::WorldLoadingGameState::init()
 	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
 
 	auto renderSystem = r_core->world.getSystem<RenderSystem>();
-	renderSystem->s_camerasForDrawingChanged.connect_mem_fn_auto_track( &WorldLoadingGameState::connectCams,
-																		*this );
+	renderSystem->s_camerasForDrawingChanged.connect_track( m_connections,
+															this,
+															&WorldLoadingGameState::connectCams );
 	connectCams( renderSystem->getCamerasForDrawing() );
 }
 

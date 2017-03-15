@@ -7,7 +7,7 @@ using namespace nb;
 void nb::InputEngine::init()
 {
 	auto* renderEngine = getCore()->engines.getEngine<GraphicsEngine>();
-	renderEngine->s_onEvent.connect_mem_fn_auto( &InputEngine::onSfEvent, *this );
+	renderEngine->s_onEvent.connect( this, &InputEngine::onSfEvent );
 }
 
 bool nb::InputEngine::update()

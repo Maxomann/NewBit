@@ -26,9 +26,9 @@ void nb::SpriteComponent::init()
 	auto entity = getEntity();
 
 	auto transform = entity->getComponent<TransformationComponent>();
-	transform->s_positionXYChanged.connect_mem_fn_auto( &SpriteComponent::onPositionXYChanged, *this );
-	transform->s_sizeChanged.connect_mem_fn_auto( &SpriteComponent::onSizeChanged, *this );
-	transform->s_rotationChanged.connect_mem_fn_auto( &SpriteComponent::onRotationChanged, *this );
+	transform->s_positionXYChanged.connect( this, &SpriteComponent::onPositionXYChanged );
+	transform->s_sizeChanged.connect( this, &SpriteComponent::onSizeChanged );
+	transform->s_rotationChanged.connect( this, &SpriteComponent::onRotationChanged );
 
 	auto render = entity->getComponent<RenderComponent>();
 	render->addDrawable( &m_sprite );

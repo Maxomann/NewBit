@@ -23,7 +23,7 @@ namespace nb
 
 		void drawNextFrame( sf::Drawable& drawable );
 
-		nb::Signal<void, const sf::Event&> s_onEvent;
+		nb::Signal<void( const sf::Event& )> s_onEvent;
 
 		const sf::RenderWindow& getWindow()const;
 
