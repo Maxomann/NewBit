@@ -33,7 +33,7 @@ set(tgui_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${tgui_INSTALL_DIR} -DSFML_ROOT=${PAC
 ExternalProject_Add(tgui
   PREFIX ${tgui_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/texus/TGUI.git
-  GIT_TAG 07b99df5f3b04f089d5a17ea9d00429c7ec0b0ce #15.03.17
+  GIT_TAG 0e53b45bbad1ef72f4d4bade26f99b4cbc323f99 #0.8-dev (16.03.17)
   INSTALL_DIR ${tgui_INSTALL_DIR}
   CMAKE_ARGS ${tgui_CMAKE_ARGS}
 )
