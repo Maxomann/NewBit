@@ -12,10 +12,17 @@ void nb::GuiEngine::init()
 	r_graphicsEngine->s_beforeDisplay.connect( [&]( sf::RenderWindow& window ) {
 		m_gui.draw();
 	} );
-	cout << "init" << endl;
+	r_graphicsEngine->s_onEvent.connect( [&]( const sf::Event& sfEvent ) {
+		m_gui.handleEvent( sfEvent );
+	} );
 }
 
 bool nb::GuiEngine::update()
 {
 	return true;
+}
+
+tgui::Gui * nb::GuiEngine::getGui()
+{
+	return &m_gui;
 }

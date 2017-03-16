@@ -9,6 +9,8 @@
 #include "TerrainComponent.h"
 #include "WorldLoadingGameState.h"
 #include "PositionTrackerComponent.h"
+#include "GuiEngine.h"
+#include "EntityTrackerScreenGameState.h"
 
 namespace nb
 {
@@ -20,11 +22,13 @@ namespace nb
 		ResourceEngine* r_resourceEngine;
 		ChunkSystem* r_chunkSystem;
 		WorldGenerationEngine* r_worldGenerationEngine;
+		tgui::Gui* r_gui;
 
 		sf::Sprite m_sprite;
 		Entity* m_debugEntity;
 		Entity* m_camera;
 
+		EntityTrackerScreenGameState* r_entityTrackerScreenGameState;
 		WorldLoadingGameState* r_worldLoadingGameState;
 
 		void addALotOfEntities();

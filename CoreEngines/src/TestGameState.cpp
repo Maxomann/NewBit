@@ -1,6 +1,7 @@
 #include "TestGameState.h"
 using namespace std;
 using namespace sf;
+using namespace tgui;
 using namespace nb;
 
 void nb::TestGameState::addALotOfEntities()
@@ -71,7 +72,9 @@ void TestGameState::init()
 	r_resourceEngine = r_core->engines.getEngine<ResourceEngine>();
 	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
 	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
+	r_gui = r_core->engines.getEngine<GuiEngine>()->getGui();
 
+	// Input
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_track( m_connections, this, &TestGameState::drawTestsprite );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, -1 * r_graphicsEngine->getFrameTime().asMilliseconds() ) );
@@ -155,7 +158,8 @@ void TestGameState::init()
 		m_debugEntity = r_core->world.createEntity<
 			TransformationComponent,
 			RenderComponent,
-			SpriteComponent>();
+			SpriteComponent,
+			HealthComponent>();
 		auto spriteComponent = m_debugEntity->getComponent<SpriteComponent>();
 		spriteComponent->setTexture( *r_resourceEngine->textures.getTextureReference( "default:texture:player" ) );
 		auto transformationComponent = m_debugEntity->getComponent<TransformationComponent>();
@@ -164,8 +168,15 @@ void TestGameState::init()
 		auto cameraPositionTracker = m_camera->getComponent<PositionTrackerComponent>();
 		cameraPositionTracker->setOffsetXY( { 0, -32 } );
 		cameraPositionTracker->trackEntity( m_debugEntity );
+
+		// EntityTrackerScreenGameState
+		if (r_entityTrackerScreenGameState)
+			r_core->gameStates.removeGameState( r_entityTrackerScreenGameState );
+		r_entityTrackerScreenGameState = r_core->gameStates.pushState_instant( make_unique<EntityTrackerScreenGameState>() );
+		r_entityTrackerScreenGameState->track( m_debugEntity );
 	} );
 
+	// logic
 	r_resourceEngine->textures.getTextureReference( "default:texture:crosshair" )->applyTextureAndDefaultTextureRectToSprite( m_sprite );
 	m_sprite.setOrigin( 8, 8 );
 	auto windowSize = r_graphicsEngine->getWindow().getSize();
@@ -189,7 +200,7 @@ void TestGameState::init()
 	transformationComponent->setSize( Vector2u( 32, 32 ) );
 	transformationComponent->setRotation( 0.f );*/
 
-	r_worldLoadingGameState = r_core->gameStates.pushState( make_unique<WorldLoadingGameState>() );
+	r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
 	r_worldGenerationEngine->generateChunk( { 10,10,0 } );
 
 	return;

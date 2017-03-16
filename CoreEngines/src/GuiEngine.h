@@ -16,5 +16,7 @@ namespace nb
 
 		// return false to terminate process
 		virtual bool update() override;
+
+		tgui::Gui* getGui();
 	};
 }
