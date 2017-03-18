@@ -106,13 +106,13 @@ void TestGameState::init()
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( m_connections, [&]() {
 		auto cameraTransform = m_camera->getComponent<TransformationComponent>();
-		cameraTransform->setPositionXY( { 0,0 } );
+		cameraTransform->setPosition( { 0,0,0 } );
 		cameraTransform->setRotation( 0 );
 		cameraTransform->setSize( { 1280,720 } );
 		if (m_debugEntity)
 		{
 			auto playerTransform = m_debugEntity->getComponent<TransformationComponent>();
-			playerTransform->setPositionXY( { 0,0 } );
+			playerTransform->setPosition( { 0,0,0 } );
 			playerTransform->setRotation( 0 );
 		}
 	} );
@@ -152,6 +152,18 @@ void TestGameState::init()
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
 		transform->moveXY( Vector2i( offset, 0 ) );
+	} );
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::K].connect_track( m_connections, [&]() {
+		if (!m_debugEntity)
+			return;
+		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		transform->moveLayer( 1 );
+	} );
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::L].connect_track( m_connections, [&]() {
+		if (!m_debugEntity)
+			return;
+		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		transform->moveLayer( -1 );
 	} );
 
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( m_connections, [&]() {

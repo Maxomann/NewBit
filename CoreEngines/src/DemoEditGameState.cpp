@@ -41,8 +41,8 @@ void nb::DemoEditGameState::init()
 		auto& widgets = r_gui->getWidgets();
 		if (any_of( widgets.begin(), widgets.end(), [&]( const shared_ptr<Widget>& el ) {return el->isFocused(); } ))
 			return;
-		auto* camera = getCore()->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 )->getComponent<CameraComponent>();
-		auto placementPosition = static_cast<sf::Vector2i>(r_graphicsEngine->getWindow().mapPixelToCoords( mousePosition, camera->getView() ));
+		auto* camera = getCore()->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
+		auto placementPositionXY = static_cast<sf::Vector2i>(r_graphicsEngine->getWindow().mapPixelToCoords( mousePosition, camera->getComponent<CameraComponent>()->getView() ));
 
 		auto entity = getCore()->world.createEntity<
 			TransformationComponent,
@@ -52,7 +52,8 @@ void nb::DemoEditGameState::init()
 		spriteComponent->setTexture( *r_resourceEngine->textures.getTextureReference( "default:texture:object_tree" ) );
 		auto transformationComponent = entity->getComponent<TransformationComponent>();
 		transformationComponent->setSize( Vector2u( 48 * 2, 64 * 2 ) );
-		transformationComponent->setPositionXY( placementPosition );
+		transformationComponent->setPositionXY( placementPositionXY );
+		transformationComponent->setLayer( camera->getComponent<TransformationComponent>()->getLayer() );
 	} );
 }
 

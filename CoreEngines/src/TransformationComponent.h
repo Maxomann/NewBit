@@ -34,6 +34,7 @@ namespace nb
 		void moveXY( sf::Vector2i offset );
 
 		void setLayer( int layer );
+		void moveLayer( int offset );
 
 		void setSize( sf::Vector2u size );
 		void scale( float factor );

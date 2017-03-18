@@ -79,6 +79,11 @@ void nb::TransformationComponent::setLayer( int layer )
 	s_layerChanged.call( this, oldLayer );
 }
 
+void nb::TransformationComponent::moveLayer( int offset )
+{
+	setLayer( m_layer + offset );
+}
+
 void nb::TransformationComponent::setSize( sf::Vector2u size )
 {
 	auto oldSize = m_size;
