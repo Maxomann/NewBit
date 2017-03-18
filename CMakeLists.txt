@@ -57,6 +57,8 @@ else()
 	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 	add_subdirectory(NewBitSignals)
+	add_subdirectory(NewBitSignalsTest)
+	add_dependencies(NewBitSignalsTest NewBitSignals)
 
 	add_subdirectory(NewBitPackageManager)
 	add_subdirectory(NewBitPackageManagerTest)

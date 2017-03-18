@@ -57,7 +57,6 @@ void nb::EntityTrackerScreenGameState::init()
 
 void nb::EntityTrackerScreenGameState::update()
 {
-	cout << m_connections.at( 0 ).is_valid() << endl;
 }
 
 void nb::EntityTrackerScreenGameState::destroy()

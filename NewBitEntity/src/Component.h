@@ -10,9 +10,10 @@ namespace nb
 		Entity* r_entity;
 
 	public:
-		Component() = default;
-		Component( const Component& component ) = delete;
-		Component( Component&& component ) = default;
+		DLL_EXPORT Component() = default;
+		DLL_EXPORT Component( const Component& component ) = delete;
+		DLL_EXPORT Component( Component&& component ) = default;
+		DLL_EXPORT virtual ~Component() = default;
 
 		DLL_EXPORT void linkToEntity( Entity* entity );
 		DLL_EXPORT Entity* getEntity()const;

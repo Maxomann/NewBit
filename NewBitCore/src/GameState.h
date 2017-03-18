@@ -11,9 +11,10 @@ namespace nb
 	class GameState : public CoreRefContainer
 	{
 	public:
-		GameState() = default;
-		GameState( const GameState& ) = delete;
-		GameState( GameState&& ) = delete;
+		DLL_EXPORT GameState() = default;
+		DLL_EXPORT GameState( const GameState& ) = delete;
+		DLL_EXPORT GameState( GameState&& ) = delete;
+		DLL_EXPORT virtual ~GameState() = default;
 
 		DLL_EXPORT virtual void init() = 0;
 
