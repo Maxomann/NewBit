@@ -1,4 +1,3 @@
-#pragma once
 #include "InputEngine.h"
 using namespace std;
 using namespace sf;
@@ -6,8 +5,8 @@ using namespace nb;
 
 void nb::InputEngine::init()
 {
-	auto* renderEngine = getCore()->engines.getEngine<GraphicsEngine>();
-	renderEngine->s_onEvent.connect( this, &InputEngine::onSfEvent );
+	r_graphicsEngine = getCore()->engines.getEngine<GraphicsEngine>();
+	r_graphicsEngine->s_onEvent.connect( this, &InputEngine::onSfEvent );
 }
 
 bool nb::InputEngine::update()
@@ -25,4 +24,14 @@ void nb::InputEngine::onSfEvent( const sf::Event & event )
 		s_onKeyPressed[event.key.code].call();
 	if (event.type == sf::Event::KeyReleased)
 		s_onKeyReleased[event.key.code].call();
+	if (event.type == sf::Event::MouseButtonPressed)
+	{
+		s_onMouseButtonPressed[event.mouseButton.button].call( { event.mouseButton.x, event.mouseButton.y } );
+		const auto& windowSize = r_graphicsEngine->getWindow().getSize();
+		if (event.mouseButton.x >= 0 &&
+			 event.mouseButton.x < windowSize.x &&
+			 event.mouseButton.y >= 0 &&
+			 event.mouseButton.y < windowSize.y)
+			s_onMouseButtonPressedInWindow[event.mouseButton.button].call( { event.mouseButton.x, event.mouseButton.y } );
+	}
 }

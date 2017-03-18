@@ -24,6 +24,8 @@ void nb::EntityManager::executeRemoveEntities()
 	{
 		throw exception::EntityDoesNotExistException();
 	}
+
+	s_onEntityCountChanged.call( getEntityCount() );
 }
 
 Entity * nb::EntityManager::addEntity( Entity&& entity )
@@ -33,6 +35,7 @@ Entity * nb::EntityManager::addEntity( Entity&& entity )
 	Entity* en = &m_entities.back();
 	en->init();
 	s_onEntityAdded.call( en );
+	s_onEntityCountChanged.call( getEntityCount() );
 	return en;
 }
 

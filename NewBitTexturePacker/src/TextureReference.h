@@ -31,6 +31,9 @@ namespace nb
 
 			// applies texture and defaultTextureRect
 			DLL_EXPORT void applyToSprite( sf::Sprite& sprite )const;
+
+			DLL_EXPORT TextureReference& operator=( const TextureReference& rhs ) = default;
+			DLL_EXPORT TextureReference& operator=( TextureReference&& rhs ) = default;
 		};
 	}
 }

@@ -24,4 +24,14 @@ namespace nb
 
 		DLL_EXPORT virtual bool shouldDestroy() = 0;
 	};
+
+	/*
+	virtual void init() override;
+
+	virtual void update() override;
+
+	virtual void destroy() override;
+
+	virtual bool shouldDestroy() override;
+	*/
 }

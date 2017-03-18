@@ -7,6 +7,8 @@ namespace nb
 {
 	class InputEngine : public CoreEngine
 	{
+		GraphicsEngine* r_graphicsEngine;
+
 	public:
 		virtual void init() override;
 
@@ -17,5 +19,8 @@ namespace nb
 		std::map<sf::Keyboard::Key, Signal<void()>> s_whileKeyPressed; // called every frame
 		std::map<sf::Keyboard::Key, Signal<void()>> s_onKeyPressed; // NOT called every frame
 		std::map<sf::Keyboard::Key, Signal<void()>> s_onKeyReleased;
+
+		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_onMouseButtonPressed; // NOT called every frame
+		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_onMouseButtonPressedInWindow; // NOT called every frame
 	};
 }

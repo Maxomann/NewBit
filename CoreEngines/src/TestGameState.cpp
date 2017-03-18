@@ -176,6 +176,10 @@ void TestGameState::init()
 		r_entityTrackerScreenGameState->track( m_debugEntity );
 	} );
 
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::O].connect_track( m_connections, [&]() {
+		r_core->gameStates.pushState_instant( make_unique<DemoEditGameState>() );
+	} );
+
 	// logic
 	r_resourceEngine->textures.getTextureReference( "default:texture:crosshair" )->applyTextureAndDefaultTextureRectToSprite( m_sprite );
 	m_sprite.setOrigin( 8, 8 );

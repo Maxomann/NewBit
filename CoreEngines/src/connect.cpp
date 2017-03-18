@@ -17,8 +17,8 @@ extern "C" {
 		manager->addEngine<nb::ResourceEngine>();
 		manager->addEngine<nb::TestEngine>();
 		manager->addEngine<nb::GraphicsEngine>();
+		manager->addEngine<nb::GuiEngine>(); // before InputEngine (due to signal callbacks from GraphicsEngine)
 		manager->addEngine<nb::InputEngine>();
-		manager->addEngine<nb::GuiEngine>();
 
 		manager->addEngine<nb::WorldLoadStateEngine>();
 		manager->addEngine<nb::WorldGenerationEngine>();

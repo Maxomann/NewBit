@@ -11,6 +11,7 @@
 #include "PositionTrackerComponent.h"
 #include "GuiEngine.h"
 #include "EntityTrackerScreenGameState.h"
+#include "DemoEditGameState.h"
 
 namespace nb
 {

@@ -52,5 +52,6 @@ namespace nb
 
 		Signal<void( Entity* )> s_onEntityAdded;
 		Signal<void( const std::vector<Entity*>& )> s_onEntitiesRemoved;
+		Signal<void( unsigned int )> s_onEntityCountChanged;
 	};
 }
