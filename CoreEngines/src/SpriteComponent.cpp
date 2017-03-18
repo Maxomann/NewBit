@@ -12,8 +12,13 @@ void nb::SpriteComponent::onSizeChanged( const TransformationComponent*const tra
 {
 	auto& texrect = m_sprite.getTextureRect();
 	auto& scale = m_sprite.getScale();
-	auto& newSize = transform->getSize();
-	m_sprite.setScale( newSize.x / (texrect.width*scale.x), newSize.y / (texrect.height*scale.y) );
+
+	Vector2f spritesOldSize;
+	spritesOldSize.x = (static_cast<float>(texrect.width)*scale.x);
+	spritesOldSize.y = (static_cast<float>(texrect.height)*scale.y);
+
+	auto& newSize = Vector2f( transform->getSize() );
+	m_sprite.setScale( newSize.x / spritesOldSize.x, newSize.y / spritesOldSize.y );
 }
 
 void nb::SpriteComponent::onRotationChanged( const TransformationComponent*const transform, float oldRotation )
@@ -23,24 +28,19 @@ void nb::SpriteComponent::onRotationChanged( const TransformationComponent*const
 
 void nb::SpriteComponent::init()
 {
-	auto transform = getEntity()->getComponent<TransformationComponent>();
-	transform->s_positionXYChanged.connect_mem_fn_auto( &SpriteComponent::onPositionXYChanged, *this );
-	transform->s_sizeChanged.connect_mem_fn_auto( &SpriteComponent::onSizeChanged, *this );
-	transform->s_rotationChanged.connect_mem_fn_auto( &SpriteComponent::onRotationChanged, *this );
+	auto entity = getEntity();
+
+	auto transform = entity->getComponent<TransformationComponent>();
+	transform->s_positionXYChanged.connect( this, &SpriteComponent::onPositionXYChanged );
+	transform->s_sizeChanged.connect( this, &SpriteComponent::onSizeChanged );
+	transform->s_rotationChanged.connect( this, &SpriteComponent::onRotationChanged );
+
+	auto render = entity->getComponent<RenderComponent>();
+	render->addDrawable( &m_sprite );
 }
 
 void nb::SpriteComponent::destroy()
 {
-}
-
-int nb::SpriteComponent::getZValue() const
-{
-	return m_zValue;
-}
-
-void nb::SpriteComponent::setZValue( int zValue )
-{
-	m_zValue = zValue;
 }
 
 void nb::SpriteComponent::setTexture( const sf::Texture & texture )

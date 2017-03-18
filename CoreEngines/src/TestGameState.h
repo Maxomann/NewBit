@@ -6,6 +6,12 @@
 #include "GraphicsEngine.h"
 #include "TransformationComponent.h"
 #include "ChunkSystem.h"
+#include "TerrainComponent.h"
+#include "WorldLoadingGameState.h"
+#include "PositionTrackerComponent.h"
+#include "GuiEngine.h"
+#include "EntityTrackerScreenGameState.h"
+#include "DemoEditGameState.h"
 
 namespace nb
 {
@@ -15,15 +21,26 @@ namespace nb
 		GraphicsEngine* r_graphicsEngine;
 		InputEngine* r_inputEngine;
 		ResourceEngine* r_resourceEngine;
+		ChunkSystem* r_chunkSystem;
+		WorldGenerationEngine* r_worldGenerationEngine;
+		tgui::Gui* r_gui;
 
 		sf::Sprite m_sprite;
 		Entity* m_debugEntity;
 		Entity* m_camera;
 
-		void addALotOfEntities( const CoreRef& core );
+		EntityTrackerScreenGameState* r_entityTrackerScreenGameState;
+		WorldLoadingGameState* r_worldLoadingGameState;
+
+		void addALotOfEntities();
+		void addSomeTerrain();
+
+		Connections m_connections;
 
 	public:
 		DLL_EXPORT virtual void init() override;
+
+		DLL_EXPORT virtual void update() override;
 
 		DLL_EXPORT virtual void destroy() override;
 

@@ -29,10 +29,12 @@ namespace nb
 
 		//
 
+		void setPosition( sf::Vector3i position );
 		void setPositionXY( sf::Vector2i position );
 		void moveXY( sf::Vector2i offset );
 
 		void setLayer( int layer );
+		void moveLayer( int offset );
 
 		void setSize( sf::Vector2u size );
 		void scale( float factor );
@@ -43,14 +45,14 @@ namespace nb
 		//
 
 		// Second parameter is old value
-		Signal<void, const TransformationComponent* const, sf::Vector3i> s_positionChanged;
+		Signal<void( const TransformationComponent* const, sf::Vector3i )> s_positionChanged;
 		// Second parameter is old value
-		Signal<void, const TransformationComponent* const, sf::Vector2i> s_positionXYChanged;
+		Signal<void( const TransformationComponent* const, sf::Vector2i )> s_positionXYChanged;
 		// Second parameter is old value
-		Signal<void, const TransformationComponent* const, int> s_layerChanged;
+		Signal<void( const TransformationComponent* const, int )> s_layerChanged;
 		// Second parameter is old value
-		Signal<void, const TransformationComponent* const, sf::Vector2u> s_sizeChanged;
+		Signal<void( const TransformationComponent* const, sf::Vector2u )> s_sizeChanged;
 		// Second parameter is old value
-		Signal<void, const TransformationComponent* const, float> s_rotationChanged;
+		Signal<void( const TransformationComponent* const, float )> s_rotationChanged;
 	};
 }

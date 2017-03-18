@@ -12,19 +12,19 @@ ExternalProject_Add(sfml
   CMAKE_ARGS ${sfml_CMAKE_ARGS}
 )
 
-# SFML Thor
-set(thor_INSTALL_DIR ${PACKAGE_DIR}/thor)
-set(thor_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${thor_INSTALL_DIR} -DSFML_ROOT=${PACKAGE_DIR}/sfml )
+# tgui
+set(tgui_INSTALL_DIR ${PACKAGE_DIR}/tgui)
+set(tgui_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${tgui_INSTALL_DIR} -DSFML_ROOT=${PACKAGE_DIR}/sfml )
 
-ExternalProject_Add(thor
-  PREFIX ${thor_INSTALL_DIR}
-  GIT_REPOSITORY https://github.com/Bromeon/Thor.git
-  GIT_TAG 3aee360fa6a54acb82637e71782863ac975705db #2.1 dev
-  INSTALL_DIR ${thor_INSTALL_DIR}
-  CMAKE_ARGS ${thor_CMAKE_ARGS}
+ExternalProject_Add(tgui
+  PREFIX ${tgui_INSTALL_DIR}
+  GIT_REPOSITORY https://github.com/texus/TGUI.git
+  GIT_TAG 0e53b45bbad1ef72f4d4bade26f99b4cbc323f99 #0.8-dev (16.03.17)
+  INSTALL_DIR ${tgui_INSTALL_DIR}
+  CMAKE_ARGS ${tgui_CMAKE_ARGS}
 )
 
-add_dependencies(thor sfml)
+add_dependencies(tgui sfml)
 
 # json
 set(json_INSTALL_DIR ${PACKAGE_DIR}/json)

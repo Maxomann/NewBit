@@ -4,6 +4,7 @@ using namespace std;
 void nb::Core::run()
 {
 	const CoreRef coreRef( m_engines, m_gameStates, m_world );
+	m_gameStates.linkToCore( &coreRef );
 
 	//init
 	m_engines.loadFromFolder( "./bin" );
@@ -15,9 +16,10 @@ void nb::Core::run()
 	while (m_engines.update())
 	{
 		m_gameStates.checkDestroyGameStates();
-		m_gameStates.initNewStates( coreRef );
+		m_gameStates.initNewStates();
+		m_gameStates.update();
 		m_world.update();
 	};
 
-	m_gameStates.clear();
+	m_gameStates.destroy_all();
 }

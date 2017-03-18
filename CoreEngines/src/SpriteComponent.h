@@ -2,13 +2,12 @@
 #include "stdafx.h"
 #include "TransformationComponent.h"
 #include "TextureReference.h"
+#include "RenderComponent.h"
 
 namespace nb
 {
 	class SpriteComponent : public nb::Component
 	{
-		int m_zValue = 0;
-
 		sf::Sprite m_sprite;
 
 		void onPositionXYChanged( const TransformationComponent*const transform, sf::Vector2i oldPositionXY );
@@ -19,9 +18,6 @@ namespace nb
 		DLL_EXPORT virtual void init()override;
 
 		DLL_EXPORT virtual void destroy()override;
-
-		int getZValue()const;
-		void setZValue( int zValue );
 
 		void setTexture( const sf::Texture& texture );
 		void setTexture( const TextureReference& texture );

@@ -5,6 +5,7 @@
 /NewBitTexturePackerTest/data/TexturePackerTestImages/*.png
 /CoreEngines/data/debug_CoreEngines/
 /NewBitPackageManagerTest/data/debug_packageManager/
+/_local/
 
 
 # Created by https://www.gitignore.io/api/c++,cmake,visualstudio,windows

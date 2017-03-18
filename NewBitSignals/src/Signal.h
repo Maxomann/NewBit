@@ -1,71 +1,88 @@
 #pragma once
 #include "stdafx.h"
-#include "Trackable.h"
+#include "Connection.h"
 
 namespace nb
 {
-	template <class R, class... Args>
-	class Signal
+	template <class T>
+	class Signal;
+
+	template< class RetVal, class ... Args >
+	class Signal<RetVal( Args... )>
 	{
-		std::vector<std::function<R( Args... )>> m_slots;
-		std::vector<std::pair<std::function<R( Args... )>, std::weak_ptr<bool>>> m_trackedSlots;
+		struct Callback
+		{
+			std::optional<std::weak_ptr<bool>> optionalTrackingPtr;
+			std::function<RetVal( Args... )> func;
+		};
+
+		std::shared_ptr<bool> m_trackablePtr;
+		std::vector<Callback> m_callbacks;
+
+		void removeInvalidConnections()
+		{
+			m_callbacks.erase( std::remove_if( m_callbacks.begin(),
+											   m_callbacks.end(),
+											   []( const Callback& el ) {
+				if (el.optionalTrackingPtr.has_value())
+					return el.optionalTrackingPtr->expired();
+				else
+					return false;
+			} ), m_callbacks.end() );
+		}
 
 	public:
-		// slot must be callable
-		// for member functions see below or use std::bind()
-		void connect( std::function < R( Args... ) > slot )
+		Signal()
+			: m_trackablePtr( std::make_shared<bool>( true ) )
+		{}
+
+		Signal( const Signal& ) = delete;
+		Signal( Signal&& ) = default;
+
+		void connect( std::function<RetVal( Args... )> func )
 		{
-			m_slots.push_back( std::move( slot ) );
-		};
+			Callback cb;
+			cb.func = std::move( func );
 
-		// binds args to slot
-		template <class T>
-		void connect_mem_fn_auto( R( __thiscall T::* slot )(Args...),
-								  T& instance )
-		{
-			std::function<R( T&, Args... )> func = slot;
-
-			m_slots.push_back( easy_bind( func, std::ref( instance ) ) );
-		};
-
-		// slot must be callable
-		// will remove connection when foo gets destroyed
-		void connect_track( std::function < R( Args... ) > slot,
-							const Trackable& foo )
-		{
-			m_trackedSlots.push_back( std::make_pair( std::move( slot ),
-													  foo.getTrackablePtr() ) );
-		};
-
-		// binds foo to slot
-		// foo needs to be a child of nb::Trackable
-		// will remove connection when foo gets destroyed
-		template<class T>
-		void connect_mem_fn_auto_track( R( __thiscall T::* slot )(Args...),
-										T& instance )
-		{
-			std::function<R( T&, Args... )> func = slot;
-
-			m_trackedSlots.push_back( std::make_pair( std::move( easy_bind( func, std::ref( instance ) ) ),
-													  instance.getTrackablePtr() ) );
-		};
-
-		void call( Args&... args )
-		{
-			for (auto& func : m_slots)
-			{
-				//call
-				func( args... );
-			}
-
-			m_trackedSlots.erase( std::remove_if( m_trackedSlots.begin(), m_trackedSlots.end(), [&]( std::pair<std::function<R( Args... )>, std::weak_ptr<bool>>& el ) {
-				if (!el.second.expired())
-					return true;
-
-				//call
-				el.first( args... );
-				return false;
-			} ), m_trackedSlots.end() );
+			m_callbacks.emplace_back( std::move( cb ) );
 		}
+
+		template < class T >
+		void connect( T* obj, RetVal( T::* mem_fn_ptr )(Args...) )
+		{
+			connect( [=]( Args... args ) -> RetVal { return (obj->*mem_fn_ptr)(args...); } );
+		}
+
+		void connect_track( Connections& connections, std::function<RetVal( Args... )> func )
+		{
+			Connection con( m_trackablePtr );
+
+			Callback cb;
+			cb.func = std::move( func );
+			cb.optionalTrackingPtr = con.getTrackablePtr();
+
+			m_callbacks.emplace_back( std::move( cb ) );
+
+			connections.push_back( std::move( con ) );
+		}
+
+		template < class T >
+		void connect_track( Connections& connections, T* obj, RetVal( T::* mem_fn_ptr )(Args...) )
+		{
+			connect_track( connections, [=]( Args... args ) -> RetVal { return (obj->*mem_fn_ptr)(args...); } );
+		}
+
+		void call( Args const& ... args )
+		{
+			removeInvalidConnections();
+
+			for (const auto& el : m_callbacks)
+			{
+				el.func( args ... );
+			}
+		}
+
+		Signal& operator=( const Signal& ) = delete;
+		Signal& operator=( Signal&& ) = default;
 	};
 }

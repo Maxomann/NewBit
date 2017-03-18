@@ -22,6 +22,10 @@ namespace nb
 					std::function<connectFunctionSignature> connectFuntion( reinterpret_cast<connectFunctionSignature*>(connectFunctionPtr) );
 					connectFuntion( this );
 				}
+				else
+				{
+					throw std::runtime_error( "libraryHandle is null" );
+				}
 			}
 		}
 #else

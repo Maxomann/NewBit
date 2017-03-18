@@ -8,17 +8,30 @@ namespace nb
 	class GameStateManager;
 	class World;
 
-	class GameState : public CoreRefContainer, public Trackable
+	class GameState : public CoreRefContainer
 	{
 	public:
-		GameState() = default;
-		GameState( const GameState& ) = delete;
-		GameState( GameState&& ) = delete;
+		DLL_EXPORT GameState() = default;
+		DLL_EXPORT GameState( const GameState& ) = delete;
+		DLL_EXPORT GameState( GameState&& ) = delete;
+		DLL_EXPORT virtual ~GameState() = default;
 
 		DLL_EXPORT virtual void init() = 0;
+
+		DLL_EXPORT virtual void update() = 0;
 
 		DLL_EXPORT virtual void destroy() = 0;
 
 		DLL_EXPORT virtual bool shouldDestroy() = 0;
 	};
+
+	/*
+	virtual void init() override;
+
+	virtual void update() override;
+
+	virtual void destroy() override;
+
+	virtual bool shouldDestroy() override;
+	*/
 }

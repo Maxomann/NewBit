@@ -3,18 +3,36 @@
 
 namespace nb
 {
-	class GameStateManager
+	class GameStateManager : public CoreRefContainer
 	{
-		std::vector<std::unique_ptr<GameState>> m_uninitializedStates;
+		std::list<std::unique_ptr<GameState>> m_uninitializedStates;
 		std::vector<std::unique_ptr<GameState>> m_states;
 
 	public:
-		DLL_EXPORT void pushState( std::unique_ptr<GameState>&& ptr );
+		template< class T >
+		void pushState( std::unique_ptr<T>&& ptr )
+		{
+			m_uninitializedStates.push_back( std::move( ptr ) );
+		}
 
-		DLL_EXPORT void initNewStates( const CoreRef& core );
+		// T must inherit from GameState
+		template< class T >
+		T* pushState_instant( std::unique_ptr<T>&& ptr )
+		{
+			ptr->linkToCore( getCore() );
+			ptr->init();
+			m_states.push_back( std::move( ptr ) );
+			return static_cast<T*>(m_states.back().get());
+		}
 
-		DLL_EXPORT void checkDestroyGameStates();
+		void initNewStates();
 
-		DLL_EXPORT void clear();
+		void checkDestroyGameStates();
+
+		DLL_EXPORT void removeGameState( const GameState* state );
+
+		void update();
+
+		void destroy_all();
 	};
 }
