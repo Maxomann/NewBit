@@ -9,7 +9,7 @@ namespace nb
 		TransformationComponent* r_transformation;
 
 		TransformationComponent* r_track = nullptr;
-		sf::Vector2i m_offset;
+		sf::Vector2i m_offset = { 0,0 };
 
 		void onTrackedPositionChanged( const TransformationComponent* transform,
 									   sf::Vector3i oldPosition );
@@ -19,6 +19,7 @@ namespace nb
 		Connections m_connections;
 
 	public:
+
 		virtual void init()override;
 
 		virtual void destroy()override;

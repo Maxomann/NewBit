@@ -11,6 +11,10 @@ namespace nb
 		float m_rotation;
 
 	public:
+		TransformationComponent( sf::Vector2i position,
+								 int layer,
+								 sf::Vector2u size,
+								 float rotation = 0 );
 
 		virtual void init()override;
 

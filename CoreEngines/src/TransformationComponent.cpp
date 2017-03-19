@@ -3,6 +3,17 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
+nb::TransformationComponent::TransformationComponent( sf::Vector2i position,
+													  int layer,
+													  sf::Vector2u size,
+													  float rotation )
+	: m_position( position ),
+	m_layer( layer ),
+	m_size( size ),
+	m_rotation( rotation )
+{
+}
+
 void nb::TransformationComponent::init()
 {
 }

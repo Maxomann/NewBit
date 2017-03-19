@@ -5,9 +5,13 @@ namespace nb
 {
 	class HealthComponent : public Component
 	{
-		int m_health = 100;
+		const int m_maxHealth;
+		int m_health;
 
 	public:
+		HealthComponent( int maxHealth,
+						 int initialHealth );
+
 		virtual void init() override;
 
 		virtual void destroy() override;
@@ -17,6 +21,7 @@ namespace nb
 		void heal( unsigned int amount );
 
 		int getHealth()const;
+		int getMaxHealth()const;
 
 		bool isDead()const;
 

@@ -10,6 +10,8 @@ namespace nb
 		std::vector<const sf::Drawable*> m_drawables;
 
 	public:
+		RenderComponent( int zValue = 0 );
+
 		virtual void init() override;
 		virtual void destroy() override;
 

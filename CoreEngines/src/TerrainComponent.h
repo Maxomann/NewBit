@@ -10,13 +10,10 @@ namespace nb
 	{
 		sf::Sprite m_debugSprite;
 
-		void onPositionXYChanged( const TransformationComponent*const transform,
-								  sf::Vector2i oldPositionXY );
-		void onSizeChanged( const TransformationComponent*const transform,
-							sf::Vector2u oldSize );
-		void onRotationChanged( const TransformationComponent*const transform,
-								float oldRotation );
+		void setSize( sf::Vector2u size );
 	public:
+		TerrainComponent( const TextureReference& debugTexture );
+
 		virtual void init() override;
 		virtual void destroy() override;
 

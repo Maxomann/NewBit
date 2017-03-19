@@ -8,7 +8,7 @@ Entity::Entity( Entity&& entity )
 	m_isInit = move( entity.m_isInit );
 
 	// Update Entity references for components in this entity
-	// Note: This may not be needed, since entities are initialized *after* being placed in the entity list
+	// Note: This is important, since entities can be moved after being initalized (ex. when an entity is initialized in a thread and added to the world after)
 	for (const auto& el : m_components)
 		el.second->linkToEntity( this );
 }
@@ -19,15 +19,25 @@ void nb::Entity::init()
 	{
 		throw exception::EntityAlreadyInitializedException();
 	}
-	for (auto& el : m_components)
+	else
 	{
-		el.second->init();
+		// init components
+		for (auto& el : m_components)
+		{
+			el.second->init();
+		}
+		m_isInit = true;
 	}
-	m_isInit = true;
+}
+
+bool nb::Entity::isInit() const
+{
+	return m_isInit;
 }
 
 void nb::Entity::destroy()
 {
 	for (auto& el : m_components)
 		el.second->destroy();
+	m_isInit = false;
 }

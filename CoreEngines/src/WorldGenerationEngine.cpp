@@ -16,16 +16,16 @@ bool WorldGenerationEngine::update()
 
 void nb::WorldGenerationEngine::generateChunk( const sf::Vector3i& chunkPosition )
 {
-	auto ent = r_core->world.createEntity<TransformationComponent, RenderComponent, TerrainComponent>();
-	auto renderComponent = ent->getComponent<RenderComponent>();
-	renderComponent->setZValue( -10 );
-	auto terrain = ent->getComponent<TerrainComponent>();
-	auto texRef = r_resourceEngine->textures.getTextureReference( "default:testterrain" );
-	terrain->setDebugTexture( *texRef );
-	auto transformationComponent = ent->getComponent<TransformationComponent>();
-	transformationComponent->setLayer( chunkPosition.z );
-	transformationComponent->setPositionXY( Vector2i( ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.x,
-													  ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.y ) );
-	transformationComponent->setSize( Vector2u( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
-												ChunkSystem::CHUNK_SIZE_IN_PIXEL ) );
+	Entity entity;
+	entity.addComponent<TransformationComponent>(
+		Vector2i( ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.x,
+				  ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.y ),
+		chunkPosition.z,
+		Vector2u( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
+				  ChunkSystem::CHUNK_SIZE_IN_PIXEL )
+		);
+	entity.addComponent<RenderComponent>( -10 );
+	entity.addComponent<TerrainComponent>( *r_resourceEngine->textures.getTextureReference( "default:testterrain" ) );
+
+	getCore()->world.addEntity( move( entity ) );
 }

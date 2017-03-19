@@ -18,27 +18,22 @@ namespace nb
 		DLL_EXPORT Entity( Entity&& entity );
 
 		// T must inherit from Component
-		template < class T >
-		Component* addComponent( std::unique_ptr<T>&& component )
+		template < class T, class ... Args >
+		T* addComponent( Args&& ... args )
 		{
+			auto component = std::make_unique<T>( (std::forward<Args>( args ))... );
 			component->linkToEntity( this );
 			if (m_isInit)
 				component->init();
 
-			auto componentPointer = component.get();
-
 			const auto typeIndex = std::type_index( typeid(T) );
-#ifdef _DEBUG
-			if (typeIndex == std::type_index( typeid(Component) ))
-				throw std::exception();
-#endif // _DEBUG
 
 			auto insertResult = m_components.insert( std::make_pair( typeIndex, std::move( component ) ) );
 			if (!insertResult.second)
 			{
 				throw exception::ComponentAlreadyExistsException( typeIndex.name() );
 			}
-			return insertResult.first->second.get();
+			return static_cast<T*>(insertResult.first->second.get());
 		};
 
 		template < class T >
@@ -56,6 +51,12 @@ namespace nb
 		};
 
 		template < class T >
+		T* component()const
+		{
+			return getComponent<T>();
+		};
+
+		template < class T >
 		T* getComponent_try()const
 		{
 			const auto typeIndex = std::type_index( typeid(T) );
@@ -67,13 +68,20 @@ namespace nb
 		};
 
 		template < class T >
+		T* component_try()const
+		{
+			return getComponent_try<T>();
+		};
+
+		template < class T >
 		void removeComponent()
 		{
 			const auto typeIndex = std::type_index( typeid(T) );
 			try
 			{
 				auto& component = m_components.at( typeIndex );
-				component->destroy();
+				if (m_isInit)
+					component->destroy();
 				m_components.erase( typeIndex );
 			}
 			catch (std::out_of_range)
@@ -82,8 +90,11 @@ namespace nb
 			}
 		};
 
-		/* init() is called by EntityManager::addEntities(). Do not call this manually! */
-		void init();
+		/* can be called manually, even if this entity is not added to world. init is supposed to set up the entity *internally* only */
+		DLL_EXPORT void init();
+
+		DLL_EXPORT bool isInit()const;
+
 		/* Not called on World::~World() */
 		void destroy();
 	};

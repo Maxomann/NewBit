@@ -10,10 +10,10 @@ namespace nb
 	{
 		sf::Sprite m_sprite;
 
-		void onPositionXYChanged( const TransformationComponent*const transform, sf::Vector2i oldPositionXY );
-		void onSizeChanged( const TransformationComponent*const transform, sf::Vector2u oldSize );
-		void onRotationChanged( const TransformationComponent*const transform, float oldRotation );
+		void setSize( sf::Vector2u size );
 	public:
+		SpriteComponent( const sf::Texture& texture );
+		SpriteComponent( const TextureReference& texture );
 
 		DLL_EXPORT virtual void init()override;
 

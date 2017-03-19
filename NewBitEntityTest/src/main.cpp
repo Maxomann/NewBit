@@ -13,7 +13,8 @@ int main()
 	world.initSystems();
 
 	Entity createThisEntity;
-	createThisEntity.addComponent( make_unique<TestComponent>() );
+	createThisEntity.addComponent<TestComponent>();
+	createThisEntity.init();//optional
 
 	Entity* entity = world.addEntity( move( createThisEntity ) );
 	TestComponent* component = entity->getComponent<TestComponent>();
