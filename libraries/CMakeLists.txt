@@ -17,58 +17,44 @@ ExternalProject_Add(sfml
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${sfml_INSTALL_DIR}
 )
 
-#[[
-
 # tgui
 set(tgui_INSTALL_DIR ${PACKAGE_DIR}/tgui)
-set(tgui_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX="V:\\gi" -DSFML_ROOT=${PACKAGE_DIR}/sfml/src/sfml-build/lib/$<$<CONFIG:Debug>:Debug>$<$<CONFIG:Release>:Release> )
 
 ExternalProject_Add(tgui
   PREFIX ${tgui_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/texus/TGUI.git
   GIT_TAG 0e53b45bbad1ef72f4d4bade26f99b4cbc323f99 #0.8-dev (16.03.17)
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${tgui_INSTALL_DIR} -DSFML_ROOT=${sfml_INSTALL_DIR}
 )
-
 add_dependencies(tgui sfml)
-
-
 
 # json
 set(json_INSTALL_DIR ${PACKAGE_DIR}/json)
-set(json_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${json_INSTALL_DIR})
 
 ExternalProject_Add(json
   PREFIX ${json_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/nlohmann/json.git
   GIT_TAG 6d2b5e377122955cb29889800cdbac653c2fae1e #2.0.7
-  INSTALL_DIR ${json_INSTALL_DIR}
-  CMAKE_ARGS ${json_CMAKE_ARGS}
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${json_INSTALL_DIR}
 )
 
 # UnitTest++
 set(unittest_INSTALL_DIR ${PACKAGE_DIR}/unittest)
-set(unittest_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${unittest_INSTALL_DIR})
 
 ExternalProject_Add(unittest
   PREFIX ${unittest_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/unittest-cpp/unittest-cpp.git
   GIT_TAG d220612eba6a03f72fdd24149d3714337809aa3f #1.6.1
-  INSTALL_DIR ${unittest_INSTALL_DIR}
-  CMAKE_ARGS ${unittest_CMAKE_ARGS}
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${unittest_INSTALL_DIR}
 )
-
-
 
 # box2d
 set(box2d_INSTALL_DIR ${PACKAGE_DIR}/box2d)
-set(box2d_CMAKE_ARGS -DBOX2D_BUILD_EXAMPLES=OFF -DBOX2D_INSTALL_DOC=OFF -DBOX2D_BUILD_STATIC=OFF)
 
 ExternalProject_Add ( box2d
     PREFIX ${box2d_INSTALL_DIR}
 	GIT_REPOSITORY https://github.com/erincatto/Box2D.git
 	GIT_TAG 71a6079b5fa717b8b56aad6a1130b74232989183 #master (20.03.17)
-	CMAKE_ARGS ${box2d_CMAKE_ARGS}
+	CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${box2d_INSTALL_DIR} -DBOX2D_BUILD_EXAMPLES=OFF -DBOX2D_INSTALL_DOC=OFF -DBOX2D_BUILD_SHARED=ON -DBOX2D_BUILD_STATIC=OFF -DBOX2D_INSTALL=ON
 	SOURCE_SUBDIR Box2D
 )
-
-]]

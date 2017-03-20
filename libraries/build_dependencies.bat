@@ -1,0 +1,4 @@
+call build_dependencies_x86-debug.bat
+call build_dependencies_x86-release.bat
+call build_dependencies_x64-debug.bat
+call build_dependencies_x64-release.bat
