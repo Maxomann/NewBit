@@ -1,30 +1,37 @@
+cmake_minimum_required (VERSION 3.7.2)
 include(ExternalProject)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/std:c++latest>)
+
+# PACKAGE_DIR defines where externel dependencies will be built
+# PACKAGE_DIR must be an absolute path
+MESSAGE(PACKAGE_DIR=${PACKAGE_DIR})
 
 # SFML
 set(sfml_INSTALL_DIR ${PACKAGE_DIR}/sfml)
-set(sfml_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${sfml_INSTALL_DIR})
 
 ExternalProject_Add(sfml
   PREFIX ${sfml_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/LaurentGomila/SFML.git
   GIT_TAG e4ae4f9cc3c3588a3634f46f436f77c051a85325 #2.4.2
-  INSTALL_DIR ${sfml_INSTALL_DIR}
-  CMAKE_ARGS ${sfml_CMAKE_ARGS}
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${sfml_INSTALL_DIR}
 )
+
+#[[
 
 # tgui
 set(tgui_INSTALL_DIR ${PACKAGE_DIR}/tgui)
-set(tgui_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${tgui_INSTALL_DIR} -DSFML_ROOT=${PACKAGE_DIR}/sfml )
+set(tgui_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX="V:\\gi" -DSFML_ROOT=${PACKAGE_DIR}/sfml/src/sfml-build/lib/$<$<CONFIG:Debug>:Debug>$<$<CONFIG:Release>:Release> )
 
 ExternalProject_Add(tgui
   PREFIX ${tgui_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/texus/TGUI.git
   GIT_TAG 0e53b45bbad1ef72f4d4bade26f99b4cbc323f99 #0.8-dev (16.03.17)
-  INSTALL_DIR ${tgui_INSTALL_DIR}
-  CMAKE_ARGS ${tgui_CMAKE_ARGS}
 )
 
 add_dependencies(tgui sfml)
+
+
 
 # json
 set(json_INSTALL_DIR ${PACKAGE_DIR}/json)
@@ -49,3 +56,19 @@ ExternalProject_Add(unittest
   INSTALL_DIR ${unittest_INSTALL_DIR}
   CMAKE_ARGS ${unittest_CMAKE_ARGS}
 )
+
+
+
+# box2d
+set(box2d_INSTALL_DIR ${PACKAGE_DIR}/box2d)
+set(box2d_CMAKE_ARGS -DBOX2D_BUILD_EXAMPLES=OFF -DBOX2D_INSTALL_DOC=OFF -DBOX2D_BUILD_STATIC=OFF)
+
+ExternalProject_Add ( box2d
+    PREFIX ${box2d_INSTALL_DIR}
+	GIT_REPOSITORY https://github.com/erincatto/Box2D.git
+	GIT_TAG 71a6079b5fa717b8b56aad6a1130b74232989183 #master (20.03.17)
+	CMAKE_ARGS ${box2d_CMAKE_ARGS}
+	SOURCE_SUBDIR Box2D
+)
+
+]]

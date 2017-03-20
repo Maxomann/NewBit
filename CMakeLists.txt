@@ -25,6 +25,9 @@ function(nb_target_add_libraries TARGET_NAME)
 	# json
 	target_include_directories(${TARGET_NAME} PUBLIC "${PACKAGE_DIR}/json/include")
 
+	# box2d
+	
+
 	# UnitTest++
 	set(UnitTest++_DIR "${PACKAGE_DIR}/unittest/lib/cmake/UnitTest++")
 	find_package (UnitTest++)
@@ -36,38 +39,31 @@ function(nb_target_add_libraries TARGET_NAME)
 endfunction()
 
 # MAIN
+include_directories(.)
 
-if(BUILD_LIB)
-	add_subdirectory(build_packages)
-else()
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-	include_directories(.)
+add_subdirectory(NewBitSignals)
+add_subdirectory(NewBitSignalsTest)
+add_dependencies(NewBitSignalsTest NewBitSignals)
 
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+add_subdirectory(NewBitPackageManager)
+add_subdirectory(NewBitPackageManagerTest)
+add_dependencies(NewBitPackageManagerTest NewBitPackageManager)
 
-	add_subdirectory(NewBitSignals)
-	add_subdirectory(NewBitSignalsTest)
-	add_dependencies(NewBitSignalsTest NewBitSignals)
+add_subdirectory(NewBitEntity)
+add_dependencies(NewBitEntity NewBitSignals)
+add_subdirectory(NewBitEntityTest)
+add_dependencies(NewBitEntityTest NewBitEntity NewBitSignals)
 
-	add_subdirectory(NewBitPackageManager)
-	add_subdirectory(NewBitPackageManagerTest)
-	add_dependencies(NewBitPackageManagerTest NewBitPackageManager)
+add_subdirectory(NewBitTexturePacker)
+add_subdirectory(NewBitTexturePackerTest)
+add_dependencies(NewBitTexturePackerTest NewBitTexturePacker)
 
-	add_subdirectory(NewBitEntity)
-	add_dependencies(NewBitEntity NewBitSignals)
-	add_subdirectory(NewBitEntityTest)
-	add_dependencies(NewBitEntityTest NewBitEntity NewBitSignals)
+add_subdirectory(NewBitCore)
+add_dependencies(NewBitCore NewBitEntity NewBitSignals)
 
-	add_subdirectory(NewBitTexturePacker)
-	add_subdirectory(NewBitTexturePackerTest)
-	add_dependencies(NewBitTexturePackerTest NewBitTexturePacker)
-
-	add_subdirectory(NewBitCore)
-	add_dependencies(NewBitCore NewBitEntity NewBitSignals)
-
-	add_subdirectory(CoreEngines)
-	add_dependencies(CoreEngines NewBitCore NewBitTexturePacker NewBitPackageManager NewBitSignals)
-
-endif()
+add_subdirectory(CoreEngines)
+add_dependencies(CoreEngines NewBitCore NewBitTexturePacker NewBitPackageManager NewBitSignals)
