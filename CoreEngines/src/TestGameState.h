@@ -32,9 +32,6 @@ namespace nb
 		EntityTrackerScreenGameState* r_entityTrackerScreenGameState;
 		WorldLoadingGameState* r_worldLoadingGameState;
 
-		void addALotOfEntities();
-		void addSomeTerrain();
-
 		Connections m_connections;
 
 	public:

@@ -5,22 +5,17 @@ using namespace nb;
 
 const int TerrainComponent::TILE_SIZE_IN_PIXEL = 32;
 
-void nb::TerrainComponent::onPositionXYChanged( const TransformationComponent*const transform, sf::Vector2i oldPositionXY )
+nb::TerrainComponent::TerrainComponent( const TextureReference & debugTexture )
 {
-	m_debugSprite.setPosition( Vector2f( transform->getPositionXY() ) );
+	setDebugTexture( debugTexture );
 }
 
-void nb::TerrainComponent::onSizeChanged( const TransformationComponent*const transform, sf::Vector2u oldSize )
+void nb::TerrainComponent::setSize( sf::Vector2u size )
 {
 	auto& texrect = m_debugSprite.getTextureRect();
 	auto& scale = m_debugSprite.getScale();
-	auto& newSize = transform->getSize();
+	const auto& newSize = size;
 	m_debugSprite.setScale( newSize.x / (texrect.width*scale.x), newSize.y / (texrect.height*scale.y) );
-}
-
-void nb::TerrainComponent::onRotationChanged( const TransformationComponent*const transform, float oldRotation )
-{
-	throw std::logic_error( "Cannot rotate Terrain" );
 }
 
 void TerrainComponent::init()
@@ -28,9 +23,23 @@ void TerrainComponent::init()
 	auto entity = getEntity();
 
 	auto transform = entity->getComponent<TransformationComponent>();
-	transform->s_positionXYChanged.connect( this, &TerrainComponent::onPositionXYChanged );
-	transform->s_sizeChanged.connect( this, &TerrainComponent::onSizeChanged );
-	transform->s_rotationChanged.connect( this, &TerrainComponent::onRotationChanged );
+	//default values
+	m_debugSprite.setPosition( Vector2f( transform->getPositionXY() ) );
+	setSize( transform->getSize() );
+
+	//connections
+	transform->s_positionXYChanged.connect( [&]( const TransformationComponent*const transform,
+												 sf::Vector2i oldPositionXY ) {
+		m_debugSprite.setPosition( Vector2f( transform->getPositionXY() ) );
+	} );
+	transform->s_sizeChanged.connect( [&]( const TransformationComponent*const transform,
+										   sf::Vector2u oldSize ) {
+		setSize( transform->getSize() );
+	} );
+	transform->s_rotationChanged.connect( [&]( const TransformationComponent*const transform,
+											   float oldRotation ) {
+		throw std::logic_error( "Cannot rotate Terrain" );
+	} );
 
 	auto render = entity->getComponent<RenderComponent>();
 	render->addDrawable( &m_debugSprite );

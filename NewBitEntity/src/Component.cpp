@@ -10,3 +10,8 @@ Entity* Component::getEntity()const
 {
 	return r_entity;
 };
+
+Entity * nb::Component::entity() const
+{
+	return r_entity;
+}

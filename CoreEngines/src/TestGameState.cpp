@@ -4,64 +4,6 @@ using namespace sf;
 using namespace tgui;
 using namespace nb;
 
-void nb::TestGameState::addALotOfEntities()
-{
-	int min = -20;
-	int max = 20;
-
-	bool b = true;
-
-	for (int x = min; x < max; x++)
-	{
-		for (int y = min; y < max; y++)
-		{
-			auto ent = r_core->world.createEntity<TransformationComponent, RenderComponent, SpriteComponent>();
-			auto renderComponent = ent->getComponent<RenderComponent>();
-			renderComponent->setZValue( -10 );
-			auto spriteComponent = ent->getComponent<SpriteComponent>();
-			if (b)
-			{
-				auto texRef = r_resourceEngine->textures.getTextureReference( "default:texture:field_grass" );
-				spriteComponent->setTexture( *texRef );
-			}
-			else
-			{
-				auto texRef = r_resourceEngine->textures.getTextureReference( "default:texture:field_sand" );
-				spriteComponent->setTexture( *texRef );
-			}
-			b = !b;
-			auto transformationComponent = ent->getComponent<TransformationComponent>();
-			transformationComponent->setPositionXY( Vector2i( x * 32, y * 32 ) );
-			transformationComponent->setSize( Vector2u( 32, 32 ) );
-			transformationComponent->setRotation( 0.f );
-		}
-	}
-}
-
-void nb::TestGameState::addSomeTerrain()
-{
-	int min = -4;
-	int max = 4;
-
-	for (int x = min; x < max; x++)
-	{
-		for (int y = min; y < max; y++)
-		{
-			auto ent = r_core->world.createEntity<TransformationComponent, RenderComponent, TerrainComponent>();
-			auto renderComponent = ent->getComponent<RenderComponent>();
-			renderComponent->setZValue( -10 );
-			auto terrain = ent->getComponent<TerrainComponent>();
-			auto texRef = r_resourceEngine->textures.getTextureReference( "default:testterrain" );
-			terrain->setDebugTexture( *texRef );
-			auto transformationComponent = ent->getComponent<TransformationComponent>();
-			transformationComponent->setPositionXY( Vector2i( ChunkSystem::CHUNK_SIZE_IN_PIXEL * x,
-															  ChunkSystem::CHUNK_SIZE_IN_PIXEL * y ) );
-			transformationComponent->setSize( Vector2u( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
-														ChunkSystem::CHUNK_SIZE_IN_PIXEL ) );
-		}
-	}
-}
-
 void TestGameState::init()
 {
 	cout << "TestGameState init()" << endl;
@@ -167,24 +109,23 @@ void TestGameState::init()
 	} );
 
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( m_connections, [&]() {
-		m_debugEntity = r_core->world.createEntity<
-			TransformationComponent,
-			RenderComponent,
-			SpriteComponent,
-			HealthComponent>();
-		auto spriteComponent = m_debugEntity->getComponent<SpriteComponent>();
-		spriteComponent->setTexture( *r_resourceEngine->textures.getTextureReference( "default:texture:player" ) );
-		auto transformationComponent = m_debugEntity->getComponent<TransformationComponent>();
-		transformationComponent->setSize( Vector2u( 32, 64 ) );
-		transformationComponent->setPositionXY( Vector2i( 0, 0 ) );
+		Entity entity;
+		entity.addComponent<TransformationComponent>( Vector2i( 0, 0 ),
+													  0,
+													  Vector2u( 32, 64 ) );
+		entity.addComponent<RenderComponent>( 0 );
+		entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:player" ) );
+		entity.addComponent<HealthComponent>( 200, 100 );
+
+		m_debugEntity = getCore()->world.addEntity( move( entity ) );
+
 		auto cameraPositionTracker = m_camera->getComponent<PositionTrackerComponent>();
 		cameraPositionTracker->setOffsetXY( { 0, -32 } );
 		cameraPositionTracker->trackEntity( m_debugEntity );
 
 		// EntityTrackerScreenGameState
-		if (r_entityTrackerScreenGameState)
-			r_core->gameStates.removeGameState( r_entityTrackerScreenGameState );
-		r_entityTrackerScreenGameState = r_core->gameStates.pushState_instant( make_unique<EntityTrackerScreenGameState>() );
+		if (!r_entityTrackerScreenGameState)
+			r_entityTrackerScreenGameState = gameStates().pushState_instant( make_unique<EntityTrackerScreenGameState>() );
 		r_entityTrackerScreenGameState->track( m_debugEntity );
 	} );
 
@@ -198,23 +139,16 @@ void TestGameState::init()
 	auto windowSize = r_graphicsEngine->getWindow().getSize();
 	m_sprite.setPosition( windowSize.x / 2.f, windowSize.y / 2.f );
 
-	m_camera = r_core->world.createEntity<TransformationComponent, CameraComponent, PositionTrackerComponent>();
-	auto transformationComponent2 = m_camera->getComponent<TransformationComponent>();
-	transformationComponent2->setSize( { 1280,720 } );
-	transformationComponent2->setPositionXY( Vector2i( 0, 0 ) );
+	Entity cameraEntity;
+	cameraEntity.addComponent<TransformationComponent>(
+		Vector2i( 0, 0 ),
+		0,
+		Vector2u( 1280, 720 ) );
+	cameraEntity.addComponent<CameraComponent>();
+	cameraEntity.addComponent<PositionTrackerComponent>();
+	m_camera = getCore()->world.addEntity( move( cameraEntity ) );
+
 	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
-
-	//addALotOfEntities();
-	//addSomeTerrain();
-
-	/*auto ent = core->world.createEntity<TransformationComponent, SpriteComponent>();
-	auto spriteComponent = ent->getComponent<SpriteComponent>();
-	auto texRef = r_resourceEngine->textures.getTextureReference( "default:texture:field_grass" );
-	spriteComponent->setTexture( *texRef );
-	auto transformationComponent = ent->getComponent<TransformationComponent>();
-	transformationComponent->setPositionXY( Vector2i( 0, 0 ) );
-	transformationComponent->setSize( Vector2u( 32, 32 ) );
-	transformationComponent->setRotation( 0.f );*/
 
 	r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
 	r_worldGenerationEngine->generateChunk( { 10,10,0 } );

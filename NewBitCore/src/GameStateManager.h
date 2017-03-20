@@ -19,7 +19,7 @@ namespace nb
 		template< class T >
 		T* pushState_instant( std::unique_ptr<T>&& ptr )
 		{
-			ptr->linkToCore( getCore() );
+			ptr->linkToCore( core() );
 			ptr->init();
 			m_states.push_back( std::move( ptr ) );
 			return static_cast<T*>(m_states.back().get());

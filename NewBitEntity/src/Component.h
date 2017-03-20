@@ -16,7 +16,13 @@ namespace nb
 		DLL_EXPORT virtual ~Component() = default;
 
 		DLL_EXPORT void linkToEntity( Entity* entity );
-		DLL_EXPORT Entity* getEntity()const;
+		[[deprecated]] DLL_EXPORT Entity* getEntity()const;
+		DLL_EXPORT Entity* entity()const;
+		template<class T>
+		T* component()
+		{
+			return entity()->getComponent<T>();
+		};
 
 		virtual void init() = 0;
 		/* Not called on World::~World() */

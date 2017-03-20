@@ -3,6 +3,11 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
+nb::RenderComponent::RenderComponent( int zValue )
+	: m_zValue( zValue )
+{
+}
+
 void RenderComponent::init()
 {
 	return;

@@ -3,12 +3,17 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-void nb::SpriteComponent::onPositionXYChanged( const TransformationComponent*const transform, sf::Vector2i oldPositionXY )
+nb::SpriteComponent::SpriteComponent( const sf::Texture & texture )
 {
-	m_sprite.setPosition( Vector2f( transform->getPositionXY() ) );
+	setTexture( texture );
 }
 
-void nb::SpriteComponent::onSizeChanged( const TransformationComponent*const transform, sf::Vector2u oldSize )
+nb::SpriteComponent::SpriteComponent( const TextureReference & texture )
+{
+	setTexture( texture );
+}
+
+void nb::SpriteComponent::setSize( sf::Vector2u size )
 {
 	auto& texrect = m_sprite.getTextureRect();
 	auto& scale = m_sprite.getScale();
@@ -17,13 +22,8 @@ void nb::SpriteComponent::onSizeChanged( const TransformationComponent*const tra
 	spritesOldSize.x = (static_cast<float>(texrect.width)*scale.x);
 	spritesOldSize.y = (static_cast<float>(texrect.height)*scale.y);
 
-	auto& newSize = Vector2f( transform->getSize() );
+	auto& newSize = Vector2f( size );
 	m_sprite.setScale( newSize.x / spritesOldSize.x, newSize.y / spritesOldSize.y );
-}
-
-void nb::SpriteComponent::onRotationChanged( const TransformationComponent*const transform, float oldRotation )
-{
-	m_sprite.setRotation( transform->getRotation() );
 }
 
 void nb::SpriteComponent::init()
@@ -31,10 +31,26 @@ void nb::SpriteComponent::init()
 	auto entity = getEntity();
 
 	auto transform = entity->getComponent<TransformationComponent>();
-	transform->s_positionXYChanged.connect( this, &SpriteComponent::onPositionXYChanged );
-	transform->s_sizeChanged.connect( this, &SpriteComponent::onSizeChanged );
-	transform->s_rotationChanged.connect( this, &SpriteComponent::onRotationChanged );
+	//default values
+	m_sprite.setPosition( Vector2f( transform->getPositionXY() ) );
+	setSize( transform->getSize() );
+	m_sprite.setRotation( transform->getRotation() );
 
+	//connections
+	transform->s_positionXYChanged.connect( [&]( const TransformationComponent*const transform,
+												 sf::Vector2i oldPositionXY ) {
+		m_sprite.setPosition( Vector2f( transform->getPositionXY() ) );
+	} );
+	transform->s_sizeChanged.connect( [&]( const TransformationComponent*const transform,
+										   sf::Vector2u oldSize ) {
+		setSize( transform->getSize() );
+	} );
+	transform->s_rotationChanged.connect( [&]( const TransformationComponent*const transform,
+											   float oldRotation ) {
+		m_sprite.setRotation( transform->getRotation() );
+	} );
+
+	// add drawable
 	auto render = entity->getComponent<RenderComponent>();
 	render->addDrawable( &m_sprite );
 }

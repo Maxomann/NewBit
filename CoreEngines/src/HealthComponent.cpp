@@ -3,6 +3,12 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
+nb::HealthComponent::HealthComponent( int maxHealth, int initialHealth )
+	: m_maxHealth( maxHealth ),
+	m_health( initialHealth )
+{
+}
+
 void nb::HealthComponent::init()
 {
 }
@@ -27,6 +33,10 @@ void nb::HealthComponent::damage( unsigned int amount )
 
 void nb::HealthComponent::heal( unsigned int amount )
 {
+	const auto maxAmount = m_maxHealth - m_health;
+	if (amount > maxAmount)
+		amount = maxAmount;
+
 	bool wasDead = isDead();
 	m_health += amount;
 	s_onChange.call( this, amount );
@@ -38,6 +48,11 @@ void nb::HealthComponent::heal( unsigned int amount )
 int nb::HealthComponent::getHealth() const
 {
 	return m_health;
+}
+
+int nb::HealthComponent::getMaxHealth() const
+{
+	return m_maxHealth;
 }
 
 bool nb::HealthComponent::isDead() const

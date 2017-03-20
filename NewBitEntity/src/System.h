@@ -21,7 +21,8 @@ namespace nb
 		DLL_EXPORT virtual ~System() = default;
 
 		DLL_EXPORT void linkToWorld( World* world );
-		DLL_EXPORT World* getWorld()const;
+		[[deprecated]]DLL_EXPORT World* getWorld()const;
+		DLL_EXPORT World* world()const;
 
 		virtual void init() = 0;
 		virtual void update() = 0;

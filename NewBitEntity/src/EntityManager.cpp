@@ -33,7 +33,8 @@ Entity * nb::EntityManager::addEntity( Entity&& entity )
 	m_entities.push_back( std::move( entity ) );
 
 	Entity* en = &m_entities.back();
-	en->init();
+	if (!en->isInit())
+		en->init();
 	s_onEntityAdded.call( en );
 	s_onEntityCountChanged.call( getEntityCount() );
 	return en;
