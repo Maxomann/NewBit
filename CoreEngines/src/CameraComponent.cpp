@@ -20,7 +20,7 @@ void nb::CameraComponent::onRotationChanged( const TransformationComponent*const
 
 void nb::CameraComponent::init()
 {
-	auto transform = entity()->component<TransformationComponent>();
+	auto transform = component<TransformationComponent>();
 
 	//default values
 	m_view.setCenter( Vector2f( transform->getPositionXY() ) );

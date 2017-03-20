@@ -31,9 +31,34 @@ namespace nb
 		{
 			r_core = core;
 		};
-		const CoreRef* getCore()
+		[[deprecated]]const CoreRef* getCore()
 		{
 			return r_core;
 		};
+		const CoreRef* core()
+		{
+			return r_core;
+		};
+
+		template<class T>
+		T* engine()
+		{
+			return r_core->engines.getEngine<T>();
+		}
+
+		const CoreEngineManager& engines()const
+		{
+			return r_core->engines;
+		}
+
+		GameStateManager& gameStates()const
+		{
+			return r_core->gameStates;
+		}
+
+		World& world()const
+		{
+			return r_core->world;
+		}
 	};
 }

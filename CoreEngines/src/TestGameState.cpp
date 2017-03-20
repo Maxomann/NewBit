@@ -125,7 +125,7 @@ void TestGameState::init()
 
 		// EntityTrackerScreenGameState
 		if (!r_entityTrackerScreenGameState)
-			r_entityTrackerScreenGameState = r_core->gameStates.pushState_instant( make_unique<EntityTrackerScreenGameState>() );
+			r_entityTrackerScreenGameState = gameStates().pushState_instant( make_unique<EntityTrackerScreenGameState>() );
 		r_entityTrackerScreenGameState->track( m_debugEntity );
 	} );
 
