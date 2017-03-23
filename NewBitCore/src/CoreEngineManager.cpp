@@ -16,16 +16,19 @@ namespace nb
 			if (extension == ".dll")
 			{
 				HMODULE libraryHandle = LoadLibrary( path.string().c_str() );
-				auto connectFunctionPtr = GetProcAddress( libraryHandle, "nbConnectCore" );
-				if (connectFunctionPtr)
+				if (!libraryHandle)
 				{
-					std::function<connectFunctionSignature> connectFuntion( reinterpret_cast<connectFunctionSignature*>(connectFunctionPtr) );
-					connectFuntion( this );
-				}
-				else
-				{
+					cout << GetLastError() << endl;
 					throw std::runtime_error( "libraryHandle is null" );
 				}
+				auto connectFunctionPtr = GetProcAddress( libraryHandle, "nbConnectCore" );
+				if (!connectFunctionPtr)
+				{
+					cout << GetLastError() << endl;
+					throw std::runtime_error( "connectFunctionPtr is null" );
+				}
+				std::function<connectFunctionSignature> connectFuntion( reinterpret_cast<connectFunctionSignature*>(connectFunctionPtr) );
+				connectFuntion( this );
 			}
 		}
 #else

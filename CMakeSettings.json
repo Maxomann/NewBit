@@ -11,7 +11,7 @@
       "variables": [
         {
           "name": "PACKAGE_DIR",
-          "value": "${workspaceRoot}\\build_packages\\x86-Debug-lib"
+          "value": "${workspaceRoot}\\libraries\\x86-debug"
         }
       ]
     },
@@ -25,7 +25,7 @@
       "variables": [
         {
           "name": "PACKAGE_DIR",
-          "value": "${workspaceRoot}\\build_packages\\x86-Release-lib"
+          "value": "${workspaceRoot}\\libraries\\x86-release"
         }
       ]
     },
@@ -39,7 +39,7 @@
       "variables": [
         {
           "name": "PACKAGE_DIR",
-          "value": "${workspaceRoot}\\build_packages\\x64-Debug-lib"
+          "value": "${workspaceRoot}\\libraries\\x64-debug"
         }
       ]
     },
@@ -53,80 +53,7 @@
       "variables": [
         {
           "name": "PACKAGE_DIR",
-          "value": "${workspaceRoot}\\build_packages\\x64-Release-lib"
-        }
-      ]
-    },
-
-    {
-      "name": "x86-Debug Lib",
-      "generator": "Visual Studio 15 2017",
-      "configurationType": "Debug",
-      "buildRoot": "${workspaceRoot}\\build\\_packages\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "BUILD_LIB",
-          "value": "true"
-        },
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${workspaceRoot}\\build_packages\\x86-Debug-lib"
-        }
-      ]
-    },
-    {
-      "name": "x86-Release Lib",
-      "generator": "Visual Studio 15 2017",
-      "configurationType": "Release",
-      "buildRoot": "${workspaceRoot}\\build\\_packages\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "BUILD_LIB",
-          "value": "true"
-        },
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${workspaceRoot}\\build_packages\\x86-Release-lib"
-        }
-      ]
-    },
-    {
-      "name": "x64-Debug Lib",
-      "generator": "Visual Studio 15 2017 Win64",
-      "configurationType": "Debug",
-      "buildRoot": "${workspaceRoot}\\build\\_packages\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "BUILD_LIB",
-          "value": "true"
-        },
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${workspaceRoot}\\build_packages\\x64-Debug-lib"
-        }
-      ]
-    },
-    {
-      "name": "x64-Release Lib",
-      "generator": "Visual Studio 15 2017 Win64",
-      "configurationType": "Release",
-      "buildRoot": "${workspaceRoot}\\build\\_packages\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-m -v:minimal",
-      "variables": [
-        {
-          "name": "BUILD_LIB",
-          "value": "true"
-        },
-        {
-          "name": "PACKAGE_DIR",
-          "value": "${workspaceRoot}\\build_packages\\x64-Release-lib"
+          "value": "${workspaceRoot}\\libraries\\x64-release"
         }
       ]
     }
