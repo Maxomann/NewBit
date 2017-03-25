@@ -4,5 +4,6 @@
 #include <NewBitTexturePacker\src\NewBitTexturePacker.h>
 
 #include <TGUI\TGUI.hpp>
+#include <Box2D/Box2D.h>
 
 #define DLL_EXPORT __declspec(dllexport)

@@ -96,7 +96,12 @@ function(nb_target_add_libraries TARGET_NAME)
 	target_include_directories(${TARGET_NAME} PUBLIC "${PACKAGE_DIR}/json/include")
 
 	# box2d
-	
+	set(Box2d_DIR "${PACKAGE_DIR}/box2d/lib/cmake/Box2D")
+	find_package(Box2d REQUIRED)
+	if(Box2d_FOUND)
+		target_include_directories(${TARGET_NAME} PUBLIC ${BOX2D_INCLUDE_DIR})
+		target_link_libraries(${TARGET_NAME} "${PACKAGE_DIR}/box2d/lib/Box2D.lib")
+	endif()
 
 	# UnitTest++
 	set(UnitTest++_DIR "${PACKAGE_DIR}/unittest/lib/cmake/UnitTest++")

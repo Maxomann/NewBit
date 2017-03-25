@@ -23,6 +23,11 @@ namespace nb
 		DLL_EXPORT void linkToWorld( World* world );
 		[[deprecated]]DLL_EXPORT World* getWorld()const;
 		DLL_EXPORT World* world()const;
+		template<class T>
+		T* system()
+		{
+			return r_world->getSystem<T>();
+		}
 
 		virtual void init() = 0;
 		virtual void update() = 0;
@@ -31,4 +36,10 @@ namespace nb
 
 		DLL_EXPORT virtual UpdateOrder getUpdateOrder()const;
 	};
+
+	/*
+		virtual void init() override;
+		virtual void update() override;
+		virtual void destroy() override;
+	*/
 }

@@ -7,7 +7,9 @@ void nb::InitEngine::init()
 {
 	auto& world = getCore()->world;
 
+	world.addSystem<TimeSystem>();
 	world.addSystem<ChunkSystem>();
+	world.addSystem<PhysicsSystem>();
 }
 
 bool nb::InitEngine::update()
