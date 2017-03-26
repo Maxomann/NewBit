@@ -38,6 +38,10 @@ void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 
 void nb::RenderSystem::generateDrawingData()
 {
+	// get debug drawing data
+	debugDrawingData.clear();
+	s_collectDebugDrawingData.call( debugDrawingData );
+
 	// sort entitiesToDraw
 	std::sort( m_entitiesToDraw.begin(), m_entitiesToDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
 		// order: z^-1,y,x
@@ -66,11 +70,15 @@ void nb::RenderSystem::generateDrawingData()
 	{
 		std::vector<const sf::Drawable*> toDraw;
 		for (const auto& el : m_entitiesToDraw)
+		{
 			if (cam->getComponent<TransformationComponent>()->getLayer() == el->getComponent<TransformationComponent>()->getLayer())
 			{
 				const auto& renderComponentDrawingData = el->getComponent<RenderComponent>()->getDrawingData();
 				toDraw.insert( toDraw.end(), renderComponentDrawingData.begin(), renderComponentDrawingData.end() );
 			}
+		}
+		for (const auto& el : debugDrawingData)
+			toDraw.push_back( el.get() );
 		m_drawingData.push_back( make_pair( &cam->getComponent<CameraComponent>()->getView(), move( toDraw ) ) );
 	}
 

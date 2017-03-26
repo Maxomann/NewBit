@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "TimeSystem.h"
 #include "PhysicsComponent.h"
+#include "RenderSystem.h"
+#include "PhysicsDebugDraw.h"
 
 namespace nb
 {
@@ -10,6 +12,9 @@ namespace nb
 		b2World simulation;
 		int32 velocityIterations = 6;
 		int32 positionIterations = 2;
+
+		bool drawDebugLayer = true;
+		std::unique_ptr<PhysicsDebugDraw> debugDraw;
 
 	public:
 		PhysicsSystem();

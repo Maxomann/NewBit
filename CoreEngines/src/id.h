@@ -21,4 +21,7 @@ namespace nb
 	}
 
 	const std::string META_ATTR_TYPE = "type";
+
+	const float METER_TO_PIXEL = 32.f;
+	const float PIXEL_TO_METER = 1.f / METER_TO_PIXEL;
 }

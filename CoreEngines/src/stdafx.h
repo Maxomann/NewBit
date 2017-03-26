@@ -6,4 +6,6 @@
 #include <TGUI\TGUI.hpp>
 #include <Box2D/Box2D.h>
 
+#include <array>
+
 #define DLL_EXPORT __declspec(dllexport)

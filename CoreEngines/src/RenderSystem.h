@@ -13,6 +13,8 @@ namespace nb
 		std::vector<Entity*> m_camerasForDrawing;
 		std::vector<Entity*> m_entitiesToDraw;
 
+		std::vector<std::unique_ptr<sf::Drawable>> debugDrawingData;
+
 		DrawingData m_drawingData;
 		bool m_drawingDataIsValid = false;
 
@@ -32,5 +34,6 @@ namespace nb
 		const DrawingData& getCurrentDrawingData();
 
 		Signal<void( const std::vector<Entity*>& )> s_camerasForDrawingChanged;
+		Signal<void( std::vector<std::unique_ptr<sf::Drawable>>& )> s_collectDebugDrawingData;
 	};
 }
