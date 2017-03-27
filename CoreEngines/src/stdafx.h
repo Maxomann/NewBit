@@ -7,5 +7,6 @@
 #include <Box2D/Box2D.h>
 
 #include <array>
+#include <math.h>
 
 #define DLL_EXPORT __declspec(dllexport)

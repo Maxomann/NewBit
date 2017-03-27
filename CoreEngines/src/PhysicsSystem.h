@@ -12,6 +12,7 @@ namespace nb
 		b2World simulation;
 		int32 velocityIterations = 6;
 		int32 positionIterations = 2;
+		std::vector<Entity*> entitiesWithPhysicsComponentInWorld;
 
 		bool drawDebugLayer = true;
 		std::unique_ptr<PhysicsDebugDraw> debugDraw;
