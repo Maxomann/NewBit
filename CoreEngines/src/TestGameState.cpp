@@ -70,30 +70,42 @@ void TestGameState::init()
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Up].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
-		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
-		transform->moveXY( Vector2i( 0, -offset ) );
+		transform->moveXY( Vector2i( 0, -offset ) );*/
+		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
+		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
+		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, -force ), true );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
-		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
-		transform->moveXY( Vector2i( 0, offset ) );
+		transform->moveXY( Vector2i( 0, offset ) );*/
+		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
+		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
+		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, force ), true );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
-		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
-		transform->moveXY( Vector2i( -offset, 0 ) );
+		transform->moveXY( Vector2i( -offset, 0 ) );*/
+		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
+		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
+		physics->getBody()->ApplyForceToCenter( b2Vec2( -force, 0 ), true );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
-		auto transform = m_debugEntity->getComponent<TransformationComponent>();
+		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
-		transform->moveXY( Vector2i( offset, 0 ) );
+		transform->moveXY( Vector2i( offset, 0 ) );*/
+		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
+		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
+		physics->getBody()->ApplyForceToCenter( b2Vec2( force, 0 ), true );
 	} );
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::K].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
@@ -116,6 +128,23 @@ void TestGameState::init()
 		entity.addComponent<RenderComponent>( 0 );
 		entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:player" ) );
 		entity.addComponent<HealthComponent>( 200, 100 );
+
+		/* Physics */
+		b2BodyDef bodyDef;
+		bodyDef.type = b2_dynamicBody;
+		bodyDef.linearDamping = 0.5f;
+		bodyDef.fixedRotation = true;
+
+		unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
+		shape->SetAsBox( 0.3f, 0.3f, b2Vec2( 0.f, 0.f ), 0.f );
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.3f;
+
+		entity.addComponent<PhysicsComponent>( bodyDef,
+											   move( shape ),
+											   fixtureDef );
 
 		m_debugEntity = getCore()->world.addEntity( move( entity ) );
 

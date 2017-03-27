@@ -12,6 +12,7 @@
 #include "GuiEngine.h"
 #include "EntityTrackerScreenGameState.h"
 #include "DemoEditGameState.h"
+#include "PhysicsSystem.h"
 
 namespace nb
 {

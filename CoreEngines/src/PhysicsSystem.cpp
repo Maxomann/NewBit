@@ -36,7 +36,7 @@ void nb::PhysicsSystem::init()
 			return any_of( vec.begin(), vec.end(), [&]( const Entity* el2 ) {
 				return el == el2;
 			} );
-		} ) );
+		} ), entitiesWithPhysicsComponentInWorld.end() );
 	} );
 	system<RenderSystem>()->s_collectDebugDrawingData.connect( [&]( auto& vec ) {
 		if (drawDebugLayer)
