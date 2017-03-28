@@ -42,6 +42,13 @@ nb::TerrainComponent::TerrainComponent( std::vector<std::vector<const TextureRef
 	generate();
 }
 
+nb::TerrainComponent::~TerrainComponent()
+{
+	if (generationFuture.valid() &&
+		 generationFuture.wait_for( chrono::microseconds( 0 ) ) != future_status::ready)
+		generationFuture.wait();// prevent thread from accessing vertexArrays after destrucion
+}
+
 void TerrainComponent::init()
 {
 	auto entity = getEntity();
@@ -79,6 +86,15 @@ void nb::TerrainComponent::setTiles( std::map<sf::Vector2i, const TextureReferen
 
 void nb::TerrainComponent::generate()
 {
+	if (generationFuture.valid() &&
+		 generationFuture.wait_for( chrono::microseconds( 0 ) ) != future_status::ready)
+		generationFuture.wait();// this is expensive, since it has to wait for generate_internal() to finish!
+
+	generationFuture = std::async( std::launch::async, &TerrainComponent::generate_internal, this );
+}
+
+void nb::TerrainComponent::generate_internal()
+{
 	vertexArrays.clear();
 
 	for (int x = 0; x < TILES_PER_TERRAIN; ++x)
@@ -115,15 +131,19 @@ void nb::TerrainComponent::generate()
 void nb::TerrainComponent::draw( sf::RenderTarget & target,
 								 sf::RenderStates states )const
 {
-	sf::Transform trans;
-	trans.translate( sf::Vector2f( component<TransformationComponent>()->getPositionXY() ) );
-	states.transform *= trans;
-
-	for (auto& el : vertexArrays)
+	if (!generationFuture.valid() ||
+		 generationFuture.wait_for( chrono::microseconds( 0 ) ) == future_status::ready)
 	{
-		states.texture = el.first;
+		sf::Transform trans;
+		trans.translate( sf::Vector2f( component<TransformationComponent>()->getPositionXY() ) );
+		states.transform *= trans;
 
-		auto& vertices = el.second;
-		target.draw( &vertices.at( 0 ), vertices.size(), sf::Quads, states );
+		for (auto& el : vertexArrays)
+		{
+			states.texture = el.first;
+
+			auto& vertices = el.second;
+			target.draw( &vertices.at( 0 ), vertices.size(), sf::Quads, states );
+		}
 	}
 }

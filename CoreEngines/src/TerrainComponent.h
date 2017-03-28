@@ -13,13 +13,16 @@ namespace nb
 
 		std::map<const sf::Texture*, std::vector<sf::Vertex>> vertexArrays;
 
+		std::future<void> generationFuture;
 		void generate();
+		void generate_internal();
 
 	public:
 		TerrainComponent( const TextureReference* defaultTile );
 		TerrainComponent( const TextureReference* defaultTile,
 						  std::map<sf::Vector2i, const TextureReference*> tileTexturesByPosition );
 		TerrainComponent( std::vector<std::vector<const TextureReference*>> tiles );
+		~TerrainComponent();
 
 		virtual void init() override;
 		virtual void destroy() override;

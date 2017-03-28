@@ -8,5 +8,6 @@
 
 #include <array>
 #include <math.h>
+#include <future>
 
 #define DLL_EXPORT __declspec(dllexport)
