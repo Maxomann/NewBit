@@ -27,5 +27,8 @@ namespace nb
 		virtual void init() override;
 		virtual void update() override;
 		virtual void destroy() override;
+
+		void setDebugDrawEnabled( bool enabled );
+		bool isDebugDrawEnabled()const;
 	};
 }

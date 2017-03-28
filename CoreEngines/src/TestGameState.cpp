@@ -162,6 +162,11 @@ void TestGameState::init()
 		r_core->gameStates.pushState_instant( make_unique<DemoEditGameState>() );
 	} );
 
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::Home].connect_track( m_connections, [&]() {
+		auto physics = world().getSystem<PhysicsSystem>();
+		physics->setDebugDrawEnabled( !physics->isDebugDrawEnabled() );
+	} );
+
 	// logic
 	r_resourceEngine->textures.getTextureReference( "default:texture:crosshair" )->applyTextureAndDefaultTextureRectToSprite( m_sprite );
 	m_sprite.setOrigin( 8, 8 );

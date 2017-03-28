@@ -108,3 +108,13 @@ void nb::PhysicsSystem::update()
 void nb::PhysicsSystem::destroy()
 {
 }
+
+void nb::PhysicsSystem::setDebugDrawEnabled( bool enabled )
+{
+	drawDebugLayer = enabled;
+}
+
+bool nb::PhysicsSystem::isDebugDrawEnabled() const
+{
+	return drawDebugLayer;
+}
