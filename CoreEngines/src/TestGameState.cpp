@@ -38,13 +38,13 @@ void TestGameState::init()
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Add].connect_track( m_connections, [&]() {
 		auto size = m_camera->getComponent<TransformationComponent>()->getSize();
-		if (size.x > 200 && size.y > 200)
-			m_camera->getComponent<TransformationComponent>()->scale( 1.f - (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) );
+		//if (size.x > 200 && size.y > 200)
+		m_camera->getComponent<TransformationComponent>()->scale( 1.f - (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Subtract].connect_track( m_connections, [&]() {
 		auto size = m_camera->getComponent<TransformationComponent>()->getSize();
-		if (size.x < 10000 && size.y < 10000)
-			m_camera->getComponent<TransformationComponent>()->scale( 1.f + (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) );
+		//if (size.x < 10000 && size.y < 10000)
+		m_camera->getComponent<TransformationComponent>()->scale( 1.f + (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( m_connections, [&]() {
 		auto cameraTransform = m_camera->getComponent<TransformationComponent>();

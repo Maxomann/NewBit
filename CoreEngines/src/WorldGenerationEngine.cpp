@@ -28,9 +28,9 @@ void nb::WorldGenerationEngine::generateChunk( const sf::Vector3i& chunkPosition
 
 	std::vector<std::vector<TextureReference>> tiles;
 
-	auto terrainComp = terrain.addComponent<TerrainComponent>( r_resourceEngine->textures.getTextureReference( "default:texture:field_grass" ) );
-	terrainComp->setTiles( { make_pair( sf::Vector2i( 0,0 ),
-										r_resourceEngine->textures.getTextureReference( "default:texture:field_sand" ) ) } );
+	auto terrainComp = terrain.addComponent<TerrainComponent>( r_resourceEngine->textures.getTextureReference( "default:texture:field_grass" ),
+															   std::map<sf::Vector2i, const TextureReference*>{ make_pair( sf::Vector2i( 0, 0 ),
+																														   r_resourceEngine->textures.getTextureReference( "default:texture:field_sand" ) ) } );
 
 	getCore()->world.addEntity( move( terrain ) );
 }

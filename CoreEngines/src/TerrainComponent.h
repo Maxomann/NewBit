@@ -17,6 +17,8 @@ namespace nb
 
 	public:
 		TerrainComponent( const TextureReference* defaultTile );
+		TerrainComponent( const TextureReference* defaultTile,
+						  std::map<sf::Vector2i, const TextureReference*> tileTexturesByPosition );
 		TerrainComponent( std::vector<std::vector<const TextureReference*>> tiles );
 
 		virtual void init() override;

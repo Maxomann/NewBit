@@ -20,6 +20,22 @@ nb::TerrainComponent::TerrainComponent( const TextureReference* defaultTile )
 	generate();
 }
 
+nb::TerrainComponent::TerrainComponent( const TextureReference * defaultTile,
+										std::map<sf::Vector2i, const TextureReference*> tileTexturesByPosition )
+{
+	for (int x = 0; x < TILES_PER_TERRAIN; ++x)
+	{
+		tiles.emplace_back();
+		for (int y = 0; y < TILES_PER_TERRAIN; ++y)
+		{
+			tiles.at( x ).emplace_back( defaultTile );
+		}
+	}
+	for (auto& el : tileTexturesByPosition)
+		tiles.at( el.first.x ).at( el.first.y ) = el.second;
+	generate();
+}
+
 nb::TerrainComponent::TerrainComponent( std::vector<std::vector<const TextureReference*>> tiles )
 	: tiles( move( tiles ) )
 {
