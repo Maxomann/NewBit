@@ -19,7 +19,7 @@ namespace nb
 		[[deprecated]] DLL_EXPORT Entity* getEntity()const;
 		DLL_EXPORT Entity* entity()const;
 		template<class T>
-		T* component()
+		T* component()const
 		{
 			return entity()->getComponent<T>();
 		};

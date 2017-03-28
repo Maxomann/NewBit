@@ -6,19 +6,27 @@
 
 namespace nb
 {
-	class TerrainComponent : public Component
+	class TerrainComponent : public Component, public sf::Drawable
 	{
-		sf::Sprite m_debugSprite;
+		std::vector<std::vector<TextureReference>> tiles;
 
-		void setSize( sf::Vector2u size );
+		std::map<const sf::Texture*, std::vector<sf::Vertex>> vertexArrays;
+
+		void generate();
+
 	public:
-		TerrainComponent( const TextureReference& debugTexture );
+		TerrainComponent( TextureReference defaultTile );
+		TerrainComponent( std::vector<std::vector<TextureReference>> tiles );
 
 		virtual void init() override;
 		virtual void destroy() override;
 
-		void setDebugTexture( const TextureReference& texture );
+		void setTiles( std::map<sf::Vector2i, TextureReference> tileTexturesByPosition );
+
+		virtual void draw( sf::RenderTarget& target, sf::RenderStates states )const override;
 
 		static const int TILE_SIZE_IN_PIXEL;
+		static const int TERRAIN_SIZE_IN_PIXEL;
+		static const int TILES_PER_TERRAIN;
 	};
 }

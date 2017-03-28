@@ -25,6 +25,9 @@ void nb::WorldGenerationEngine::generateChunk( const sf::Vector3i& chunkPosition
 				  ChunkSystem::CHUNK_SIZE_IN_PIXEL )
 		);
 	terrain.addComponent<RenderComponent>( -10 );
+
+	std::vector<std::vector<TextureReference>> tiles;
+
 	terrain.addComponent<TerrainComponent>( *r_resourceEngine->textures.getTextureReference( "default:testterrain" ) );
 
 	getCore()->world.addEntity( move( terrain ) );

@@ -15,7 +15,7 @@ namespace nb
 		int32 positionIterations = 2;
 		std::vector<Entity*> entitiesWithPhysicsComponentInWorld;
 
-		bool drawDebugLayer = true;
+		bool drawDebugLayer = false;
 		std::unique_ptr<PhysicsDebugDraw> debugDraw;
 
 		b2World& getSimulationForLayer( int layer );

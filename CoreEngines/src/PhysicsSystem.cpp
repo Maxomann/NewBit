@@ -79,30 +79,6 @@ void nb::PhysicsSystem::update()
 
 	for (auto& el : entitiesWithPhysicsComponentInWorld)
 		el->getComponent<PhysicsComponent>()->updateSimulationDataToComponentsIfActive();
-
-	if (sf::Keyboard::isKeyPressed( Keyboard::J ))
-	{
-		/* test */
-		b2BodyDef bodyDef;
-		bodyDef.type = b2_dynamicBody;
-		bodyDef.position.Set( 0, 0 );
-		bodyDef.linearDamping = 0.0005f;
-		bodyDef.angularDamping = 0.0005f;
-
-		auto body = getSimulationForLayer( 0 ).CreateBody( &bodyDef );
-
-		b2PolygonShape shape;
-		shape.SetAsBox( 0.5f, 0.5f );
-
-		b2FixtureDef fixtureDef;
-		fixtureDef.shape = &shape;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.3f;
-
-		body->CreateFixture( &fixtureDef );
-
-		body->ApplyForce( b2Vec2( 0, -0.001f ), b2Vec2( 0, 0 ), true );
-	}
 }
 
 void nb::PhysicsSystem::destroy()

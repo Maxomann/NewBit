@@ -3,7 +3,7 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-const int ChunkSystem::CHUNK_SIZE_IN_PIXEL = 640;
+const int ChunkSystem::CHUNK_SIZE_IN_PIXEL = TerrainComponent::TERRAIN_SIZE_IN_PIXEL;
 
 void nb::ChunkSystem::onEntityPositionChanged( const TransformationComponent*const transform,
 											   sf::Vector3i oldPosition )
