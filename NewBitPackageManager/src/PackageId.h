@@ -46,7 +46,7 @@ namespace nb
 		DLL_EXPORT GlobalId( GlobalId&& id ) = default;
 		DLL_EXPORT GlobalId& operator= ( const GlobalId& ) = default;
 
-		const LocalId local;
+		LocalId local;
 
 		DLL_EXPORT const std::string& getPackageName()const;
 

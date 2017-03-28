@@ -4,6 +4,20 @@
 namespace sf
 {
 	template<typename T>
+	bool operator<( const sf::Vector2<T>& lhs, const sf::Vector2<T>& rhs )
+	{
+		if (lhs.y < rhs.y)
+			return true;
+		if (rhs.y < lhs.y)
+			return false;
+
+		// a1==b1: continue with element 2
+		if (lhs.x < rhs.x)
+			return true;
+		return false; // early out
+	}
+
+	template<typename T>
 	bool operator<( const sf::Vector3<T>& lhs, const sf::Vector3<T>& rhs )
 	{
 		if (lhs.z < rhs.z)

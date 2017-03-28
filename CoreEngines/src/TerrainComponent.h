@@ -3,6 +3,7 @@
 #include "TransformationComponent.h"
 #include "RenderComponent.h"
 #include "TextureReference.h"
+#include "sfmlExtensions.h"
 
 namespace nb
 {

@@ -17,11 +17,13 @@ nb::TerrainComponent::TerrainComponent( TextureReference defaultTile )
 			tiles.at( x ).emplace_back( defaultTile );
 		}
 	}
+	generate();
 }
 
 nb::TerrainComponent::TerrainComponent( std::vector<std::vector<TextureReference>> tiles )
 	: tiles( move( tiles ) )
 {
+	generate();
 }
 
 void TerrainComponent::init()
@@ -55,7 +57,7 @@ void TerrainComponent::destroy()
 void nb::TerrainComponent::setTiles( std::map<sf::Vector2i, TextureReference> tileTexturesByPosition )
 {
 	for (auto& el : tileTexturesByPosition)
-		tiles.at( el.first.x ).at( el.first.y ) = move( el.second );
+		tiles.at( el.first.x ).at( el.first.y ) = el.second;
 	generate();
 }
 
@@ -97,12 +99,12 @@ void nb::TerrainComponent::generate()
 void nb::TerrainComponent::draw( sf::RenderTarget & target,
 								 sf::RenderStates states )const
 {
+	sf::Transform trans;
+	trans.translate( sf::Vector2f( component<TransformationComponent>()->getPositionXY() ) );
+	states.transform *= trans;
+
 	for (auto& el : vertexArrays)
 	{
-		sf::Transform trans;
-		trans.translate( sf::Vector2f( component<TransformationComponent>()->getPositionXY() ) );
-
-		states.transform *= trans;
 		states.texture = el.first;
 
 		auto& vertices = el.second;

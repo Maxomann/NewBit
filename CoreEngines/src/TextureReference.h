@@ -5,9 +5,9 @@ namespace nb
 {
 	class TextureReference
 	{
-		const GlobalId m_id;
-		const sf::Texture& m_texture;
-		const sf::IntRect m_defaultTextureRect;
+		GlobalId m_id;
+		const sf::Texture* m_texture;
+		sf::IntRect m_defaultTextureRect;
 
 	public:
 		TextureReference( GlobalId id,
