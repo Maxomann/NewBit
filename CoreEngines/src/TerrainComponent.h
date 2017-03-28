@@ -9,20 +9,20 @@ namespace nb
 {
 	class TerrainComponent : public Component, public sf::Drawable
 	{
-		std::vector<std::vector<TextureReference>> tiles;
+		std::vector<std::vector<const TextureReference*>> tiles;
 
 		std::map<const sf::Texture*, std::vector<sf::Vertex>> vertexArrays;
 
 		void generate();
 
 	public:
-		TerrainComponent( TextureReference defaultTile );
-		TerrainComponent( std::vector<std::vector<TextureReference>> tiles );
+		TerrainComponent( const TextureReference* defaultTile );
+		TerrainComponent( std::vector<std::vector<const TextureReference*>> tiles );
 
 		virtual void init() override;
 		virtual void destroy() override;
 
-		void setTiles( std::map<sf::Vector2i, TextureReference> tileTexturesByPosition );
+		void setTiles( std::map<sf::Vector2i, const TextureReference*> tileTexturesByPosition );
 
 		virtual void draw( sf::RenderTarget& target, sf::RenderStates states )const override;
 

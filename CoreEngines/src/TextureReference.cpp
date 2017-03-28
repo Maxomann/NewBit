@@ -26,16 +26,3 @@ const void nb::TextureReference::applyTextureAndDefaultTextureRectToSprite( sf::
 	sprite.setTexture( getTexture() );
 	sprite.setTextureRect( getDefaultTextureRect() );
 }
-
-/*TextureReference& TextureReference::operator=( const TextureReference& rhs )
-{
-	if (&rhs == this)
-		return *this;
-
-	m_id = rhs.m_id;
-	m_texture = rhs.m_texture;
-	m_defaultTextureRect = rhs.m_defaultTextureRect;
-
-	return *this;
-}
-*/
