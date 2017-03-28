@@ -136,7 +136,7 @@ void TestGameState::init()
 		bodyDef.fixedRotation = true;
 
 		unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
-		shape->SetAsBox( 0.3f, 0.3f, b2Vec2( 0.f, 0.f ), 0.f );
+		shape->SetAsBox( 0.3f, 0.15f, b2Vec2( 0.f, -0.15f ), 0.f );
 
 		b2FixtureDef fixtureDef;
 		fixtureDef.density = 1.0f;

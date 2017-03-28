@@ -9,13 +9,17 @@ namespace nb
 {
 	class PhysicsSystem : public System
 	{
-		b2World simulation;
+		b2Vec2 defaultGravity = b2Vec2( 0, 0 );
+		std::map<int, b2World> simulation;
 		int32 velocityIterations = 6;
 		int32 positionIterations = 2;
 		std::vector<Entity*> entitiesWithPhysicsComponentInWorld;
 
 		bool drawDebugLayer = true;
 		std::unique_ptr<PhysicsDebugDraw> debugDraw;
+
+		b2World& getSimulationForLayer( int layer );
+		void checkSimulationLayerForRemoval( int layer );
 
 	public:
 		PhysicsSystem();

@@ -16,16 +16,16 @@ bool WorldGenerationEngine::update()
 
 void nb::WorldGenerationEngine::generateChunk( const sf::Vector3i& chunkPosition )
 {
-	Entity entity;
-	entity.addComponent<TransformationComponent>(
+	Entity terrain;
+	terrain.addComponent<TransformationComponent>(
 		Vector2i( ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.x,
 				  ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.y ),
 		chunkPosition.z,
 		Vector2u( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
 				  ChunkSystem::CHUNK_SIZE_IN_PIXEL )
 		);
-	entity.addComponent<RenderComponent>( -10 );
-	entity.addComponent<TerrainComponent>( *r_resourceEngine->textures.getTextureReference( "default:testterrain" ) );
+	terrain.addComponent<RenderComponent>( -10 );
+	terrain.addComponent<TerrainComponent>( *r_resourceEngine->textures.getTextureReference( "default:testterrain" ) );
 
-	getCore()->world.addEntity( move( entity ) );
+	getCore()->world.addEntity( move( terrain ) );
 }

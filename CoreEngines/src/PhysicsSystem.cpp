@@ -3,22 +3,42 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
+b2World & nb::PhysicsSystem::getSimulationForLayer( int layer )
+{
+	auto emplaceRetVal = simulation.try_emplace( layer, defaultGravity );
+	auto& sim = emplaceRetVal.first->second;
+	return sim;
+}
+
+void nb::PhysicsSystem::checkSimulationLayerForRemoval( int layer )
+{
+	if (simulation.at( layer ).GetBodyCount() <= 0)
+		simulation.erase( layer );
+}
+
 nb::PhysicsSystem::PhysicsSystem()
-	: simulation( b2Vec2( 0, 0 ) ),
-	debugDraw( make_unique<PhysicsDebugDraw>() )
+	: debugDraw( make_unique<PhysicsDebugDraw>() )
 {
 	debugDraw->SetFlags( b2Draw::e_shapeBit );
-	simulation.SetDebugDraw( debugDraw.get() );
 }
 
 void nb::PhysicsSystem::init()
 {
 	world()->s_onEntityAdded.connect( [&]( Entity* entity ) {
+		auto transform = entity->getComponent<TransformationComponent>();
 		auto physics = entity->getComponent_try<PhysicsComponent>();
 		if (physics)
 		{
-			physics->addToSimulation( simulation );
+			auto entityLayer = transform->getLayer();
+			physics->addToSimulation( getSimulationForLayer( entityLayer ) );
 			entitiesWithPhysicsComponentInWorld.push_back( entity );
+
+			transform->s_layerChanged.connect( [&, physics]( const TransformationComponent* comp,
+															 int oldLayer ) {
+				physics->removeFromSimulation( getSimulationForLayer( oldLayer ) );
+				checkSimulationLayerForRemoval( oldLayer );
+				physics->addToSimulation( getSimulationForLayer( comp->getLayer() ) );
+			} );
 		}
 	} );
 	world()->s_onEntitiesRemoved.connect( [&]( const std::vector<Entity*>& vec ) {
@@ -27,7 +47,9 @@ void nb::PhysicsSystem::init()
 			auto physics = entity->getComponent_try<PhysicsComponent>();
 			if (physics)
 			{
-				physics->removeFromSimulation( simulation );
+				auto entityLayer = entity->getComponent<TransformationComponent>()->getLayer();
+				physics->removeFromSimulation( getSimulationForLayer( entityLayer ) );
+				checkSimulationLayerForRemoval( entityLayer );
 			}
 		}
 		entitiesWithPhysicsComponentInWorld.erase( remove_if( entitiesWithPhysicsComponentInWorld.begin(),
@@ -38,11 +60,13 @@ void nb::PhysicsSystem::init()
 			} );
 		} ), entitiesWithPhysicsComponentInWorld.end() );
 	} );
-	system<RenderSystem>()->s_collectDebugDrawingData.connect( [&]( auto& vec ) {
+	system<RenderSystem>()->s_collectDebugDrawingData.connect( [&]( auto& vec, int layer ) {
 		if (drawDebugLayer)
 		{
 			debugDraw->setDrawContainer( vec );
-			simulation.DrawDebugData();
+			auto& sim = getSimulationForLayer( layer );
+			sim.SetDebugDraw( debugDraw.get() );
+			sim.DrawDebugData();
 		}
 	} );
 }
@@ -50,8 +74,8 @@ void nb::PhysicsSystem::init()
 void nb::PhysicsSystem::update()
 {
 	auto& frameTime = system<TimeSystem>()->getFrameTime();
-	simulation.Step( frameTime.asMilliseconds(), velocityIterations, positionIterations );
-	simulation.DrawDebugData();
+	for (auto& sim : simulation)
+		sim.second.Step( frameTime.asMilliseconds(), velocityIterations, positionIterations );
 
 	for (auto& el : entitiesWithPhysicsComponentInWorld)
 		el->getComponent<PhysicsComponent>()->updateSimulationDataToComponentsIfActive();
@@ -65,7 +89,7 @@ void nb::PhysicsSystem::update()
 		bodyDef.linearDamping = 0.0005f;
 		bodyDef.angularDamping = 0.0005f;
 
-		auto body = simulation.CreateBody( &bodyDef );
+		auto body = getSimulationForLayer( 0 ).CreateBody( &bodyDef );
 
 		b2PolygonShape shape;
 		shape.SetAsBox( 0.5f, 0.5f );

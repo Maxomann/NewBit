@@ -3,6 +3,7 @@
 #include "GuiEngine.h"
 #include "InputEngine.h"
 #include "ResourceEngine.h"
+#include "PhysicsComponent.h"
 
 namespace nb
 {

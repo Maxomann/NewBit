@@ -50,6 +50,20 @@ void nb::DemoEditGameState::init()
 													  Vector2u( 48 * 2, 64 * 2 ) );
 		entity.addComponent<RenderComponent>( 0 );
 		entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:object_tree" ) );
+		/* Physics */
+		b2BodyDef bodyDef;
+		bodyDef.type = b2_staticBody;
+
+		unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
+		shape->SetAsBox( 0.3f, 0.3f, b2Vec2( 0.f, -0.3f ), 0.f );
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.3f;
+
+		entity.addComponent<PhysicsComponent>( bodyDef,
+											   move( shape ),
+											   fixtureDef );
 
 		getCore()->world.addEntity( move( entity ) );
 	} );

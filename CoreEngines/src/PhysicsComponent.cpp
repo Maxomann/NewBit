@@ -17,16 +17,22 @@ void nb::PhysicsComponent::init()
 	auto transform = component<TransformationComponent>();
 
 	transform->s_positionXYChanged.connect( [&]( const auto& comp, const auto& oldPosition ) {
-		auto newPositionXY = comp->getPositionXY();
-		body->SetTransform( b2Vec2( static_cast<float>(newPositionXY.x)*PIXEL_TO_METER,
-									static_cast<float>(newPositionXY.y)*PIXEL_TO_METER ),
-							body->GetAngle() );
+		if (!isUpdatingToComponents)
+		{
+			auto newPositionXY = comp->getPositionXY();
+			body->SetTransform( b2Vec2( static_cast<float>(newPositionXY.x)*PIXEL_TO_METER,
+										static_cast<float>(newPositionXY.y)*PIXEL_TO_METER ),
+								body->GetAngle() );
+		}
 	} );
 
 	transform->s_rotationChanged.connect( [&]( const auto& comp, const auto& oldRotation ) {
-		auto newRotation = comp->getRotation();
-		body->SetTransform( body->GetPosition(),
-							degToRad( newRotation ) );
+		if (!isUpdatingToComponents)
+		{
+			auto newRotation = comp->getRotation();
+			body->SetTransform( body->GetPosition(),
+								degToRad( newRotation ) );
+		}
 	} );
 }
 
@@ -41,7 +47,8 @@ void nb::PhysicsComponent::addToSimulation( b2World & simulation )
 	auto rotation = transform->getRotation();
 
 	/* init */
-	bodyDef.position.Set( position.x, position.y );
+	bodyDef.position.Set( position.x*PIXEL_TO_METER,
+						  position.y*PIXEL_TO_METER );
 	bodyDef.angle = degToRad( rotation );
 
 	body = simulation.CreateBody( &bodyDef );
@@ -74,6 +81,8 @@ void nb::PhysicsComponent::updateSimulationDataToComponentsIfActive()
 											position.y*METER_TO_PIXEL ) );
 		transform->setRotation( radToDeg( body->GetAngle() ) );
 	}
+
+	isUpdatingToComponents = false;
 }
 
 b2Body * nb::PhysicsComponent::getBody()

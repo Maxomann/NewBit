@@ -40,7 +40,6 @@ void nb::RenderSystem::generateDrawingData()
 {
 	// get debug drawing data
 	debugDrawingData.clear();
-	s_collectDebugDrawingData.call( debugDrawingData );
 
 	// sort entitiesToDraw
 	std::sort( m_entitiesToDraw.begin(), m_entitiesToDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
@@ -68,10 +67,13 @@ void nb::RenderSystem::generateDrawingData()
 	m_drawingData.clear();
 	for (const auto& cam : m_camerasForDrawing)
 	{
+		auto camLayer = cam->getComponent<TransformationComponent>()->getLayer();
+		s_collectDebugDrawingData.call( debugDrawingData, camLayer );
+
 		std::vector<const sf::Drawable*> toDraw;
 		for (const auto& el : m_entitiesToDraw)
 		{
-			if (cam->getComponent<TransformationComponent>()->getLayer() == el->getComponent<TransformationComponent>()->getLayer())
+			if (camLayer == el->getComponent<TransformationComponent>()->getLayer())
 			{
 				const auto& renderComponentDrawingData = el->getComponent<RenderComponent>()->getDrawingData();
 				toDraw.insert( toDraw.end(), renderComponentDrawingData.begin(), renderComponentDrawingData.end() );
