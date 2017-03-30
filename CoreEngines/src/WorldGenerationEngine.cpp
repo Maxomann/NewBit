@@ -46,7 +46,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 		{
 			double positionInTilesX = static_cast<double>((chunkPosition.x*TerrainComponent::TILES_PER_TERRAIN) + x);
 			double positionInTilesY = static_cast<double>((chunkPosition.y*TerrainComponent::TILES_PER_TERRAIN) + y);
-			double positionInTilesZ = static_cast<double>(chunkPosition.z);
+			double positionInTilesZ = static_cast<double>(std::hash<int>{}(chunkPosition.z));
 
 			auto noiseVal = noiseGenerator.GetValue( positionInTilesX,
 													 positionInTilesY,

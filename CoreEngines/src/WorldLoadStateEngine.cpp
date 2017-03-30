@@ -22,7 +22,7 @@ bool nb::WorldLoadStateEngine::update()
 	chunkLoadStateChanger.erase( remove_if( chunkLoadStateChanger.begin(), chunkLoadStateChanger.end(), [&]( const unique_ptr<ChunkLoadStateChanger>& el ) {
 		if (el->isReady())
 		{
-			chunkLoadStates[el->getChunkPosition()] = el->execute( engines(), world() );
+			chunkLoadStates[el->getChunkPosition()] = el->finish( engines(), world() );
 			return true;
 		}
 		else
@@ -52,7 +52,9 @@ void nb::WorldLoadStateEngine::changeChunkLoadState( std::unique_ptr<ChunkLoadSt
 		auto& newPtr = chunkLoadStateChanger.back();
 		if (getChunkLoadState( newPtr->getChunkPosition() ) != newPtr->getFrom())
 			throw logic_error( "ChunkLoadState getFrom() does not match" );
-		chunkLoadStates[newPtr->getChunkPosition()] = newPtr->prepareExecute( engines() );
+		chunkLoadStates[newPtr->getChunkPosition()] = newPtr->prepare( engines(), world() );
+		// launches a thread
+		newPtr->execute( engines() );
 	}
 }
 

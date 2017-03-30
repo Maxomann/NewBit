@@ -14,23 +14,28 @@ nb::ChunkLoadStateChanger::ChunkLoadStateChanger( sf::Vector3i chunkPosition,
 {
 }
 
-nb::ChunkLoadState nb::ChunkLoadStateChanger::prepareExecute( const CoreEngineManager& coreEngines )
+ChunkLoadState nb::ChunkLoadStateChanger::prepare( const CoreEngineManager & coreEngines, World & world )
 {
 	if (!aborted)
 	{
-		prepareExecute_internal( coreEngines );
+		prepare_internal( coreEngines, world );
 		return intermediate;
 	}
 	else
 		return from;
 }
 
-nb::ChunkLoadState nb::ChunkLoadStateChanger::execute( const CoreEngineManager& coreEngines,
-													   World& world )
+void nb::ChunkLoadStateChanger::execute( const CoreEngineManager & coreEngines )
 {
 	if (!aborted)
+		future = async( std::launch::async, &ChunkLoadStateChanger::execute_internal, this, std::ref( coreEngines ) );
+}
+
+ChunkLoadState nb::ChunkLoadStateChanger::finish( const CoreEngineManager & coreEngines, World & world )
+{
+	if (!aborted && isReady())
 	{
-		execute_internal( coreEngines, world );
+		finish_internal( coreEngines, world );
 		return to;
 	}
 	else

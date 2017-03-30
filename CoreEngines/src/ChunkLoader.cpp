@@ -3,13 +3,16 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-void nb::ChunkLoader::prepareExecute_internal( const CoreEngineManager & coreEngines )
+void nb::ChunkLoader::prepare_internal( const CoreEngineManager & coreEngines, World & world )
+{
+}
+
+void nb::ChunkLoader::execute_internal( const CoreEngineManager & coreEngines )
 {
 	entities = coreEngines.getEngine<WorldGenerationEngine>()->generateChunk( chunkPosition );
 }
 
-void nb::ChunkLoader::execute_internal( const CoreEngineManager & coreEngines,
-										World & world )
+void nb::ChunkLoader::finish_internal( const CoreEngineManager & coreEngines, World & world )
 {
 	world.addEntities( move( entities ) );
 }

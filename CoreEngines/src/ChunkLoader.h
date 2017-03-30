@@ -10,10 +10,13 @@ namespace nb
 		std::vector<Entity> entities;
 
 	protected:
-		virtual void prepareExecute_internal( const CoreEngineManager& coreEngines ) override;
-
-		virtual void execute_internal( const CoreEngineManager& coreEngines,
+		virtual void prepare_internal( const CoreEngineManager& coreEngines,
 									   World& world ) override;
+
+		virtual void execute_internal( const CoreEngineManager& coreEngines ) override;
+
+		virtual void finish_internal( const CoreEngineManager& coreEngines,
+									  World& world ) override;
 
 	public:
 		ChunkLoader( sf::Vector3i position );

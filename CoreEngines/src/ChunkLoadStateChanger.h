@@ -16,11 +16,14 @@ namespace nb
 		const ChunkLoadState to;
 		const ChunkLoadState intermediate;
 
-		// must be thread safe
-		virtual void prepareExecute_internal( const CoreEngineManager& coreEngines ) = 0;
-
-		virtual void execute_internal( const CoreEngineManager& coreEngines,
+		virtual void prepare_internal( const CoreEngineManager& coreEngines,
 									   World& world ) = 0;
+
+		// must be thread safe
+		virtual void execute_internal( const CoreEngineManager& coreEngines ) = 0;
+
+		virtual void finish_internal( const CoreEngineManager& coreEngines,
+									  World& world ) = 0;
 
 	public:
 		ChunkLoadStateChanger( sf::Vector3i chunkPosition,
@@ -30,11 +33,15 @@ namespace nb
 		virtual ~ChunkLoadStateChanger() = default;
 
 		// return value is the new intermediate ChunkLoadSate for chunkPosition
-		ChunkLoadState prepareExecute( const CoreEngineManager& coreEngines );
+		ChunkLoadState prepare( const CoreEngineManager& coreEngines,
+								World& world );
+
+		// internal execution happens in a thread
+		void execute( const CoreEngineManager& coreEngines );
 
 		// return value is the new ChunkLoadSate for chunkPosition
-		ChunkLoadState execute( const CoreEngineManager& coreEngines,
-								World& world );
+		ChunkLoadState finish( const CoreEngineManager& coreEngines,
+							   World& world );
 
 		void abort();
 		bool isAborted()const;
