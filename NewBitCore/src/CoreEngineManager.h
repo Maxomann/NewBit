@@ -28,6 +28,7 @@ namespace nb
 			m_enginesVector.push_back( emplaceRetVal.first->second.get() );
 		};
 
+		// thread safe, after initEngines() has been called
 		template<class T>
 		T* getEngine()const
 		{

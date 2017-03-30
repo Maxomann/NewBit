@@ -22,7 +22,63 @@ namespace nb
 		{};
 	};
 
-	class CoreRefContainer
+	class EngineRefContainer
+	{
+		const CoreEngineManager* enginesRef;
+	public:
+		void linkToEngines( const CoreEngineManager& engines )
+		{
+			this->enginesRef = &engines;
+		}
+
+		template<class T>
+		T* engine()const
+		{
+			return r_core->engines.getEngine<T>();
+		}
+
+		const CoreEngineManager& engines()const
+		{
+			return *enginesRef;
+		}
+	};
+
+	class GameStateRefContainer
+	{
+		GameStateManager* gameStatesRef;
+
+	public:
+		void linkToGameStates( GameStateManager& gameStates )
+		{
+			this->gameStatesRef = &gameStates;
+		}
+
+		GameStateManager& gameStates()const
+		{
+			return *gameStatesRef;
+		}
+	};
+
+	class WorldRefContainer
+	{
+		World* worldRef;
+
+	public:
+		void linkToWorld( World& world )
+		{
+			this->worldRef = &world;
+		}
+
+		World& world()const
+		{
+			return *worldRef;
+		}
+	};
+
+	class CoreRefContainer :
+		public EngineRefContainer,
+		public GameStateRefContainer,
+		public WorldRefContainer
 	{
 		const CoreRef* r_core;
 
@@ -30,6 +86,9 @@ namespace nb
 		void linkToCore( const CoreRef* core )
 		{
 			r_core = core;
+			linkToEngines( core->engines );
+			linkToGameStates( core->gameStates );
+			linkToWorld( core->world );
 		};
 		[[deprecated]]const CoreRef* getCore()
 		{
@@ -39,26 +98,5 @@ namespace nb
 		{
 			return r_core;
 		};
-
-		template<class T>
-		T* engine()
-		{
-			return r_core->engines.getEngine<T>();
-		}
-
-		const CoreEngineManager& engines()const
-		{
-			return r_core->engines;
-		}
-
-		GameStateManager& gameStates()const
-		{
-			return r_core->gameStates;
-		}
-
-		World& world()const
-		{
-			return r_core->world;
-		}
 	};
 }
