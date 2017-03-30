@@ -78,7 +78,7 @@ void nb::PhysicsSystem::update()
 		sim.second.Step( frameTime.asMilliseconds(), velocityIterations, positionIterations );
 
 	for (auto& el : entitiesWithPhysicsComponentInWorld)
-		el->getComponent<PhysicsComponent>()->updateSimulationDataToComponentsIfActive();
+		el->getComponent<PhysicsComponent>()->updateSimulationDataToComponents();
 }
 
 void nb::PhysicsSystem::destroy()

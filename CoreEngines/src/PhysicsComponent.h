@@ -26,7 +26,7 @@ namespace nb
 		void addToSimulation( b2World& simulation );
 		void removeFromSimulation( b2World& simulation );
 
-		void updateSimulationDataToComponentsIfActive();
+		void updateSimulationDataToComponents();
 
 		b2Body* getBody();
 	};

@@ -1,5 +1,7 @@
 #pragma once
 
+#define NOMINMAX // disable minwindef.h macros
+
 #include <iostream>
 #include <string>
 #include <unordered_map>

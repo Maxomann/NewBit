@@ -68,19 +68,16 @@ void nb::PhysicsComponent::removeFromSimulation( b2World & simulation )
 	}
 }
 
-void nb::PhysicsComponent::updateSimulationDataToComponentsIfActive()
+void nb::PhysicsComponent::updateSimulationDataToComponents()
 {
 	isUpdatingToComponents = true;
 
-	if (body->IsActive())
-	{
-		auto transform = component<TransformationComponent>();
+	auto transform = component<TransformationComponent>();
 
-		auto position = body->GetPosition();
-		transform->setPositionXY( Vector2i( position.x*METER_TO_PIXEL,
-											position.y*METER_TO_PIXEL ) );
-		transform->setRotation( radToDeg( body->GetAngle() ) );
-	}
+	auto position = body->GetPosition();
+	transform->setPositionXY( Vector2i( position.x*METER_TO_PIXEL,
+										position.y*METER_TO_PIXEL ) );
+	transform->setRotation( radToDeg( body->GetAngle() ) );
 
 	isUpdatingToComponents = false;
 }

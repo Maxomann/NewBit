@@ -111,6 +111,11 @@ function(nb_target_add_libraries TARGET_NAME)
 		target_link_libraries(${TARGET_NAME} "${PACKAGE_DIR}/unittest/lib/UnitTest++.lib")
 	endif()
 
+	# libnoise
+	set(libnoise_DIR "${PACKAGE_DIR}/libnoise")
+	target_include_directories(${TARGET_NAME} PUBLIC ${libnoise_DIR}/include)
+	target_link_libraries(${TARGET_NAME} "${libnoise_DIR}/lib/libnoise.lib")
+
 endfunction()
 
 # MAIN

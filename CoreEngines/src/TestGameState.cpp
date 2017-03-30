@@ -75,6 +75,8 @@ void TestGameState::init()
 		transform->moveXY( Vector2i( 0, -offset ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
 		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
+		if (Keyboard::isKeyPressed( Keyboard::LShift ))
+			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, -force ), true );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( m_connections, [&]() {
@@ -85,6 +87,8 @@ void TestGameState::init()
 		transform->moveXY( Vector2i( 0, offset ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
 		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
+		if (Keyboard::isKeyPressed( Keyboard::LShift ))
+			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, force ), true );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( m_connections, [&]() {
@@ -95,6 +99,8 @@ void TestGameState::init()
 		transform->moveXY( Vector2i( -offset, 0 ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
 		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
+		if (Keyboard::isKeyPressed( Keyboard::LShift ))
+			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( -force, 0 ), true );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( m_connections, [&]() {
@@ -105,6 +111,8 @@ void TestGameState::init()
 		transform->moveXY( Vector2i( offset, 0 ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
 		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
+		if (Keyboard::isKeyPressed( Keyboard::LShift ))
+			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( force, 0 ), true );
 	} );
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::K].connect_track( m_connections, [&]() {
