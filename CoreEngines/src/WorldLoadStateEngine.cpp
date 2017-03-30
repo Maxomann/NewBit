@@ -3,6 +3,15 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
+bool nb::WorldLoadStateEngine::isChunkLoadStateChanging( const sf::Vector3i & position )
+{
+	for (auto& el : chunkLoadStateChanger)
+		if (el->getChunkPosition() == position &&
+			 !el->isAborted())
+			return true;
+	return false;
+}
+
 void nb::WorldLoadStateEngine::init()
 {
 	return;
@@ -10,36 +19,60 @@ void nb::WorldLoadStateEngine::init()
 
 bool nb::WorldLoadStateEngine::update()
 {
+	chunkLoadStateChanger.erase( remove_if( chunkLoadStateChanger.begin(), chunkLoadStateChanger.end(), [&]( const unique_ptr<ChunkLoadStateChanger>& el ) {
+		if (el->isReady())
+		{
+			chunkLoadStates[el->getChunkPosition()] = el->execute( engines(), world() );
+			return true;
+		}
+		else
+			return false;
+	} ), chunkLoadStateChanger.end() );
+
+	// remove_if on map
+	for (auto iter = chunkLoadStates.begin(); iter != chunkLoadStates.end(); ) {
+		if (iter->second == ChunkLoadState::STATE_UNLOADED) {
+			iter = chunkLoadStates.erase( iter );
+		}
+		else {
+			++iter;
+		}
+	}
+
 	return true;
 }
 
-bool nb::WorldLoadStateEngine::isChunkLoaded( const sf::Vector3i & chunkPosition )const
+void nb::WorldLoadStateEngine::changeChunkLoadState( std::unique_ptr<ChunkLoadStateChanger> loadStateChanger )
 {
-	return (find( m_loadedChunks.begin(),
-				  m_loadedChunks.end(),
-				  chunkPosition ) != m_loadedChunks.end());
-}
-
-void nb::WorldLoadStateEngine::setChunkLoaded( const sf::Vector3i & chunkPosition, bool isLoaded )
-{
-	bool stateNow = isChunkLoaded( chunkPosition );
-
-	if (stateNow != isLoaded)
+	if (isChunkLoadStateChanging( loadStateChanger->getChunkPosition() ))
+		throw logic_error( "ChunkLoadState is already changing" );
+	else if (!loadStateChanger->isAborted())
 	{
-		if (isLoaded)
-		{
-			m_loadedChunks.push_back( chunkPosition );
-		}
-		else
-		{
-			m_loadedChunks.erase( remove_if( m_loadedChunks.begin(), m_loadedChunks.end(), [&]( const Vector3i& el ) {
-				return (el == chunkPosition);
-			} ), m_loadedChunks.end() );
-		}
+		chunkLoadStateChanger.push_back( move( loadStateChanger ) );
+		auto& newPtr = chunkLoadStateChanger.back();
+		if (getChunkLoadState( newPtr->getChunkPosition() ) != newPtr->getFrom())
+			throw logic_error( "ChunkLoadState getFrom() does not match" );
+		chunkLoadStates[newPtr->getChunkPosition()] = newPtr->prepareExecute( engines() );
 	}
 }
 
-const std::vector<sf::Vector3i>& nb::WorldLoadStateEngine::getLoadedChunks() const
+void nb::WorldLoadStateEngine::abortChunkLoadStateChange( sf::Vector3i position )
 {
-	return m_loadedChunks;
+	for (auto& el : chunkLoadStateChanger)
+		if (el->getChunkPosition() == position)
+			el->abort();
+}
+
+ChunkLoadState nb::WorldLoadStateEngine::getChunkLoadState( const sf::Vector3i & chunkPosition ) const
+{
+	auto found = chunkLoadStates.find( chunkPosition );
+	if (found != chunkLoadStates.end())
+		return found->second;
+	else
+		return ChunkLoadState::STATE_UNLOADED;
+}
+
+const std::map<sf::Vector3i, ChunkLoadState>& nb::WorldLoadStateEngine::getAllChunkLoadStates() const
+{
+	return chunkLoadStates;
 }

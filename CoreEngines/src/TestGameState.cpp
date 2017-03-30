@@ -193,7 +193,6 @@ void TestGameState::init()
 	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
 	r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
-	r_worldGenerationEngine->generateChunk( { 10,10,0 } );
 
 	return;
 }

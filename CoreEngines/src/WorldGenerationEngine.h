@@ -29,6 +29,7 @@ namespace nb
 
 		DLL_EXPORT virtual bool update()override;
 
-		DLL_EXPORT void generateChunk( const sf::Vector3i& chunkPosition );
+		// thread safe
+		DLL_EXPORT std::vector<Entity> generateChunk( const sf::Vector3i& chunkPosition );
 	};
 }

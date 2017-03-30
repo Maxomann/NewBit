@@ -40,6 +40,15 @@ Entity * nb::EntityManager::addEntity( Entity&& entity )
 	return en;
 }
 
+void nb::EntityManager::addEntities( std::vector<Entity>&& entities )
+{
+	while (entities.size() > 0)
+	{
+		addEntity( move( entities.back() ) );
+		entities.pop_back();
+	}
+}
+
 void nb::EntityManager::removeEntity( Entity * entity )
 {
 	m_toDelete.push_back( entity );

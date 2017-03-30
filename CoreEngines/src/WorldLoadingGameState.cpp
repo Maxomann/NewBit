@@ -64,26 +64,43 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 	chunksThatShouldBeLoaded.erase( unique( chunksThatShouldBeLoaded.begin(), chunksThatShouldBeLoaded.end() ), chunksThatShouldBeLoaded.end() );
 
 	//unload
-	auto loadedChunksCopy = r_worldLoadStateEngine->getLoadedChunks();
-	for (const auto& el : loadedChunksCopy)
+	auto chunkLoadStateCopy = r_worldLoadStateEngine->getAllChunkLoadStates();
+	for (const auto& el : chunkLoadStateCopy)
 	{
-		auto it = find( chunksThatShouldBeLoaded.begin(), chunksThatShouldBeLoaded.end(), el );
-		if (it == chunksThatShouldBeLoaded.end())
+		if (el.second == ChunkLoadState::STATE_LOADED ||
+			 el.second == ChunkLoadState::STATE_LOADING)
 		{
-			r_chunkSystem->removeEntitiesInChunk( el );
-			r_worldLoadStateEngine->setChunkLoaded( el, false );
+			auto it = find( chunksThatShouldBeLoaded.begin(), chunksThatShouldBeLoaded.end(), el.first );
+			if (it == chunksThatShouldBeLoaded.end())
+			{
+				if (el.second == ChunkLoadState::STATE_LOADED)
+				{
+					r_worldLoadStateEngine->changeChunkLoadState( make_unique<ChunkUnloader>( el.first ) );
+				}
+				else if (el.second == ChunkLoadState::STATE_LOADING)
+				{
+					r_worldLoadStateEngine->abortChunkLoadStateChange( el.first );
+				}
+				else
+					throw std::logic_error( "big mistake here" );
+			}
 		}
 	}
 
 	//load
 	for (const auto& el : chunksThatShouldBeLoaded)
 	{
+		auto loadState = r_worldLoadStateEngine->getChunkLoadState( el );
+
 		//is not loaded
-		if (!r_worldLoadStateEngine->isChunkLoaded( el ))
+		if (loadState == ChunkLoadState::STATE_UNLOADED)
 		{
 			//load
-			r_worldGenerationEngine->generateChunk( el );
-			r_worldLoadStateEngine->setChunkLoaded( el, true );
+			r_worldLoadStateEngine->changeChunkLoadState( make_unique<ChunkLoader>( el ) );
+		}
+		else if (loadState == ChunkLoadState::STATE_UNLOADING)
+		{
+			r_worldLoadStateEngine->abortChunkLoadStateChange( el );
 		}
 	}
 }

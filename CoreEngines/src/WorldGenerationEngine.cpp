@@ -23,8 +23,10 @@ bool WorldGenerationEngine::update()
 	return true;
 }
 
-void nb::WorldGenerationEngine::generateChunk( const sf::Vector3i& chunkPosition )
+std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i& chunkPosition )
 {
+	std::vector<Entity> retVal;
+
 	Entity terrain;
 	terrain.addComponent<TransformationComponent>(
 		Vector2i( ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.x,
@@ -78,7 +80,7 @@ void nb::WorldGenerationEngine::generateChunk( const sf::Vector3i& chunkPosition
 														   move( shape ),
 														   fixtureDef );
 
-					getCore()->world.addEntity( move( entity ) );
+					retVal.push_back( move( entity ) );
 				}
 			}
 			else if (noiseVal > -0.5)
@@ -90,5 +92,7 @@ void nb::WorldGenerationEngine::generateChunk( const sf::Vector3i& chunkPosition
 
 	auto terrainComp = terrain.addComponent<TerrainComponent>( tiles );
 
-	getCore()->world.addEntity( move( terrain ) );
+	retVal.push_back( move( terrain ) );
+
+	return retVal;
 }

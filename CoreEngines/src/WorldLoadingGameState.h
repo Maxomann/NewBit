@@ -4,6 +4,8 @@
 #include "ChunkSystem.h"
 #include "WorldGenerationEngine.h"
 #include "WorldLoadStateEngine.h"
+#include "ChunkLoader.h"
+#include "ChunkUnloader.h"
 
 namespace nb
 {
