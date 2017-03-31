@@ -71,7 +71,11 @@ bool nb::Package::isLoaded() const
 void nb::Package::save()const
 {
 	for (const auto& el : m_metaFiles)
-		el.saveToFile();
+	{
+		auto& data = el.getData();
+		if (!data.is_null() && data.size() > 0)
+			el.saveToFile();
+	}
 }
 
 std::string nb::Package::getName() const

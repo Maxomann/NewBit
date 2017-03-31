@@ -4,6 +4,7 @@
 #include "RenderComponent.h"
 #include "TextureReference.h"
 #include "sfmlExtensions.h"
+#include "Tile.h"
 
 namespace nb
 {

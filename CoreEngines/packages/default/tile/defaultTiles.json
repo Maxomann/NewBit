@@ -1,0 +1,14 @@
+[
+	{
+		"id":0,
+		"texture":"default:texture:field_grass"
+	},
+	{
+		"id":1,
+		"texture":"default:texture:field_sand"
+	},
+	{
+		"id":2,
+		"texture":"default:texture:field_water"
+	}
+]

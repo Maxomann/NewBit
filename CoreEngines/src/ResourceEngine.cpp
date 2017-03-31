@@ -11,6 +11,7 @@ void nb::ResourceEngine::init()
 	packages.save();
 
 	textures.init( packages );
+	tiles.init( packages, textures );
 }
 
 bool nb::ResourceEngine::update()

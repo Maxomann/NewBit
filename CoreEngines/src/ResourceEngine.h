@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "TextureManager.h"
+#include "TileManager.h"
 
 namespace nb
 {
@@ -13,6 +14,7 @@ namespace nb
 
 		PackageManager packages;
 		TextureManager textures;
+		TileManager tiles;
 
 		static const std::string PATH_PACKAGES;
 	};

@@ -12,5 +12,6 @@
 #include <future>
 #include <random>
 #include <limits>
+#include <list>
 
 #define DLL_EXPORT __declspec(dllexport)
