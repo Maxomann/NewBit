@@ -37,7 +37,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 		);
 	terrain.addComponent<RenderComponent>( -10 );
 
-	std::vector<std::vector<const TextureReference*>> tiles;
+	std::vector<std::vector<const Tile*>> tiles;
 
 	for (int x = 0; x < TerrainComponent::TILES_PER_TERRAIN; ++x)
 	{
@@ -54,7 +54,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 
 			if (noiseVal > 0)
 			{
-				tiles.at( x ).push_back( r_resourceEngine->textures.getTextureReference( "default:texture:field_grass" ) );
+				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
 				if (noiseVal > 0.8 && dist2( mt ) < 1)
 				{
 					sf::Vector2i placementPositionXY( positionInTilesX*TerrainComponent::TILE_SIZE_IN_PIXEL,
@@ -84,9 +84,9 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 				}
 			}
 			else if (noiseVal > -0.5)
-				tiles.at( x ).push_back( r_resourceEngine->textures.getTextureReference( "default:texture:field_sand" ) );
+				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 1 ) );
 			else
-				tiles.at( x ).push_back( r_resourceEngine->textures.getTextureReference( "default:texture:field_water" ) );
+				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 2 ) );
 		}
 	}
 

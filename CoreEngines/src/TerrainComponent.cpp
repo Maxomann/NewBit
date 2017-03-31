@@ -7,7 +7,7 @@ const int TerrainComponent::TILE_SIZE_IN_PIXEL = 32;
 const int TerrainComponent::TERRAIN_SIZE_IN_PIXEL = 640;
 const int TerrainComponent::TILES_PER_TERRAIN = 20; // = 640/32
 
-nb::TerrainComponent::TerrainComponent( const TextureReference* defaultTile )
+nb::TerrainComponent::TerrainComponent( const Tile* defaultTile )
 {
 	for (int x = 0; x < TILES_PER_TERRAIN; ++x)
 	{
@@ -20,8 +20,7 @@ nb::TerrainComponent::TerrainComponent( const TextureReference* defaultTile )
 	generate();
 }
 
-nb::TerrainComponent::TerrainComponent( const TextureReference * defaultTile,
-										std::map<sf::Vector2i, const TextureReference*> tileTexturesByPosition )
+nb::TerrainComponent::TerrainComponent( const Tile* defaultTile, std::map<sf::Vector2i, const Tile*> tileTexturesByPosition )
 {
 	for (int x = 0; x < TILES_PER_TERRAIN; ++x)
 	{
@@ -36,7 +35,7 @@ nb::TerrainComponent::TerrainComponent( const TextureReference * defaultTile,
 	generate();
 }
 
-nb::TerrainComponent::TerrainComponent( std::vector<std::vector<const TextureReference*>> tiles )
+nb::TerrainComponent::TerrainComponent( std::vector<std::vector<const Tile*>> tiles )
 	: tiles( move( tiles ) )
 {
 	generate();
@@ -77,9 +76,9 @@ void TerrainComponent::destroy()
 	return;
 };
 
-void nb::TerrainComponent::setTiles( std::map<sf::Vector2i, const TextureReference*> tileTexturesByPosition )
+void nb::TerrainComponent::setTiles( std::map<sf::Vector2i, const Tile*> tilesByPosition )
 {
-	for (auto& el : tileTexturesByPosition)
+	for (auto& el : tilesByPosition)
 		tiles.at( el.first.x ).at( el.first.y ) = el.second;
 	generate();
 }
@@ -101,7 +100,7 @@ void nb::TerrainComponent::generate_internal()
 	{
 		for (int y = 0; y < TILES_PER_TERRAIN; ++y)
 		{
-			const auto& texRef = *tiles.at( x ).at( y );
+			const auto& texRef = *tiles.at( x ).at( y )->getTextureReference();
 			const auto& defaultTexRect = texRef.getDefaultTextureRect();
 
 			vertexArrays[&texRef.getTexture()].push_back( sf::Vertex(
