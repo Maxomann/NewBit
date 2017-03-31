@@ -3,15 +3,15 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-void nb::ChunkUnloader::prepare_internal( const CoreEngineManager & coreEngines, World & world )
+void nb::ChunkUnloader::prepare_internal( World & world )
 {
 }
 
-void nb::ChunkUnloader::execute_internal( const CoreEngineManager & coreEngines )
+void nb::ChunkUnloader::execute_internal()
 {
 }
 
-void nb::ChunkUnloader::finish_internal( const CoreEngineManager & coreEngines, World & world )
+void nb::ChunkUnloader::finish_internal( World & world )
 {
 	world.getSystem<ChunkSystem>()->removeEntitiesInChunk( chunkPosition );
 }

@@ -64,7 +64,7 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 	chunksThatShouldBeLoaded.erase( unique( chunksThatShouldBeLoaded.begin(), chunksThatShouldBeLoaded.end() ), chunksThatShouldBeLoaded.end() );
 
 	//unload
-	auto chunkLoadStateCopy = r_worldLoadStateEngine->getAllChunkLoadStates();
+	auto chunkLoadStateCopy = r_worldLoadStateSystem->getAllChunkLoadStates();
 	for (const auto& el : chunkLoadStateCopy)
 	{
 		if (el.second == ChunkLoadState::STATE_LOADED ||
@@ -75,11 +75,11 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 			{
 				if (el.second == ChunkLoadState::STATE_LOADED)
 				{
-					r_worldLoadStateEngine->changeChunkLoadState( make_unique<ChunkUnloader>( el.first ) );
+					r_worldLoadStateSystem->changeChunkLoadState( make_unique<ChunkUnloader>( el.first ) );
 				}
 				else if (el.second == ChunkLoadState::STATE_LOADING)
 				{
-					r_worldLoadStateEngine->abortChunkLoadStateChange( el.first );
+					r_worldLoadStateSystem->abortChunkLoadStateChange( el.first );
 				}
 				else
 					throw std::logic_error( "big mistake here" );
@@ -90,17 +90,18 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 	//load
 	for (const auto& el : chunksThatShouldBeLoaded)
 	{
-		auto loadState = r_worldLoadStateEngine->getChunkLoadState( el );
+		auto loadState = r_worldLoadStateSystem->getChunkLoadState( el );
 
 		//is not loaded
 		if (loadState == ChunkLoadState::STATE_UNLOADED)
 		{
 			//load
-			r_worldLoadStateEngine->changeChunkLoadState( make_unique<ChunkLoader>( el ) );
+			r_worldLoadStateSystem->changeChunkLoadState( make_unique<ChunkLoader>( el,
+																					engines() ) );
 		}
 		else if (loadState == ChunkLoadState::STATE_UNLOADING)
 		{
-			r_worldLoadStateEngine->abortChunkLoadStateChange( el );
+			r_worldLoadStateSystem->abortChunkLoadStateChange( el );
 		}
 	}
 }
@@ -108,7 +109,7 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 void nb::WorldLoadingGameState::init()
 {
 	r_core = getCore();
-	r_worldLoadStateEngine = r_core->engines.getEngine<WorldLoadStateEngine>();
+	r_worldLoadStateSystem = r_core->world.getSystem<WorldLoadStateSystem>();
 	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
 	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
 

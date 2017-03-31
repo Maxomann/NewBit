@@ -7,18 +7,18 @@ namespace nb
 {
 	class ChunkLoader : public ChunkLoadStateChanger
 	{
+		const CoreEngineManager& coreEngines;
+
 		std::vector<Entity> entities;
 
 	protected:
-		virtual void prepare_internal( const CoreEngineManager& coreEngines,
-									   World& world ) override;
+		virtual void prepare_internal( World& world ) override;
 
-		virtual void execute_internal( const CoreEngineManager& coreEngines ) override;
+		virtual void execute_internal() override;
 
-		virtual void finish_internal( const CoreEngineManager& coreEngines,
-									  World& world ) override;
+		virtual void finish_internal( World& world ) override;
 
 	public:
-		ChunkLoader( sf::Vector3i position );
+		ChunkLoader( sf::Vector3i position, const CoreEngineManager& coreEngines );
 	};
 }

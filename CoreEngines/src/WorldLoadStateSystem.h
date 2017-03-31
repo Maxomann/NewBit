@@ -5,7 +5,7 @@
 
 namespace nb
 {
-	class WorldLoadStateEngine : public CoreEngine
+	class WorldLoadStateSystem : public System
 	{
 		std::map<sf::Vector3i, ChunkLoadState> chunkLoadStates;
 
@@ -16,7 +16,9 @@ namespace nb
 	public:
 		DLL_EXPORT virtual void init()override;
 
-		DLL_EXPORT virtual bool update()override;
+		DLL_EXPORT virtual void update()override;
+
+		DLL_EXPORT virtual void destroy()override;
 
 		void changeChunkLoadState( std::unique_ptr<ChunkLoadStateChanger> loadStateChanger );
 		void abortChunkLoadStateChange( sf::Vector3i position );

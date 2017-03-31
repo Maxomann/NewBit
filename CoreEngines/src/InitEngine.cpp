@@ -10,6 +10,7 @@ void nb::InitEngine::init()
 	world.addSystem<TimeSystem>();
 	world.addSystem<ChunkSystem>();
 	world.addSystem<PhysicsSystem>();
+	world.addSystem<WorldLoadStateSystem>();
 }
 
 bool nb::InitEngine::update()

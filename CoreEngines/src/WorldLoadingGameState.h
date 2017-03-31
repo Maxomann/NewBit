@@ -3,7 +3,7 @@
 #include "RenderSystem.h"
 #include "ChunkSystem.h"
 #include "WorldGenerationEngine.h"
-#include "WorldLoadStateEngine.h"
+#include "WorldLoadStateSystem.h"
 #include "ChunkLoader.h"
 #include "ChunkUnloader.h"
 
@@ -12,7 +12,7 @@ namespace nb
 	class WorldLoadingGameState : public GameState
 	{
 		const CoreRef* r_core;
-		WorldLoadStateEngine* r_worldLoadStateEngine;
+		WorldLoadStateSystem* r_worldLoadStateSystem;
 		WorldGenerationEngine* r_worldGenerationEngine;
 		ChunkSystem* r_chunkSystem;
 

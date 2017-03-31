@@ -3,6 +3,7 @@
 #include "ChunkSystem.h"
 #include "PhysicsSystem.h"
 #include "TimeSystem.h"
+#include "WorldLoadStateSystem.h"
 
 namespace nb
 {
