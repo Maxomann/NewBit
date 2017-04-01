@@ -99,8 +99,8 @@ void nb::EntityTrackerScreenGameState::track( const Entity* entity )
 		auto val = health->getHealth();
 		m_playerHealthValueLabel->setText( to_string( val ) );
 		health->s_onChange.connect_track( m_connections, [&]( const HealthComponent* const comp,
-															  int health ) {
-			m_playerHealthValueLabel->setText( to_string( health ) );
+															  int change ) {
+			m_playerHealthValueLabel->setText( to_string( comp->getHealth() ) + " / " + to_string( comp->getMaxHealth() ) );
 		} );
 	}
 }

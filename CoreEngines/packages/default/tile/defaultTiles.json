@@ -13,5 +13,10 @@
 		"id":2,
 		"name":"Water",
 		"texture":"default:texture:field_water"
+	},
+	{
+		"id":3,
+		"name":"Wood",
+		"texture":"default:texture:field_wood"
 	}
 ]

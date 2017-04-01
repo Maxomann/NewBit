@@ -48,14 +48,18 @@ void TestGameState::init()
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( m_connections, [&]() {
 		auto cameraTransform = m_camera->getComponent<TransformationComponent>();
-		cameraTransform->setPosition( { 0,0,0 } );
-		cameraTransform->setRotation( 0 );
 		cameraTransform->setSize( { 1280,720 } );
+		cameraTransform->setRotation( 0 );
+
 		if (m_debugEntity)
 		{
 			auto playerTransform = m_debugEntity->getComponent<TransformationComponent>();
 			playerTransform->setPosition( { 0,0,0 } );
 			playerTransform->setRotation( 0 );
+		}
+		else
+		{
+			cameraTransform->setPosition( { 0,0,0 } );
 		}
 	} );
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::T].connect_track( m_connections, [&]() {
@@ -202,6 +206,12 @@ void TestGameState::init()
 
 void nb::TestGameState::update()
 {
+	if (m_debugEntity)
+	{
+		auto healthComp = m_debugEntity->getComponent<HealthComponent>();
+		healthComp->damage( 0.002f*engine<GraphicsEngine>()->getFrameTime().asMilliseconds() );
+	}
+
 	return;
 }
 

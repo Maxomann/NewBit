@@ -17,8 +17,10 @@ void nb::HealthComponent::destroy()
 {
 }
 
-void nb::HealthComponent::damage( unsigned int amount )
+void nb::HealthComponent::damage( float amount )
 {
+	amount = abs( amount );
+
 	bool wasDead = isDead();
 	m_health -= amount;
 	s_onChange.call( this, -1 * static_cast<int>(amount) );
@@ -31,8 +33,10 @@ void nb::HealthComponent::damage( unsigned int amount )
 	}
 }
 
-void nb::HealthComponent::heal( unsigned int amount )
+void nb::HealthComponent::heal( float amount )
 {
+	amount = abs( amount );
+
 	const auto maxAmount = m_maxHealth - m_health;
 	if (amount > maxAmount)
 		amount = maxAmount;
