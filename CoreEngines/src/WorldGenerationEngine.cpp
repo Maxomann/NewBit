@@ -80,6 +80,12 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 														   move( shape ),
 														   fixtureDef );
 
+					/*
+						Entity entity = r_resourceEngine->blueprints.getEntity( 0 );
+						entity->setPosition( {...} );
+						entity->setZValue( 0 );
+					*/
+
 					retVal.push_back( move( entity ) );
 				}
 			}
