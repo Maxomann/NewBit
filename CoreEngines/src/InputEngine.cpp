@@ -7,23 +7,24 @@ void nb::InputEngine::init()
 {
 	r_graphicsEngine = getCore()->engines.getEngine<GraphicsEngine>();
 	r_graphicsEngine->s_onEvent.connect( this, &InputEngine::onSfEvent );
+
+	mousePosition = sf::Mouse::getPosition( r_graphicsEngine->getWindow() );
 }
 
 bool nb::InputEngine::update()
 {
 	for (auto& el : s_whileKeyPressed)
-		if (Keyboard::isKeyPressed( el.first ))
+		if (isKeyPressed[el.first])
 			el.second.call();
 
 	const auto& window = r_graphicsEngine->getWindow();
 	const auto& windowSize = window.getSize();
-	auto mousePosition = Mouse::getPosition( window );
 
 	for (auto& el : s_whileMouseButtonPressed)
-		if (Mouse::isButtonPressed( el.first ))
+		if (isMouseButtonPressed[el.first])
 			el.second.call( mousePosition );
 	for (auto& el : s_whileMouseButtonPressedInWindow)
-		if (Mouse::isButtonPressed( el.first ))
+		if (isMouseButtonPressed[el.first])
 			if (mousePosition.x >= 0 &&
 				 mousePosition.x < windowSize.x &&
 				 mousePosition.y >= 0 &&
@@ -36,11 +37,22 @@ bool nb::InputEngine::update()
 void nb::InputEngine::onSfEvent( const sf::Event & event )
 {
 	if (event.type == sf::Event::KeyPressed)
+	{
+		isKeyPressed[event.key.code] = true;
 		s_onKeyPressed[event.key.code].call();
+	}
 	if (event.type == sf::Event::KeyReleased)
+	{
+		isKeyPressed[event.key.code] = false;
 		s_onKeyReleased[event.key.code].call();
+	}
+	if (event.type == sf::Event::MouseMoved)
+	{
+		mousePosition = Vector2i( event.mouseMove.x, event.mouseMove.y );
+	}
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
+		isMouseButtonPressed[event.mouseButton.button] = true;
 		s_onMouseButtonPressed[event.mouseButton.button].call( { event.mouseButton.x, event.mouseButton.y } );
 		const auto& windowSize = r_graphicsEngine->getWindow().getSize();
 		if (event.mouseButton.x >= 0 &&
@@ -48,5 +60,16 @@ void nb::InputEngine::onSfEvent( const sf::Event & event )
 			 event.mouseButton.y >= 0 &&
 			 event.mouseButton.y < windowSize.y)
 			s_onMouseButtonPressedInWindow[event.mouseButton.button].call( { event.mouseButton.x, event.mouseButton.y } );
+	}
+	if (event.type == sf::Event::MouseButtonReleased)
+	{
+		isMouseButtonPressed[event.mouseButton.button] = false;
+		s_onMouseButtonReleased[event.mouseButton.button].call( { event.mouseButton.x, event.mouseButton.y } );
+		const auto& windowSize = r_graphicsEngine->getWindow().getSize();
+		if (event.mouseButton.x >= 0 &&
+			 event.mouseButton.x < windowSize.x &&
+			 event.mouseButton.y >= 0 &&
+			 event.mouseButton.y < windowSize.y)
+			s_onMouseButtonReleasedInWindow[event.mouseButton.button].call( { event.mouseButton.x, event.mouseButton.y } );
 	}
 }

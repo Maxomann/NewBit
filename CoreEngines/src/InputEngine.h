@@ -9,6 +9,10 @@ namespace nb
 	{
 		GraphicsEngine* r_graphicsEngine;
 
+		std::map<sf::Keyboard::Key, bool> isKeyPressed;
+		std::map<sf::Mouse::Button, bool> isMouseButtonPressed;
+		sf::Vector2i mousePosition;
+
 	public:
 		virtual void init() override;
 
@@ -22,6 +26,9 @@ namespace nb
 
 		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_onMouseButtonPressed; // NOT called every frame
 		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_onMouseButtonPressedInWindow; // NOT called every frame
+
+		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_onMouseButtonReleased; // NOT called every frame
+		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_onMouseButtonReleasedInWindow; // NOT called every frame
 
 		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_whileMouseButtonPressed; // called every frame
 		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_whileMouseButtonPressedInWindow; // called every frame
