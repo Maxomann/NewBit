@@ -6,7 +6,7 @@ using namespace tgui;
 
 void nb::TilePaintGameState::init()
 {
-	r_gui = getCore()->engines.getEngine<GuiEngine>()->getGui();
+	r_gui = getCore()->engines.getEngine<GraphicsEngine>()->getGui();
 
 	childWindow = ChildWindow::create();
 	childWindow->setSize( { 200,200 } );
@@ -33,7 +33,7 @@ void nb::TilePaintGameState::init()
 	r_gui->add( childWindow );
 
 	engine<InputEngine>()->s_whileMouseButtonPressedInWindow[Mouse::Button::Left].connect( [&]( const sf::Vector2i& positionInWindow ) {
-		if (engine<GuiEngine>()->isGuiFocused())
+		if (engine<GraphicsEngine>()->isGuiFocused())
 			return;
 
 		const auto& camera = world().getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );

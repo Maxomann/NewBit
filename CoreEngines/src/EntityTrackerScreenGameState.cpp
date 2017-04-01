@@ -6,7 +6,7 @@ using namespace nb;
 
 void nb::EntityTrackerScreenGameState::init()
 {
-	r_gui = getCore()->engines.getEngine<GuiEngine>()->getGui();
+	r_gui = getCore()->engines.getEngine<GraphicsEngine>()->getGui();
 
 	// GUI
 	m_playerStatsWindow = ChildWindow::create();

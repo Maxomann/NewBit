@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include "GuiEngine.h"
+#include "GraphicsEngine.h"
 #include "InputEngine.h"
 #include "ResourceEngine.h"
 #include "PhysicsComponent.h"

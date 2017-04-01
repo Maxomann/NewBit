@@ -9,7 +9,7 @@
 #include "TerrainComponent.h"
 #include "WorldLoadingGameState.h"
 #include "PositionTrackerComponent.h"
-#include "GuiEngine.h"
+#include "GraphicsEngine.h"
 #include "EntityTrackerScreenGameState.h"
 #include "DemoEditGameState.h"
 #include "PhysicsSystem.h"

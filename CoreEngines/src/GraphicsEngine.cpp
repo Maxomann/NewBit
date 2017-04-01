@@ -1,12 +1,15 @@
 #include "GraphicsEngine.h"
 using namespace std;
 using namespace sf;
+using namespace tgui;
 using namespace nb;
 
 void nb::GraphicsEngine::init()
 {
 	m_window.create( sf::VideoMode( 1280, 720 ), "GraphicsEngine Window", Style::Titlebar | Style::Close );
 	m_window.setVerticalSyncEnabled( true );
+
+	m_gui.setWindow( m_window );
 
 	r_renderSystem = getCore()->world.addSystem<RenderSystem>();
 }
@@ -24,6 +27,7 @@ bool nb::GraphicsEngine::update()
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape)
 			m_window.close();
 
+		m_gui.handleEvent( event );
 		s_onEvent.call( event );
 	}
 
@@ -40,7 +44,7 @@ bool nb::GraphicsEngine::update()
 	for (const auto& drawable : m_toDrawNextFrame)
 		m_window.draw( *drawable );
 
-	s_beforeDisplay.call( m_window );
+	m_gui.draw();
 
 	m_window.display();
 	m_toDrawNextFrame.clear();
@@ -66,4 +70,15 @@ const sf::RenderWindow & nb::GraphicsEngine::getWindow() const
 const sf::Time & nb::GraphicsEngine::getFrameTime() const
 {
 	return m_frameTime;
+}
+
+tgui::Gui * nb::GraphicsEngine::getGui()
+{
+	return &m_gui;;
+}
+
+bool nb::GraphicsEngine::isGuiFocused() const
+{
+	const auto& widgets = m_gui.getWidgets();
+	return any_of( widgets.begin(), widgets.end(), [&]( const shared_ptr<Widget>& el ) {return el->isFocused(); } );
 }

@@ -14,7 +14,7 @@ void TestGameState::init()
 	r_resourceEngine = r_core->engines.getEngine<ResourceEngine>();
 	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
 	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
-	r_gui = r_core->engines.getEngine<GuiEngine>()->getGui();
+	r_gui = r_core->engines.getEngine<GraphicsEngine>()->getGui();
 
 	// Input
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_track( m_connections, this, &TestGameState::drawTestsprite );
