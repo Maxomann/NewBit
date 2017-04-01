@@ -9,7 +9,7 @@ namespace nb
 		sf::View m_view;
 
 		void onPositionXYChanged( const TransformationComponent*const transform, sf::Vector2i oldPositionXY );
-		void onSizeChanged( const TransformationComponent*const transform, sf::Vector2u oldSize );
+		void onSizeChanged( const TransformationComponent*const transform, sf::Vector2f oldSize );
 		void onRotationChanged( const TransformationComponent*const transform, float oldRotation );
 
 		Connections m_connections;

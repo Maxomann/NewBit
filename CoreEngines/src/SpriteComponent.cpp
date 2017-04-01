@@ -13,7 +13,7 @@ nb::SpriteComponent::SpriteComponent( const TextureReference & texture )
 	setTexture( texture );
 }
 
-void nb::SpriteComponent::setSize( sf::Vector2u size )
+void nb::SpriteComponent::setSize( sf::Vector2f newSize )
 {
 	auto& texrect = m_sprite.getTextureRect();
 	auto& scale = m_sprite.getScale();
@@ -22,7 +22,6 @@ void nb::SpriteComponent::setSize( sf::Vector2u size )
 	spritesOldSize.x = (static_cast<float>(texrect.width)*scale.x);
 	spritesOldSize.y = (static_cast<float>(texrect.height)*scale.y);
 
-	auto& newSize = Vector2f( size );
 	m_sprite.setScale( newSize.x / spritesOldSize.x, newSize.y / spritesOldSize.y );
 }
 
@@ -42,7 +41,7 @@ void nb::SpriteComponent::init()
 		m_sprite.setPosition( Vector2f( transform->getPositionXY() ) );
 	} );
 	transform->s_sizeChanged.connect( [&]( const TransformationComponent*const transform,
-										   sf::Vector2u oldSize ) {
+										   sf::Vector2f oldSize ) {
 		setSize( transform->getSize() );
 	} );
 	transform->s_rotationChanged.connect( [&]( const TransformationComponent*const transform,

@@ -45,7 +45,7 @@ void nb::DemoEditGameState::init()
 		Entity entity;
 		entity.addComponent<TransformationComponent>( placementPositionXY,
 													  camera->getComponent<TransformationComponent>()->getLayer(),
-													  Vector2u( 48 * 2, 64 * 2 ) );
+													  Vector2f( 48 * 2, 64 * 2 ) );
 		entity.addComponent<RenderComponent>( 0 );
 		entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:object_tree" ) );
 		/* Physics */

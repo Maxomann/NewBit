@@ -5,7 +5,7 @@ using namespace nb;
 
 nb::TransformationComponent::TransformationComponent( sf::Vector2i position,
 													  int layer,
-													  sf::Vector2u size,
+													  sf::Vector2f size,
 													  float rotation )
 	: m_position( position ),
 	m_layer( layer ),
@@ -39,7 +39,7 @@ int nb::TransformationComponent::getLayer() const
 	return m_layer;
 }
 
-sf::Vector2u nb::TransformationComponent::getSize() const
+sf::Vector2f nb::TransformationComponent::getSize() const
 {
 	return m_size;
 }
@@ -106,7 +106,7 @@ void nb::TransformationComponent::moveLayer( int offset )
 	setLayer( m_layer + offset );
 }
 
-void nb::TransformationComponent::setSize( sf::Vector2u size )
+void nb::TransformationComponent::setSize( sf::Vector2f size )
 {
 	auto oldSize = m_size;
 
@@ -118,9 +118,9 @@ void nb::TransformationComponent::setSize( sf::Vector2u size )
 
 void nb::TransformationComponent::scale( float factor )
 {
-	auto newSize = (Vector2u)Vector2f(
-		static_cast<float>(m_size.x)*factor,
-		static_cast<float>(m_size.y)*factor );
+	auto newSize = Vector2f(
+		m_size.x*factor,
+		m_size.y*factor );
 	setSize( newSize );
 }
 

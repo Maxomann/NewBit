@@ -60,7 +60,7 @@ void TerrainComponent::init()
 		//do nothing
 	} );
 	transform->s_sizeChanged.connect( [&]( const TransformationComponent*const transform,
-										   sf::Vector2u oldSize ) {
+										   sf::Vector2f oldSize ) {
 		throw std::logic_error( "Cannot size Terrain" );
 	} );
 	transform->s_rotationChanged.connect( [&]( const TransformationComponent*const transform,

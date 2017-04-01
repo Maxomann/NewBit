@@ -32,7 +32,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 		Vector2i( ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.x,
 				  ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.y ),
 		chunkPosition.z,
-		Vector2u( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
+		Vector2f( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
 				  ChunkSystem::CHUNK_SIZE_IN_PIXEL )
 		);
 	terrain.addComponent<RenderComponent>( -10 );
@@ -62,7 +62,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 					Entity entity;
 					entity.addComponent<TransformationComponent>( placementPositionXY,
 																  chunkPosition.z,
-																  Vector2u( 48 * 2, 64 * 2 ) );
+																  Vector2f( 48 * 2, 64 * 2 ) );
 					entity.addComponent<RenderComponent>( 0 );
 					entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:object_tree" ) );
 					/* Physics */

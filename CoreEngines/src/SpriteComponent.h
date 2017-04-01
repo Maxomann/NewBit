@@ -10,7 +10,7 @@ namespace nb
 	{
 		sf::Sprite m_sprite;
 
-		void setSize( sf::Vector2u size );
+		void setSize( sf::Vector2f newSize );
 	public:
 		SpriteComponent( const sf::Texture& texture );
 		SpriteComponent( const TextureReference& texture );

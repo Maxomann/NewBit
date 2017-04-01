@@ -7,13 +7,13 @@ namespace nb
 	{
 		sf::Vector2i m_position;
 		int m_layer = 0;
-		sf::Vector2u m_size;
+		sf::Vector2f m_size;
 		float m_rotation;
 
 	public:
 		TransformationComponent( sf::Vector2i position,
 								 int layer,
-								 sf::Vector2u size,
+								 sf::Vector2f size,
 								 float rotation = 0 );
 
 		virtual void init()override;
@@ -27,7 +27,7 @@ namespace nb
 
 		int getLayer()const;
 
-		sf::Vector2u getSize()const;
+		sf::Vector2f getSize()const;
 
 		float getRotation()const;
 
@@ -40,7 +40,7 @@ namespace nb
 		void setLayer( int layer );
 		void moveLayer( int offset );
 
-		void setSize( sf::Vector2u size );
+		void setSize( sf::Vector2f size );
 		void scale( float factor );
 
 		void setRotation( float rotation );
@@ -55,7 +55,7 @@ namespace nb
 		// Second parameter is old value
 		Signal<void( const TransformationComponent* const, int )> s_layerChanged;
 		// Second parameter is old value
-		Signal<void( const TransformationComponent* const, sf::Vector2u )> s_sizeChanged;
+		Signal<void( const TransformationComponent* const, sf::Vector2f )> s_sizeChanged;
 		// Second parameter is old value
 		Signal<void( const TransformationComponent* const, float )> s_rotationChanged;
 	};

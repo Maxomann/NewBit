@@ -132,7 +132,7 @@ void TestGameState::init()
 		Entity entity;
 		entity.addComponent<TransformationComponent>( Vector2i( 0, 0 ),
 													  0,
-													  Vector2u( 32, 64 ) );
+													  Vector2f( 32, 64 ) );
 		entity.addComponent<RenderComponent>( 0 );
 		entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:player" ) );
 		entity.addComponent<HealthComponent>( 200, 100 );
@@ -188,7 +188,7 @@ void TestGameState::init()
 	cameraEntity.addComponent<TransformationComponent>(
 		Vector2i( 0, 0 ),
 		0,
-		Vector2u( 1280, 720 ) );
+		Vector2f( 1280, 720 ) );
 	cameraEntity.addComponent<CameraComponent>();
 	cameraEntity.addComponent<PositionTrackerComponent>();
 	m_camera = getCore()->world.addEntity( move( cameraEntity ) );
