@@ -100,7 +100,7 @@ void nb::TerrainComponent::generate()
 
 void nb::TerrainComponent::generate_internal()
 {
-	vertexArrays.clear();
+	std::map<const sf::Texture*, std::vector<sf::Vertex>>vertexArraysBuffer;
 
 	for (int x = 0; x < TILES_PER_TERRAIN; ++x)
 	{
@@ -109,47 +109,48 @@ void nb::TerrainComponent::generate_internal()
 			const auto& texRef = *tiles.at( x ).at( y )->getTextureReference();
 			const auto& defaultTexRect = texRef.getDefaultTextureRect();
 
-			vertexArrays[&texRef.getTexture()].push_back( sf::Vertex(
+			vertexArraysBuffer[&texRef.getTexture()].push_back( sf::Vertex(
 				sf::Vector2f( x*TILE_SIZE_IN_PIXEL,
 							  y*TILE_SIZE_IN_PIXEL ),
 				sf::Vector2f( defaultTexRect.left,
 							  defaultTexRect.top ) ) );
-			vertexArrays[&texRef.getTexture()].push_back( sf::Vertex(
+			vertexArraysBuffer[&texRef.getTexture()].push_back( sf::Vertex(
 				sf::Vector2f( (x*TILE_SIZE_IN_PIXEL) + TILE_SIZE_IN_PIXEL,
 							  y*TILE_SIZE_IN_PIXEL ),
 				sf::Vector2f( defaultTexRect.left + defaultTexRect.width,
 							  defaultTexRect.top ) ) );
-			vertexArrays[&texRef.getTexture()].push_back( sf::Vertex(
+			vertexArraysBuffer[&texRef.getTexture()].push_back( sf::Vertex(
 				sf::Vector2f( (x*TILE_SIZE_IN_PIXEL) + TILE_SIZE_IN_PIXEL,
 				(y*TILE_SIZE_IN_PIXEL) + TILE_SIZE_IN_PIXEL ),
 				sf::Vector2f( defaultTexRect.left + defaultTexRect.width,
 							  defaultTexRect.top + defaultTexRect.height ) ) );
-			vertexArrays[&texRef.getTexture()].push_back( sf::Vertex(
+			vertexArraysBuffer[&texRef.getTexture()].push_back( sf::Vertex(
 				sf::Vector2f( x*TILE_SIZE_IN_PIXEL,
 				(y*TILE_SIZE_IN_PIXEL) + TILE_SIZE_IN_PIXEL ),
 				sf::Vector2f( defaultTexRect.left,
 							  defaultTexRect.top + defaultTexRect.height ) ) );
 		}
 	}
+
+	lock_guard<mutex> lock( vertexArraysMutex );
+	vertexArrays = move( vertexArraysBuffer );
 }
 
 void nb::TerrainComponent::draw( sf::RenderTarget & target,
 								 sf::RenderStates states )const
 {
-	if (!generationFuture.valid() ||
-		 generationFuture.wait_for( chrono::microseconds( 0 ) ) == future_status::ready)
+	lock_guard<mutex> lock( vertexArraysMutex );
+
+	sf::Transform trans;
+	trans.translate( sf::Vector2f( component<TransformationComponent>()->getPositionXY() ) );
+	states.transform *= trans;
+
+	for (auto& el : vertexArrays)
 	{
-		sf::Transform trans;
-		trans.translate( sf::Vector2f( component<TransformationComponent>()->getPositionXY() ) );
-		states.transform *= trans;
+		states.texture = el.first;
 
-		for (auto& el : vertexArrays)
-		{
-			states.texture = el.first;
-
-			auto& vertices = el.second;
-			target.draw( &vertices.at( 0 ), vertices.size(), sf::Quads, states );
-		}
+		auto& vertices = el.second;
+		target.draw( &vertices.at( 0 ), vertices.size(), sf::Quads, states );
 	}
 }
 

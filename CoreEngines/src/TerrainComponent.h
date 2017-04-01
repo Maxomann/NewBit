@@ -12,6 +12,7 @@ namespace nb
 	{
 		std::vector<std::vector<const Tile*>> tiles;
 
+		mutable std::mutex vertexArraysMutex;
 		std::map<const sf::Texture*, std::vector<sf::Vertex>> vertexArrays;
 
 		std::future<void> generationFuture;

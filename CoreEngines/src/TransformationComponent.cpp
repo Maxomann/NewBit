@@ -118,7 +118,10 @@ void nb::TransformationComponent::setSize( sf::Vector2u size )
 
 void nb::TransformationComponent::scale( float factor )
 {
-	setSize( Vector2u( ((float)m_size.x)*factor, ((float)m_size.y)*factor ) );
+	auto newSize = (Vector2u)Vector2f(
+		static_cast<float>(m_size.x)*factor,
+		static_cast<float>(m_size.y)*factor );
+	setSize( newSize );
 }
 
 void nb::TransformationComponent::setRotation( float rotation )
