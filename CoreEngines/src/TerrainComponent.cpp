@@ -1,11 +1,12 @@
 #include "TerrainComponent.h"
+#include "ChunkSystem.h"
 using namespace std;
 using namespace sf;
 using namespace nb;
 
-const int TerrainComponent::TILE_SIZE_IN_PIXEL = 32;
+const int TerrainComponent::TILE_SIZE_IN_PIXEL = Tile::TILE_SIZE_IN_PIXEL;
 const int TerrainComponent::TERRAIN_SIZE_IN_PIXEL = 640;
-const int TerrainComponent::TILES_PER_TERRAIN = 20; // = 640/32
+const int TerrainComponent::TILES_PER_TERRAIN = 20; // = 640(TERRAIN_SIZE_IN_PIXEL) / 32(TILE_SIZE_IN_PIXEL)
 
 nb::TerrainComponent::TerrainComponent( const Tile* defaultTile )
 {
@@ -83,6 +84,11 @@ void nb::TerrainComponent::setTiles( std::map<sf::Vector2i, const Tile*> tilesBy
 	generate();
 }
 
+const Tile * nb::TerrainComponent::getTile( sf::Vector2i relativePosition ) const
+{
+	return tiles.at( relativePosition.x ).at( relativePosition.y );
+}
+
 void nb::TerrainComponent::generate()
 {
 	if (generationFuture.valid() &&
@@ -145,4 +151,26 @@ void nb::TerrainComponent::draw( sf::RenderTarget & target,
 			target.draw( &vertices.at( 0 ), vertices.size(), sf::Quads, states );
 		}
 	}
+}
+
+sf::Vector2i nb::TerrainComponent::calculateRelativeTilePosition( sf::Vector3i absoluteTilePosition )
+{
+	Vector2i retVal;
+
+	auto thisPixelPosition = component<TransformationComponent>()->getPosition();
+	if (thisPixelPosition.z != absoluteTilePosition.z)
+		throw std::logic_error( "nb::TerrainComponent::calculateRelativeTilePosition | thisPixelPosition.z != absoluteTilePosition.z" );
+
+	auto thisChunkPosition = ChunkSystem::calculateChunkPositionForPixelPosition( thisPixelPosition );
+
+	retVal.x = abs( absoluteTilePosition.x ) % TILES_PER_TERRAIN;
+
+	retVal.y = abs( absoluteTilePosition.y ) % TILES_PER_TERRAIN;
+
+	if (thisChunkPosition.x < 0 && retVal.x != 0)
+		retVal.x = TILES_PER_TERRAIN - retVal.x;
+	if (thisChunkPosition.y < 0 && retVal.y != 0)
+		retVal.y = TILES_PER_TERRAIN - retVal.y;
+
+	return retVal;
 }

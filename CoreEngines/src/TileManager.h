@@ -20,6 +20,8 @@ namespace nb
 		// It will not be modified after init() has been called
 		const Tile* getTile( Tile::ID id )const;
 
+		const std::list<Tile>& getAllTiles()const;
+
 		static const std::vector<std::string> AUTO_CACHE_ID_COMPONENTS;
 	};
 }

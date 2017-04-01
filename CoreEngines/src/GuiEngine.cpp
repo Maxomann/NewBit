@@ -26,3 +26,9 @@ tgui::Gui * nb::GuiEngine::getGui()
 {
 	return &m_gui;
 }
+
+bool nb::GuiEngine::isGuiFocused() const
+{
+	const auto& widgets = m_gui.getWidgets();
+	return any_of( widgets.begin(), widgets.end(), [&]( const shared_ptr<Widget>& el ) {return el->isFocused(); } );
+}

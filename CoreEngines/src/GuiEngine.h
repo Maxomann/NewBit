@@ -18,5 +18,7 @@ namespace nb
 		virtual bool update() override;
 
 		tgui::Gui* getGui();
+
+		bool isGuiFocused()const;
 	};
 }

@@ -10,18 +10,27 @@ namespace nb
 		using ID = unsigned int;
 
 	private:
+		const ID id;
+
 		const TextureReference*const texref;
 
-		const ID id;
+		const std::string name;
 
 	public:
 
-		Tile( ID tileId, const TextureReference* texture );
+		Tile( ID tileId,
+			  std::string name,
+			  const TextureReference* texture );
 		Tile( const Tile& ) = delete;//no copy
 		Tile( Tile&& ) = default;
 
 		ID getId()const;
+		const std::string& getName()const;
 
 		const TextureReference* getTextureReference()const;
+
+		static sf::Vector3i calculateTilePositionForPixelPosition( sf::Vector3i pixelPosition );
+
+		static const int TILE_SIZE_IN_PIXEL;
 	};
 }

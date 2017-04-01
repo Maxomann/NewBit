@@ -15,6 +15,9 @@ void nb::DemoEditGameState::init()
 	m_childWindow->setSize( { 200,80 } );
 	m_childWindow->setTitle( "Demo Edit" );
 	m_childWindow->keepInParent( true );
+	m_childWindow->connect( "Closed", [&]() {
+		m_shouldDestroy = true;
+	} );
 
 	m_EntityCountLabel = Label::create();
 	m_EntityCountLabel->setSize( { 140,40 } );
@@ -29,17 +32,12 @@ void nb::DemoEditGameState::init()
 
 	r_gui->add( m_childWindow );
 
-	m_childWindow->connect( "Closed", [&]() {
-		m_shouldDestroy = true;
-	} );
-
 	getCore()->world.s_onEntityCountChanged.connect_track( m_connections, [&]( unsigned int newCount ) {
 		m_EntityCountValueLabel->setText( to_string( newCount ) );
 	} );
 
 	r_inputEngine->s_onMouseButtonPressedInWindow[Mouse::Button::Left].connect_track( m_connections, [&]( Vector2i mousePosition ) {
-		auto& widgets = r_gui->getWidgets();
-		if (any_of( widgets.begin(), widgets.end(), [&]( const shared_ptr<Widget>& el ) {return el->isFocused(); } ))
+		if (engine<GuiEngine>()->isGuiFocused())
 			return;
 		auto* camera = getCore()->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
 		auto placementPositionXY = static_cast<sf::Vector2i>(r_graphicsEngine->getWindow().mapPixelToCoords( mousePosition, camera->getComponent<CameraComponent>()->getView() ));

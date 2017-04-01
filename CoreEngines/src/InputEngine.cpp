@@ -15,6 +15,21 @@ bool nb::InputEngine::update()
 		if (Keyboard::isKeyPressed( el.first ))
 			el.second.call();
 
+	const auto& window = r_graphicsEngine->getWindow();
+	const auto& windowSize = window.getSize();
+	auto mousePosition = Mouse::getPosition( window );
+
+	for (auto& el : s_whileMouseButtonPressed)
+		if (Mouse::isButtonPressed( el.first ))
+			el.second.call( mousePosition );
+	for (auto& el : s_whileMouseButtonPressedInWindow)
+		if (Mouse::isButtonPressed( el.first ))
+			if (mousePosition.x >= 0 &&
+				 mousePosition.x < windowSize.x &&
+				 mousePosition.y >= 0 &&
+				 mousePosition.y < windowSize.y)
+				el.second.call( mousePosition );
+
 	return true;
 }
 

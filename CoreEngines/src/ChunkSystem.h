@@ -23,6 +23,21 @@ namespace nb
 
 		std::vector<Entity*> getEntitiesInChunk( sf::Vector3i chunkPosition )const;
 
+		template<class UnaryPredicate>
+		std::vector<Entity*> getEntitiesInChunk_if( sf::Vector3i chunkPosition, const UnaryPredicate& pred )const
+		{
+			std::vector<Entity*> retVal;
+
+			auto result = m_entitiesByChunk.find( chunkPosition );
+			if (result != m_entitiesByChunk.end())
+				for (const auto& el : result->second)
+				{
+					if (pred( el ))
+						retVal.push_back( el );
+				}
+			return retVal;
+		}
+
 		void removeEntitiesInChunk( sf::Vector3i chunkPosition );
 
 		template<class UnaryPredicate>

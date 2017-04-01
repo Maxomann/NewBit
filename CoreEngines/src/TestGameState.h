@@ -13,6 +13,7 @@
 #include "EntityTrackerScreenGameState.h"
 #include "DemoEditGameState.h"
 #include "PhysicsSystem.h"
+#include "TilePaintGameState.h"
 
 namespace nb
 {

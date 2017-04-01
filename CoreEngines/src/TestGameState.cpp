@@ -169,6 +169,9 @@ void TestGameState::init()
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::O].connect_track( m_connections, [&]() {
 		r_core->gameStates.pushState_instant( make_unique<DemoEditGameState>() );
 	} );
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::P].connect_track( m_connections, [&]() {
+		r_core->gameStates.pushState_instant( make_unique<TilePaintGameState>() );
+	} );
 
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::Home].connect_track( m_connections, [&]() {
 		auto physics = world().getSystem<PhysicsSystem>();

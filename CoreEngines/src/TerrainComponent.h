@@ -29,8 +29,11 @@ namespace nb
 		virtual void destroy() override;
 
 		void setTiles( std::map<sf::Vector2i, const Tile*> tilesByPosition );
+		const Tile* getTile( sf::Vector2i relativePosition )const;
 
 		virtual void draw( sf::RenderTarget& target, sf::RenderStates states )const override;
+
+		sf::Vector2i calculateRelativeTilePosition( sf::Vector3i absoluteTilePosition );
 
 		static const int TILE_SIZE_IN_PIXEL;
 		static const int TERRAIN_SIZE_IN_PIXEL;

@@ -22,5 +22,8 @@ namespace nb
 
 		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_onMouseButtonPressed; // NOT called every frame
 		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_onMouseButtonPressedInWindow; // NOT called every frame
+
+		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_whileMouseButtonPressed; // called every frame
+		std::map<sf::Mouse::Button, Signal<void( sf::Vector2i )>> s_whileMouseButtonPressedInWindow; // called every frame
 	};
 }

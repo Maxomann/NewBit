@@ -34,7 +34,7 @@ namespace nb
 		template<class T>
 		T* engine()const
 		{
-			return r_core->engines.getEngine<T>();
+			return enginesRef->getEngine<T>();
 		}
 
 		const CoreEngineManager& engines()const
