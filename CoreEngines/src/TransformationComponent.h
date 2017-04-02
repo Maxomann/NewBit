@@ -23,7 +23,7 @@ namespace nb
 		//
 
 		sf::Vector3i getPosition()const;
-		sf::Vector2i getPositionXY()const;
+		const sf::Vector2i& getPositionXY()const;
 
 		int getLayer()const;
 

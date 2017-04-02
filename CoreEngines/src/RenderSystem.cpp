@@ -9,8 +9,6 @@ void nb::RenderSystem::onEntityAdded( Entity * entity )
 
 	if (renderComponent)
 		m_entitiesToDraw.push_back( entity );
-
-	m_drawingDataIsValid = false;
 }
 
 void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
@@ -32,36 +30,12 @@ void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 			return (el == el2);
 		} );
 	} ), m_entitiesToDraw.end() );
-
-	m_drawingDataIsValid = false;
 }
 
-void nb::RenderSystem::generateDrawingData()
+/*void nb::RenderSystem::generateDrawingData()
 {
 	// get debug drawing data
 	debugDrawingData.clear();
-
-	// sort entitiesToDraw
-	std::sort( m_entitiesToDraw.begin(), m_entitiesToDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
-		// order: z^-1,y,x
-		auto posLhs = lhs->getComponent<TransformationComponent>()->getPositionXY();
-		auto posRhs = rhs->getComponent<TransformationComponent>()->getPositionXY();
-		auto zVlaueLhs = lhs->getComponent<RenderComponent>()->getZValue();
-		auto zVlaueRhs = rhs->getComponent<RenderComponent>()->getZValue();
-
-		if (zVlaueRhs > zVlaueLhs)
-			return true;
-		else if (zVlaueRhs < zVlaueLhs)
-			return false;
-		else if (posRhs.y > posLhs.y)
-			return true;
-		else if (posRhs.y < posLhs.y)
-			return false;
-		else if (posRhs.x > posLhs.x)
-			return true;
-		else
-			return false;
-	} );
 
 	// generate drawingData
 	m_drawingData.clear();
@@ -85,7 +59,7 @@ void nb::RenderSystem::generateDrawingData()
 	}
 
 	m_drawingDataIsValid = true;
-}
+}*/
 
 void RenderSystem::init()
 {
@@ -96,7 +70,6 @@ void RenderSystem::init()
 
 void RenderSystem::update()
 {
-	m_drawingDataIsValid = false;
 };
 
 void RenderSystem::destroy()
@@ -114,10 +87,38 @@ const std::vector<Entity*>& nb::RenderSystem::getCamerasForDrawing() const
 	return m_camerasForDrawing;
 }
 
-const RenderSystem::DrawingData & nb::RenderSystem::getCurrentDrawingData()
+void nb::RenderSystem::sort()
 {
-	if (!m_drawingDataIsValid)
-		generateDrawingData();
+	// sort entitiesToDraw
+	std::sort( m_entitiesToDraw.begin(), m_entitiesToDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
+		// order: z^-1,y,x
+		const auto& posLhs = lhs->getComponent<TransformationComponent>()->getPositionXY();
+		const auto& posRhs = rhs->getComponent<TransformationComponent>()->getPositionXY();
+		const auto& zVlaueLhs = lhs->getComponent<RenderComponent>()->getZValue();
+		const auto& zVlaueRhs = rhs->getComponent<RenderComponent>()->getZValue();
 
-	return m_drawingData;
+		if (zVlaueRhs > zVlaueLhs)
+			return true;
+		else if (zVlaueRhs < zVlaueLhs)
+			return false;
+		else if (posRhs.y > posLhs.y)
+			return true;
+		else if (posRhs.y < posLhs.y)
+			return false;
+		else if (posRhs.x > posLhs.x)
+			return true;
+		else
+			return false;
+	} );
+}
+
+const std::vector<Entity*>& nb::RenderSystem::getEntitiesWithRenderComponentSorted() const
+{
+	return m_entitiesToDraw;
+}
+
+const std::vector<std::unique_ptr<sf::Drawable>>& nb::RenderSystem::getDebugDrawingDataForLayer( int layer )
+{
+	s_collectDebugDrawingData.call( debugDrawingData, layer );
+	return debugDrawingData;
 }

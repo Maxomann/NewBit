@@ -29,7 +29,7 @@ sf::Vector3i nb::TransformationComponent::getPosition() const
 					 m_layer );
 }
 
-sf::Vector2i nb::TransformationComponent::getPositionXY() const
+const sf::Vector2i& nb::TransformationComponent::getPositionXY() const
 {
 	return m_position;
 }

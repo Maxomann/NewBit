@@ -15,13 +15,9 @@ namespace nb
 
 		std::vector<std::unique_ptr<sf::Drawable>> debugDrawingData;
 
-		DrawingData m_drawingData;
-		bool m_drawingDataIsValid = false;
-
 		void onEntityAdded( Entity* entity );
 		void onEntitiesRemoved( const std::vector<Entity*>& entities );
 
-		void generateDrawingData();
 	public:
 
 		virtual void init() override;
@@ -31,7 +27,10 @@ namespace nb
 		void setCamerasForDrawing( std::vector<Entity*> cameras );
 		const std::vector<Entity*>& getCamerasForDrawing()const;
 
-		const DrawingData& getCurrentDrawingData();
+		void sort();
+		const std::vector<Entity*>& getEntitiesWithRenderComponentSorted()const;
+
+		const std::vector<std::unique_ptr<sf::Drawable>>& getDebugDrawingDataForLayer( int layer );
 
 		Signal<void( const std::vector<Entity*>& )> s_camerasForDrawingChanged;
 		Signal<void( std::vector<std::unique_ptr<sf::Drawable>>&, int )> s_collectDebugDrawingData;

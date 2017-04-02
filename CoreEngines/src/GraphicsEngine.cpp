@@ -34,15 +34,26 @@ bool nb::GraphicsEngine::update()
 	// draw
 	m_window.clear( sf::Color::Green );
 
-	for (const auto& el : r_renderSystem->getCurrentDrawingData())
+	r_renderSystem->sort();
+	for (const auto& cam : r_renderSystem->getCamerasForDrawing())
 	{
-		m_window.setView( *el.first );
-		for (const auto& drawable : el.second)
+		auto camLayer = cam->getComponent<TransformationComponent>()->getLayer();
+		m_window.setView( cam->getComponent<CameraComponent>()->getView() );
+
+		for (const auto& el : r_renderSystem->getEntitiesWithRenderComponentSorted())
+		{
+			if (el->getComponent<TransformationComponent>()->getLayer() == camLayer)
+				for (const auto& drawable : el->getComponent<RenderComponent>()->getDrawingData())
+					m_window.draw( *drawable );
+		}
+
+		for (const auto& debugEl : r_renderSystem->getDebugDrawingDataForLayer( camLayer ))
+			m_window.draw( *debugEl );
+
+		m_window.setView( m_window.getDefaultView() );
+		for (const auto& drawable : m_toDrawNextFrame)
 			m_window.draw( *drawable );
 	}
-	m_window.setView( m_window.getDefaultView() );
-	for (const auto& drawable : m_toDrawNextFrame)
-		m_window.draw( *drawable );
 
 	m_gui.draw();
 

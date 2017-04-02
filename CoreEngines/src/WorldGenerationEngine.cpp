@@ -52,41 +52,40 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 													 positionInTilesY,
 													 positionInTilesZ );
 
+			sf::Vector2i placementPositionXY( positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL,
+											  positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL );
+			Entity entity;
+			entity.addComponent<TransformationComponent>( placementPositionXY,
+														  chunkPosition.z,
+														  Vector2f( 48 * 2, 64 * 2 ) );
+			entity.addComponent<RenderComponent>( 0 );
+			entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:object_tree" ) );
+			/* Physics */
+			b2BodyDef bodyDef;
+			bodyDef.type = b2_staticBody;
+
+			unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
+			shape->SetAsBox( 0.3f, 0.3f, b2Vec2( 0.f, -0.3f ), 0.f );
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.density = 1.0f;
+			fixtureDef.friction = 0.3f;
+
+			entity.addComponent<PhysicsComponent>( bodyDef,
+												   move( shape ),
+												   fixtureDef );
+			retVal.push_back( move( entity ) );
+			/*
+			Entity entity = r_resourceEngine->blueprints.getEntity( 0 );
+			entity->setPosition( {...} );
+			entity->setZValue( 0 );
+			*/
+
 			if (noiseVal > 0)
 			{
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
 				if (noiseVal > 0.8 && dist2( mt ) < 1)
 				{
-					sf::Vector2i placementPositionXY( positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL,
-													  positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL );
-					Entity entity;
-					entity.addComponent<TransformationComponent>( placementPositionXY,
-																  chunkPosition.z,
-																  Vector2f( 48 * 2, 64 * 2 ) );
-					entity.addComponent<RenderComponent>( 0 );
-					entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:object_tree" ) );
-					/* Physics */
-					b2BodyDef bodyDef;
-					bodyDef.type = b2_staticBody;
-
-					unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
-					shape->SetAsBox( 0.3f, 0.3f, b2Vec2( 0.f, -0.3f ), 0.f );
-
-					b2FixtureDef fixtureDef;
-					fixtureDef.density = 1.0f;
-					fixtureDef.friction = 0.3f;
-
-					entity.addComponent<PhysicsComponent>( bodyDef,
-														   move( shape ),
-														   fixtureDef );
-
-					/*
-						Entity entity = r_resourceEngine->blueprints.getEntity( 0 );
-						entity->setPosition( {...} );
-						entity->setZValue( 0 );
-					*/
-
-					retVal.push_back( move( entity ) );
 				}
 			}
 			else if (noiseVal > -0.5)
