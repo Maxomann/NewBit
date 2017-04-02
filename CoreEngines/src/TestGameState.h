@@ -27,6 +27,8 @@ namespace nb
 		WorldGenerationEngine* r_worldGenerationEngine;
 		tgui::Gui* r_gui;
 
+		tgui::Label::Ptr fpsLabel;
+
 		sf::Sprite m_sprite;
 		Entity* m_debugEntity;
 		Entity* m_camera;

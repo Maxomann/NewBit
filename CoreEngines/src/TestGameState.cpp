@@ -16,6 +16,13 @@ void TestGameState::init()
 	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
 	r_gui = r_core->engines.getEngine<GraphicsEngine>()->getGui();
 
+	fpsLabel = Label::create();
+	fpsLabel->setSize( Layout2d( 100, 40 ) );
+	fpsLabel->setPosition( "{parent.width-width, 0}" );
+	fpsLabel->setText( "0" );
+	fpsLabel->setTextSize( 30 );
+	r_gui->add( fpsLabel );
+
 	// Input
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_track( m_connections, this, &TestGameState::drawTestsprite );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Up].connect_track( m_connections, [&]() {
@@ -206,10 +213,12 @@ void TestGameState::init()
 
 void nb::TestGameState::update()
 {
+	const auto frameTimeAsMilliseconds = engine<GraphicsEngine>()->getFrameTime().asMilliseconds();
+	fpsLabel->setText( to_string( frameTimeAsMilliseconds ) );
 	if (m_debugEntity)
 	{
 		auto healthComp = m_debugEntity->getComponent<HealthComponent>();
-		healthComp->damage( 0.002f*engine<GraphicsEngine>()->getFrameTime().asMilliseconds() );
+		healthComp->damage( 0.002f*frameTimeAsMilliseconds );
 	}
 
 	return;
@@ -217,6 +226,7 @@ void nb::TestGameState::update()
 
 void TestGameState::destroy()
 {
+	r_gui->remove( fpsLabel );
 	cout << "TestGameState destroy()" << endl;
 }
 
