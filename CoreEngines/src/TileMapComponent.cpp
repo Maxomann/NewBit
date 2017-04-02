@@ -1,14 +1,14 @@
-#include "TerrainComponent.h"
+#include "TileMapComponent.h"
 #include "ChunkSystem.h"
 using namespace std;
 using namespace sf;
 using namespace nb;
 
-const int TerrainComponent::TILE_SIZE_IN_PIXEL = Tile::TILE_SIZE_IN_PIXEL;
-const int TerrainComponent::TERRAIN_SIZE_IN_PIXEL = 640;
-const int TerrainComponent::TILES_PER_TERRAIN = 20; // = 640(TERRAIN_SIZE_IN_PIXEL) / 32(TILE_SIZE_IN_PIXEL)
+const int TileMapComponent::TILE_SIZE_IN_PIXEL = Tile::TILE_SIZE_IN_PIXEL;
+const int TileMapComponent::TERRAIN_SIZE_IN_PIXEL = 640;
+const int TileMapComponent::TILES_PER_TERRAIN = 20; // = 640(TERRAIN_SIZE_IN_PIXEL) / 32(TILE_SIZE_IN_PIXEL)
 
-nb::TerrainComponent::TerrainComponent( const Tile* defaultTile )
+nb::TileMapComponent::TileMapComponent( const Tile* defaultTile )
 {
 	for (int x = 0; x < TILES_PER_TERRAIN; ++x)
 	{
@@ -21,7 +21,7 @@ nb::TerrainComponent::TerrainComponent( const Tile* defaultTile )
 	generate();
 }
 
-nb::TerrainComponent::TerrainComponent( const Tile* defaultTile, std::map<sf::Vector2i, const Tile*> tileTexturesByPosition )
+nb::TileMapComponent::TileMapComponent( const Tile* defaultTile, std::map<sf::Vector2i, const Tile*> tileTexturesByPosition )
 {
 	for (int x = 0; x < TILES_PER_TERRAIN; ++x)
 	{
@@ -36,20 +36,20 @@ nb::TerrainComponent::TerrainComponent( const Tile* defaultTile, std::map<sf::Ve
 	generate();
 }
 
-nb::TerrainComponent::TerrainComponent( std::vector<std::vector<const Tile*>> tiles )
+nb::TileMapComponent::TileMapComponent( std::vector<std::vector<const Tile*>> tiles )
 	: tiles( move( tiles ) )
 {
 	generate();
 }
 
-nb::TerrainComponent::~TerrainComponent()
+nb::TileMapComponent::~TileMapComponent()
 {
 	if (generationFuture.valid() &&
 		 generationFuture.wait_for( chrono::microseconds( 0 ) ) != future_status::ready)
 		generationFuture.wait();// prevent thread from accessing vertexArrays after destrucion
 }
 
-void TerrainComponent::init()
+void TileMapComponent::init()
 {
 	auto entity = getEntity();
 
@@ -72,33 +72,33 @@ void TerrainComponent::init()
 	render->addDrawable( this );
 };
 
-void TerrainComponent::destroy()
+void TileMapComponent::destroy()
 {
 	return;
 };
 
-void nb::TerrainComponent::setTiles( std::map<sf::Vector2i, const Tile*> tilesByPosition )
+void nb::TileMapComponent::setTiles( std::map<sf::Vector2i, const Tile*> tilesByPosition )
 {
 	for (auto& el : tilesByPosition)
 		tiles.at( el.first.x ).at( el.first.y ) = el.second;
 	generate();
 }
 
-const Tile * nb::TerrainComponent::getTile( sf::Vector2i relativePosition ) const
+const Tile * nb::TileMapComponent::getTile( sf::Vector2i relativePosition ) const
 {
 	return tiles.at( relativePosition.x ).at( relativePosition.y );
 }
 
-void nb::TerrainComponent::generate()
+void nb::TileMapComponent::generate()
 {
 	if (generationFuture.valid() &&
 		 generationFuture.wait_for( chrono::microseconds( 0 ) ) != future_status::ready)
 		generationFuture.wait();// this is expensive, since it has to wait for generate_internal() to finish!
 
-	generationFuture = std::async( std::launch::async, &TerrainComponent::generate_internal, this );
+	generationFuture = std::async( std::launch::async, &TileMapComponent::generate_internal, this );
 }
 
-void nb::TerrainComponent::generate_internal()
+void nb::TileMapComponent::generate_internal()
 {
 	std::map<const sf::Texture*, std::vector<sf::Vertex>>vertexArraysBuffer;
 
@@ -136,7 +136,7 @@ void nb::TerrainComponent::generate_internal()
 	vertexArrays = move( vertexArraysBuffer );
 }
 
-void nb::TerrainComponent::draw( sf::RenderTarget & target,
+void nb::TileMapComponent::draw( sf::RenderTarget & target,
 								 sf::RenderStates states )const
 {
 	lock_guard<mutex> lock( vertexArraysMutex );
@@ -154,13 +154,13 @@ void nb::TerrainComponent::draw( sf::RenderTarget & target,
 	}
 }
 
-sf::Vector2i nb::TerrainComponent::calculateRelativeTilePosition( sf::Vector3i absoluteTilePosition )
+sf::Vector2i nb::TileMapComponent::calculateRelativeTilePosition( sf::Vector3i absoluteTilePosition )
 {
 	Vector2i retVal;
 
 	auto thisPixelPosition = component<TransformationComponent>()->getPosition();
 	if (thisPixelPosition.z != absoluteTilePosition.z)
-		throw std::logic_error( "nb::TerrainComponent::calculateRelativeTilePosition | thisPixelPosition.z != absoluteTilePosition.z" );
+		throw std::logic_error( "nb::TileMapComponent::calculateRelativeTilePosition | thisPixelPosition.z != absoluteTilePosition.z" );
 
 	auto thisChunkPosition = ChunkSystem::calculateChunkPositionForPixelPosition( thisPixelPosition );
 

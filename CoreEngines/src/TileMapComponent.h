@@ -8,7 +8,7 @@
 
 namespace nb
 {
-	class TerrainComponent : public Component, public sf::Drawable
+	class TileMapComponent : public Component, public sf::Drawable
 	{
 		std::vector<std::vector<const Tile*>> tiles;
 
@@ -20,11 +20,11 @@ namespace nb
 		void generate_internal();
 
 	public:
-		TerrainComponent( const Tile* defaultTile );
-		TerrainComponent( const Tile* defaultTile,
+		TileMapComponent( const Tile* defaultTile );
+		TileMapComponent( const Tile* defaultTile,
 						  std::map<sf::Vector2i, const Tile*> tileTexturesByPosition );
-		TerrainComponent( std::vector<std::vector<const Tile*>> tiles );
-		~TerrainComponent();
+		TileMapComponent( std::vector<std::vector<const Tile*>> tiles );
+		~TileMapComponent();
 
 		virtual void init() override;
 		virtual void destroy() override;

@@ -3,7 +3,7 @@
 #include "ResourceEngine.h"
 #include "TransformationComponent.h"
 #include "RenderComponent.h"
-#include "TerrainComponent.h"
+#include "TileMapComponent.h"
 #include "ChunkSystem.h"
 #include "MathExtensions.h"
 #include "SpriteComponent.h"

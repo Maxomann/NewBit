@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "GraphicsEngine.h"
-#include "TerrainComponent.h"
+#include "TileMapComponent.h"
 #include "ResourceEngine.h"
 #include "InputEngine.h"
 #include "ChunkSystem.h"
@@ -19,6 +19,8 @@ namespace nb
 		Tile::ID tileToPaint = 0;
 
 		bool isWindowOpen = true;
+
+		Connections connections;
 
 	public:
 

@@ -32,7 +32,7 @@ void nb::TilePaintGameState::init()
 	childWindow->add( tileListBox );
 	r_gui->add( childWindow );
 
-	engine<InputEngine>()->s_whileMouseButtonPressedInWindow[Mouse::Button::Left].connect( [&]( const sf::Vector2i& positionInWindow ) {
+	engine<InputEngine>()->s_whileMouseButtonPressedInWindow[Mouse::Button::Left].connect_track( connections, [&]( const sf::Vector2i& positionInWindow ) {
 		if (engine<GraphicsEngine>()->isGuiFocused())
 			return;
 
@@ -47,11 +47,11 @@ void nb::TilePaintGameState::init()
 		auto chunkPositionInWorld = ChunkSystem::calculateChunkPositionForPixelPosition( pixelPositionInWorld );
 		auto tilePositionInWorld = Tile::calculateTilePositionForPixelPosition( pixelPositionInWorld );
 		auto terrainToModifyVec = world().getSystem<ChunkSystem>()->getEntitiesInChunk_if( chunkPositionInWorld, [&]( const Entity* entity ) {
-			return(entity->getComponent_try<TerrainComponent>() != nullptr);
+			return(entity->getComponent_try<TileMapComponent>() != nullptr);
 		} );
 		if (terrainToModifyVec.size() == 1)
 		{
-			auto terrainToModify = terrainToModifyVec.at( 0 )->getComponent<TerrainComponent>();
+			auto terrainToModify = terrainToModifyVec.at( 0 )->getComponent<TileMapComponent>();
 			auto relativeTilePosition = terrainToModify->calculateRelativeTilePosition( tilePositionInWorld );
 			auto tileToSet = engine<ResourceEngine>()->tiles.getTile( tileToPaint );
 			if (tileToSet->getId() != terrainToModify->getTile( relativeTilePosition )->getId())

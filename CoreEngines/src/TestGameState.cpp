@@ -18,16 +18,16 @@ void TestGameState::init()
 
 	// Input
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_track( m_connections, this, &TestGameState::drawTestsprite );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Up].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, -1 * r_graphicsEngine->getFrameTime().asMilliseconds() ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::S].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, r_graphicsEngine->getFrameTime().asMilliseconds() ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::A].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( -1 * r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::D].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( m_connections, [&]() {
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Q].connect_track( m_connections, [&]() {
@@ -71,7 +71,7 @@ void TestGameState::init()
 				return false;
 		} );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Up].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
@@ -83,7 +83,7 @@ void TestGameState::init()
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, -force ), true );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::S].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
@@ -95,7 +95,7 @@ void TestGameState::init()
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, force ), true );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::A].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
@@ -107,7 +107,7 @@ void TestGameState::init()
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( -force, 0 ), true );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::D].connect_track( m_connections, [&]() {
 		if (!m_debugEntity)
 			return;
 		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();

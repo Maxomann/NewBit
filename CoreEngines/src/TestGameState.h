@@ -6,7 +6,7 @@
 #include "GraphicsEngine.h"
 #include "TransformationComponent.h"
 #include "ChunkSystem.h"
-#include "TerrainComponent.h"
+#include "TileMapComponent.h"
 #include "WorldLoadingGameState.h"
 #include "PositionTrackerComponent.h"
 #include "GraphicsEngine.h"

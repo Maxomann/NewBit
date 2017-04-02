@@ -39,13 +39,13 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 
 	std::vector<std::vector<const Tile*>> tiles;
 
-	for (int x = 0; x < TerrainComponent::TILES_PER_TERRAIN; ++x)
+	for (int x = 0; x < TileMapComponent::TILES_PER_TERRAIN; ++x)
 	{
 		tiles.emplace_back();
-		for (int y = 0; y < TerrainComponent::TILES_PER_TERRAIN; ++y)
+		for (int y = 0; y < TileMapComponent::TILES_PER_TERRAIN; ++y)
 		{
-			double positionInTilesX = static_cast<double>((chunkPosition.x*TerrainComponent::TILES_PER_TERRAIN) + x);
-			double positionInTilesY = static_cast<double>((chunkPosition.y*TerrainComponent::TILES_PER_TERRAIN) + y);
+			double positionInTilesX = static_cast<double>((chunkPosition.x*TileMapComponent::TILES_PER_TERRAIN) + x);
+			double positionInTilesY = static_cast<double>((chunkPosition.y*TileMapComponent::TILES_PER_TERRAIN) + y);
 			double positionInTilesZ = static_cast<double>(std::hash<int>{}(chunkPosition.z));
 
 			auto noiseVal = noiseGenerator.GetValue( positionInTilesX,
@@ -57,8 +57,8 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
 				if (noiseVal > 0.8 && dist2( mt ) < 1)
 				{
-					sf::Vector2i placementPositionXY( positionInTilesX*TerrainComponent::TILE_SIZE_IN_PIXEL,
-													  positionInTilesY*TerrainComponent::TILE_SIZE_IN_PIXEL );
+					sf::Vector2i placementPositionXY( positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL,
+													  positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL );
 					Entity entity;
 					entity.addComponent<TransformationComponent>( placementPositionXY,
 																  chunkPosition.z,
@@ -96,7 +96,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 		}
 	}
 
-	auto terrainComp = terrain.addComponent<TerrainComponent>( tiles );
+	auto terrainComp = terrain.addComponent<TileMapComponent>( tiles );
 
 	retVal.push_back( move( terrain ) );
 

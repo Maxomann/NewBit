@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "TransformationComponent.h"
 #include "sfmlExtensions.h"
-#include "TerrainComponent.h"
+#include "TileMapComponent.h"
 
 namespace nb
 {
