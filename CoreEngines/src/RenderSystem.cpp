@@ -32,35 +32,6 @@ void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 	} ), m_entitiesToDraw.end() );
 }
 
-/*void nb::RenderSystem::generateDrawingData()
-{
-	// get debug drawing data
-	debugDrawingData.clear();
-
-	// generate drawingData
-	m_drawingData.clear();
-	for (const auto& cam : m_camerasForDrawing)
-	{
-		auto camLayer = cam->getComponent<TransformationComponent>()->getLayer();
-		s_collectDebugDrawingData.call( debugDrawingData, camLayer );
-
-		std::vector<const sf::Drawable*> toDraw;
-		for (const auto& el : m_entitiesToDraw)
-		{
-			if (camLayer == el->getComponent<TransformationComponent>()->getLayer())
-			{
-				const auto& renderComponentDrawingData = el->getComponent<RenderComponent>()->getDrawingData();
-				toDraw.insert( toDraw.end(), renderComponentDrawingData.begin(), renderComponentDrawingData.end() );
-			}
-		}
-		for (const auto& el : debugDrawingData)
-			toDraw.push_back( el.get() );
-		m_drawingData.push_back( make_pair( &cam->getComponent<CameraComponent>()->getView(), move( toDraw ) ) );
-	}
-
-	m_drawingDataIsValid = true;
-}*/
-
 void RenderSystem::init()
 {
 	auto world = getWorld();
@@ -86,38 +57,6 @@ const std::vector<Entity*>& nb::RenderSystem::getCamerasForDrawing() const
 {
 	return m_camerasForDrawing;
 }
-
-/*void nb::RenderSystem::sort()
-{
-	//cout << m_entitiesToDraw.size() << ":";
-	//int count = 0;
-
-	// sort entitiesToDraw
-	std::sort( m_entitiesToDraw.begin(), m_entitiesToDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
-		// order: z^-1,y,x
-		const auto& posLhs = lhs->getComponent<TransformationComponent>()->getPositionXY();
-		const auto& posRhs = rhs->getComponent<TransformationComponent>()->getPositionXY();
-		const auto& zVlaueLhs = lhs->getComponent<RenderComponent>()->getZValue();
-		const auto& zVlaueRhs = rhs->getComponent<RenderComponent>()->getZValue();
-
-		//count += 4;
-
-		if (zVlaueRhs > zVlaueLhs)
-			return true;
-		else if (zVlaueRhs < zVlaueLhs)
-			return false;
-		else if (posRhs.y > posLhs.y)
-			return true;
-		else if (posRhs.y < posLhs.y)
-			return false;
-		else if (posRhs.x > posLhs.x)
-			return true;
-		else
-			return false;
-	} );
-
-	//cout << count << endl;
-}*/
 
 const std::vector<Entity*>& nb::RenderSystem::getEntitiesWithRenderComponent() const
 {

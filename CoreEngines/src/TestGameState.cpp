@@ -46,12 +46,12 @@ void TestGameState::init()
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Add].connect_track( m_connections, [&]() {
 		auto size = m_camera->getComponent<TransformationComponent>()->getSize();
 		//if (size.x > 200 && size.y > 200)
-		m_camera->getComponent<TransformationComponent>()->scale( 1.f - (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) );
+		m_camera->getComponent<TransformationComponent>()->scale( abs( 1.f - (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) ) );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Subtract].connect_track( m_connections, [&]() {
 		auto size = m_camera->getComponent<TransformationComponent>()->getSize();
 		//if (size.x < 10000 && size.y < 10000)
-		m_camera->getComponent<TransformationComponent>()->scale( 1.f + (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) );
+		m_camera->getComponent<TransformationComponent>()->scale( abs( 1.f + (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) ) );
 	} );
 	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( m_connections, [&]() {
 		auto cameraTransform = m_camera->getComponent<TransformationComponent>();
@@ -207,11 +207,11 @@ void TestGameState::init()
 
 	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
-	//r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
-	world().addEntities( r_worldGenerationEngine->generateChunk( { 0,0,0 } ) );
+	r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
+	/*world().addEntities( r_worldGenerationEngine->generateChunk( { 0,0,0 } ) );
 	world().addEntities( r_worldGenerationEngine->generateChunk( { 1,0,0 } ) );
 	world().addEntities( r_worldGenerationEngine->generateChunk( { 2,0,0 } ) );
-	world().addEntities( r_worldGenerationEngine->generateChunk( { 3,0,0 } ) );
+	world().addEntities( r_worldGenerationEngine->generateChunk( { 3,0,0 } ) );*/
 
 	return;
 }

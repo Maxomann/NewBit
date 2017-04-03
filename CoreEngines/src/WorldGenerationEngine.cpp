@@ -52,8 +52,9 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 													 positionInTilesY,
 													 positionInTilesZ );
 
-			sf::Vector2i placementPositionXY( positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL,
-											  positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL );
+			sf::Vector2i placementPositionXY(
+				(positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
+				(positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2 );
 			Entity entity;
 			entity.addComponent<TransformationComponent>( placementPositionXY,
 														  chunkPosition.z,
