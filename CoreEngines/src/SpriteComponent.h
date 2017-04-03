@@ -9,8 +9,12 @@ namespace nb
 	class SpriteComponent : public nb::Component
 	{
 		sf::Sprite m_sprite;
+		sf::FloatRect globalBounds;
 
 		void setSize( sf::Vector2f newSize );
+
+		void calculateGlobalBounds();
+
 	public:
 		SpriteComponent( const sf::Texture& texture );
 		SpriteComponent( const TextureReference& texture );

@@ -14,6 +14,8 @@ namespace nb
 
 		mutable std::mutex vertexArraysMutex;
 		std::map<const sf::Texture*, std::vector<sf::Vertex>> vertexArrays;
+		sf::FloatRect globalBounds;
+		void calculateGlobalBounds();
 
 		std::future<void> generationFuture;
 		void generate();

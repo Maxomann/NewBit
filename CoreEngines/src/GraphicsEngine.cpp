@@ -34,18 +34,50 @@ bool nb::GraphicsEngine::update()
 	// draw
 	m_window.clear( sf::Color::Green );
 
-	r_renderSystem->sort();
 	for (const auto& cam : r_renderSystem->getCamerasForDrawing())
 	{
-		auto camLayer = cam->getComponent<TransformationComponent>()->getLayer();
-		m_window.setView( cam->getComponent<CameraComponent>()->getView() );
+		const auto& camLayer = cam->getComponent<TransformationComponent>()->getLayer();
+		const auto& camComponent = cam->getComponent<CameraComponent>();
+		const auto& camView = camComponent->getView();
+		const auto& camGlobalBounds = camComponent->getGlobalBounds();
+		m_window.setView( camView );
 
-		for (const auto& el : r_renderSystem->getEntitiesWithRenderComponentSorted())
+		std::vector<Entity*> toDraw;
+
+		//get to draw
+		for (const auto& el : r_renderSystem->getEntitiesWithRenderComponent())
 		{
-			if (el->getComponent<TransformationComponent>()->getLayer() == camLayer)
-				for (const auto& drawable : el->getComponent<RenderComponent>()->getDrawingData())
-					m_window.draw( *drawable );
+			if (el->getComponent<TransformationComponent>()->getLayer() == camLayer &&
+				 el->getComponent<RenderComponent>()->getGlobalBounds().intersects( camGlobalBounds ))
+				toDraw.push_back( el );
 		}
+
+		//sort
+		std::sort( toDraw.begin(), toDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
+			// order: z^-1,y,x
+			const auto& posLhs = lhs->getComponent<TransformationComponent>()->getPositionXY();
+			const auto& posRhs = rhs->getComponent<TransformationComponent>()->getPositionXY();
+			const auto& zVlaueLhs = lhs->getComponent<RenderComponent>()->getZValue();
+			const auto& zVlaueRhs = rhs->getComponent<RenderComponent>()->getZValue();
+
+			if (zVlaueRhs > zVlaueLhs)
+				return true;
+			else if (zVlaueRhs < zVlaueLhs)
+				return false;
+			else if (posRhs.y > posLhs.y)
+				return true;
+			else if (posRhs.y < posLhs.y)
+				return false;
+			else if (posRhs.x > posLhs.x)
+				return true;
+			else
+				return false;
+		} );
+
+		//draw
+		for (const auto& el : toDraw)
+			for (const auto& drawable : el->getComponent<RenderComponent>()->getDrawingData())
+				m_window.draw( *drawable );
 
 		for (const auto& debugEl : r_renderSystem->getDebugDrawingDataForLayer( camLayer ))
 			m_window.draw( *debugEl );

@@ -186,6 +186,7 @@ void TestGameState::init()
 
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::Home].connect_track( m_connections, [&]() {
 		auto physics = world().getSystem<PhysicsSystem>();
+		cout << !physics->isDebugDrawEnabled() << endl;
 		physics->setDebugDrawEnabled( !physics->isDebugDrawEnabled() );
 	} );
 
@@ -206,7 +207,11 @@ void TestGameState::init()
 
 	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
-	r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
+	//r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
+	world().addEntities( r_worldGenerationEngine->generateChunk( { 0,0,0 } ) );
+	world().addEntities( r_worldGenerationEngine->generateChunk( { 1,0,0 } ) );
+	world().addEntities( r_worldGenerationEngine->generateChunk( { 2,0,0 } ) );
+	world().addEntities( r_worldGenerationEngine->generateChunk( { 3,0,0 } ) );
 
 	return;
 }

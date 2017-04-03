@@ -27,8 +27,7 @@ namespace nb
 		void setCamerasForDrawing( std::vector<Entity*> cameras );
 		const std::vector<Entity*>& getCamerasForDrawing()const;
 
-		void sort();
-		const std::vector<Entity*>& getEntitiesWithRenderComponentSorted()const;
+		const std::vector<Entity*>& getEntitiesWithRenderComponent()const;
 
 		const std::vector<std::unique_ptr<sf::Drawable>>& getDebugDrawingDataForLayer( int layer );
 

@@ -18,5 +18,7 @@ namespace nb
 
 		virtual void init() override;
 		virtual void destroy() override;
+
+		sf::FloatRect getGlobalBounds()const;
 	};
 }

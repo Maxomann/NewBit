@@ -87,8 +87,11 @@ const std::vector<Entity*>& nb::RenderSystem::getCamerasForDrawing() const
 	return m_camerasForDrawing;
 }
 
-void nb::RenderSystem::sort()
+/*void nb::RenderSystem::sort()
 {
+	//cout << m_entitiesToDraw.size() << ":";
+	//int count = 0;
+
 	// sort entitiesToDraw
 	std::sort( m_entitiesToDraw.begin(), m_entitiesToDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
 		// order: z^-1,y,x
@@ -96,6 +99,8 @@ void nb::RenderSystem::sort()
 		const auto& posRhs = rhs->getComponent<TransformationComponent>()->getPositionXY();
 		const auto& zVlaueLhs = lhs->getComponent<RenderComponent>()->getZValue();
 		const auto& zVlaueRhs = rhs->getComponent<RenderComponent>()->getZValue();
+
+		//count += 4;
 
 		if (zVlaueRhs > zVlaueLhs)
 			return true;
@@ -110,15 +115,18 @@ void nb::RenderSystem::sort()
 		else
 			return false;
 	} );
-}
 
-const std::vector<Entity*>& nb::RenderSystem::getEntitiesWithRenderComponentSorted() const
+	//cout << count << endl;
+}*/
+
+const std::vector<Entity*>& nb::RenderSystem::getEntitiesWithRenderComponent() const
 {
 	return m_entitiesToDraw;
 }
 
 const std::vector<std::unique_ptr<sf::Drawable>>& nb::RenderSystem::getDebugDrawingDataForLayer( int layer )
 {
+	debugDrawingData.clear();
 	s_collectDebugDrawingData.call( debugDrawingData, layer );
 	return debugDrawingData;
 }

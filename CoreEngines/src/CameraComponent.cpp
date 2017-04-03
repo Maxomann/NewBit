@@ -41,3 +41,16 @@ const View & nb::CameraComponent::getView() const
 {
 	return m_view;
 }
+
+sf::FloatRect nb::CameraComponent::getGlobalBounds() const
+{
+	sf::Vector2f size = m_view.getSize();
+	sf::Vector2f center = m_view.getCenter();
+
+	sf::RectangleShape shape;
+	shape.setPosition( center.x - (size.x / 2), center.y - (size.y / 2) );
+	shape.setSize( size );
+	shape.setRotation( m_view.getRotation() );
+
+	return shape.getGlobalBounds();
+}

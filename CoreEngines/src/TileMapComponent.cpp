@@ -8,6 +8,17 @@ const int TileMapComponent::TILE_SIZE_IN_PIXEL = Tile::TILE_SIZE_IN_PIXEL;
 const int TileMapComponent::TERRAIN_SIZE_IN_PIXEL = 640;
 const int TileMapComponent::TILES_PER_TERRAIN = 20; // = 640(TERRAIN_SIZE_IN_PIXEL) / 32(TILE_SIZE_IN_PIXEL)
 
+void nb::TileMapComponent::calculateGlobalBounds()
+{
+	const auto transformPositionXY = component<TransformationComponent>()->getPositionXY();
+	globalBounds = FloatRect(
+		transformPositionXY.x,
+		transformPositionXY.y,
+		TERRAIN_SIZE_IN_PIXEL,
+		TERRAIN_SIZE_IN_PIXEL
+	);
+}
+
 nb::TileMapComponent::TileMapComponent( const Tile* defaultTile )
 {
 	for (int x = 0; x < TILES_PER_TERRAIN; ++x)
@@ -57,7 +68,7 @@ void TileMapComponent::init()
 	auto transform = entity->getComponent<TransformationComponent>();
 	transform->s_positionXYChanged.connect( [&]( const TransformationComponent*const transform,
 												 sf::Vector2i oldPositionXY ) {
-		//do nothing
+		calculateGlobalBounds();
 	} );
 	transform->s_sizeChanged.connect( [&]( const TransformationComponent*const transform,
 										   sf::Vector2f oldSize ) {
@@ -68,8 +79,10 @@ void TileMapComponent::init()
 		throw std::logic_error( "Cannot rotate Terrain" );
 	} );
 
+	calculateGlobalBounds();
+
 	auto render = entity->getComponent<RenderComponent>();
-	render->addDrawable( this );
+	render->addDrawable( this, &globalBounds );
 };
 
 void TileMapComponent::destroy()
