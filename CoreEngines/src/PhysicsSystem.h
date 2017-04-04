@@ -4,6 +4,7 @@
 #include "PhysicsComponent.h"
 #include "RenderSystem.h"
 #include "PhysicsDebugDraw.h"
+#include "PhysicsSystemCallbacks.h"
 
 namespace nb
 {
@@ -30,5 +31,7 @@ namespace nb
 
 		void setDebugDrawEnabled( bool enabled );
 		bool isDebugDrawEnabled()const;
+
+		Entity* getFirstEntityAtPixelPosition( const sf::Vector3i& position );
 	};
 }

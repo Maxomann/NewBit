@@ -46,6 +46,19 @@ void nb::DemoEditGameState::init()
 																	 placementPositionXY.y,
 																	 camera->getComponent<TransformationComponent>()->getLayer() ) ) );
 	} );
+
+	r_inputEngine->s_onMouseButtonPressedInWindow[Mouse::Button::Right].connect_track( m_connections, [&]( Vector2i mousePosition ) {
+		if (engine<GraphicsEngine>()->isGuiFocused())
+			return;
+		auto* camera = getCore()->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
+		auto placementPositionXY = static_cast<sf::Vector2i>(r_graphicsEngine->getWindow().mapPixelToCoords( mousePosition, camera->getComponent<CameraComponent>()->getView() ));
+
+		const auto entity = getCore()->world.getSystem<PhysicsSystem>()->getFirstEntityAtPixelPosition( Vector3i( placementPositionXY.x,
+																												  placementPositionXY.y,
+																												  camera->getComponent<TransformationComponent>()->getLayer() ) );
+		if (entity)
+			world().removeEntity( entity );
+	} );
 }
 
 void nb::DemoEditGameState::update()

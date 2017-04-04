@@ -5,6 +5,7 @@
 #include "ResourceEngine.h"
 #include "PhysicsComponent.h"
 #include "EntityFactories.h"
+#include "PhysicsSystem.h"
 
 namespace nb
 {

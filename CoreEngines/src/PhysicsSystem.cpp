@@ -94,3 +94,20 @@ bool nb::PhysicsSystem::isDebugDrawEnabled() const
 {
 	return drawDebugLayer;
 }
+
+Entity * nb::PhysicsSystem::getFirstEntityAtPixelPosition( const sf::Vector3i & position )
+{
+	const auto& layer = getSimulationForLayer( position.z );
+	b2AABB aabb;
+	aabb.upperBound = b2Vec2( position.x * PIXEL_TO_METER,
+							  position.y * PIXEL_TO_METER );
+	aabb.lowerBound = aabb.upperBound;
+
+	PhysicsAABBCallback callback;
+	layer.QueryAABB( &callback, aabb );
+
+	if (callback.foundBodies.size())
+		return static_cast<Entity*>(callback.foundBodies.at( 0 )->GetUserData());
+	else
+		return nullptr;
+}
