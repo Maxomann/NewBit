@@ -9,7 +9,7 @@ namespace nb
 {
 	class Entity
 	{
-		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_components;
+		std::map<std::type_index, std::unique_ptr<Component>> m_components;
 		bool m_isInit = false;
 
 	public:
@@ -26,7 +26,7 @@ namespace nb
 			if (m_isInit)
 				component->init();
 
-			const auto typeIndex = std::type_index( typeid(T) );
+			const std::type_index typeIndex( typeid(T) );
 
 			auto insertResult = m_components.insert( std::make_pair( typeIndex, std::move( component ) ) );
 			if (!insertResult.second)
@@ -39,7 +39,7 @@ namespace nb
 		template < class T >
 		T* getComponent()const
 		{
-			const auto typeIndex = std::type_index( typeid(T) );
+			const std::type_index typeIndex( typeid(T) );
 			try
 			{
 				return (T*)m_components.at( typeIndex ).get();
@@ -59,7 +59,7 @@ namespace nb
 		template < class T >
 		T* getComponent_try()const
 		{
-			const auto typeIndex = std::type_index( typeid(T) );
+			const std::type_index typeIndex( typeid(T) );
 			auto result = m_components.find( typeIndex );
 			if (result != m_components.end())
 				return (T*)result->second.get();
@@ -76,7 +76,7 @@ namespace nb
 		template < class T >
 		void removeComponent()
 		{
-			const auto typeIndex = std::type_index( typeid(T) );
+			const std::type_index typeIndex( typeid(T) );
 			try
 			{
 				auto& component = m_components.at( typeIndex );
