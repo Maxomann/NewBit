@@ -19,10 +19,14 @@ void nb::WorldLoadStateSystem::init()
 
 void nb::WorldLoadStateSystem::update()
 {
+	int count = 0;
+
 	chunkLoadStateChanger.erase( remove_if( chunkLoadStateChanger.begin(), chunkLoadStateChanger.end(), [&]( const unique_ptr<ChunkLoadStateChanger>& el ) {
-		if (el->isReady())
+		if (count < CHUNK_LOAD_STATE_EXECUTIONS_PER_FRAME &&
+			 el->isReady())
 		{
 			chunkLoadStates[el->getChunkPosition()] = el->finish( *world() );
+			count++;
 			return true;
 		}
 		else

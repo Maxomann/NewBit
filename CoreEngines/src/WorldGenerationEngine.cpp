@@ -55,7 +55,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 			if (noiseVal > -0.2)
 			{
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
-				if (noiseVal > 0.8 && dist2( mt ) < 1)
+				if (noiseVal > 0.6 && dist2( mt ) < 1)
 				{
 					sf::Vector2i placementPositionXY(
 						(positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
