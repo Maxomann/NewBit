@@ -52,6 +52,8 @@ void nb::PhysicsComponent::addToSimulation( b2World & simulation )
 	bodyDef.angle = degToRad( rotation );
 
 	body = simulation.CreateBody( &bodyDef );
+	// store a ptr to this entity in UserData
+	body->SetUserData( entity() );
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = shape.get();

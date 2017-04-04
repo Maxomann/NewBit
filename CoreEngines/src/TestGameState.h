@@ -14,6 +14,7 @@
 #include "DemoEditGameState.h"
 #include "PhysicsSystem.h"
 #include "TilePaintGameState.h"
+#include "EntityFactories.h"
 
 namespace nb
 {

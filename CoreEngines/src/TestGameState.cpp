@@ -140,32 +140,7 @@ void TestGameState::init()
 	} );
 
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( m_connections, [&]() {
-		Entity entity;
-		entity.addComponent<TransformationComponent>( Vector2i( 0, 0 ),
-													  0,
-													  Vector2f( 32, 64 ) );
-		entity.addComponent<RenderComponent>( 0 );
-		entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:player" ) );
-		entity.addComponent<HealthComponent>( 200, 100 );
-
-		/* Physics */
-		b2BodyDef bodyDef;
-		bodyDef.type = b2_dynamicBody;
-		bodyDef.linearDamping = 0.5f;
-		bodyDef.fixedRotation = true;
-
-		unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
-		shape->SetAsBox( 0.3f, 0.15f, b2Vec2( 0.f, -0.15f ), 0.f );
-
-		b2FixtureDef fixtureDef;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.3f;
-
-		entity.addComponent<PhysicsComponent>( bodyDef,
-											   move( shape ),
-											   fixtureDef );
-
-		m_debugEntity = getCore()->world.addEntity( move( entity ) );
+		m_debugEntity = getCore()->world.addEntity( createHuman( engines() ) );
 
 		auto cameraPositionTracker = m_camera->getComponent<PositionTrackerComponent>();
 		cameraPositionTracker->setOffsetXY( { 0, -32 } );

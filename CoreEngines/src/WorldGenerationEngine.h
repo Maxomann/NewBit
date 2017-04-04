@@ -8,6 +8,7 @@
 #include "MathExtensions.h"
 #include "SpriteComponent.h"
 #include "PhysicsComponent.h"
+#include "EntityFactories.h"
 
 namespace nb
 {

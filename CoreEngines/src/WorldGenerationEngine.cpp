@@ -27,16 +27,6 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 {
 	std::vector<Entity> retVal;
 
-	Entity terrain;
-	terrain.addComponent<TransformationComponent>(
-		Vector2i( ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.x,
-				  ChunkSystem::CHUNK_SIZE_IN_PIXEL * chunkPosition.y ),
-		chunkPosition.z,
-		Vector2f( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
-				  ChunkSystem::CHUNK_SIZE_IN_PIXEL )
-		);
-	terrain.addComponent<RenderComponent>( -10 );
-
 	std::vector<std::vector<const Tile*>> tiles;
 
 	for (int x = 0; x < TileMapComponent::TILES_PER_TERRAIN; ++x)
@@ -57,30 +47,12 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
 				if (noiseVal > 0.6 && dist2( mt ) < 1)
 				{
-					sf::Vector2i placementPositionXY(
+					sf::Vector3i placementPosition(
 						(positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
-						(positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2 );
-					Entity entity;
-					entity.addComponent<TransformationComponent>( placementPositionXY,
-																  chunkPosition.z,
-																  Vector2f( 48 * 2, 64 * 2 ) );
-					entity.addComponent<RenderComponent>( 0 );
-					entity.addComponent<SpriteComponent>( *r_resourceEngine->textures.getTextureReference( "default:texture:object_tree" ) );
-					/* Physics */
-					b2BodyDef bodyDef;
-					bodyDef.type = b2_staticBody;
+						(positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
+						chunkPosition.z );
 
-					unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
-					shape->SetAsBox( 0.3f, 0.3f, b2Vec2( 0.f, -0.3f ), 0.f );
-
-					b2FixtureDef fixtureDef;
-					fixtureDef.density = 1.0f;
-					fixtureDef.friction = 0.3f;
-
-					entity.addComponent<PhysicsComponent>( bodyDef,
-														   move( shape ),
-														   fixtureDef );
-					retVal.push_back( move( entity ) );
+					retVal.push_back( createTree( engines(), placementPosition ) );
 					/*
 					Entity entity = r_resourceEngine->blueprints.getEntity( 0 );
 					entity->setPosition( {...} );
@@ -95,9 +67,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 		}
 	}
 
-	auto terrainComp = terrain.addComponent<TileMapComponent>( tiles );
-
-	retVal.push_back( move( terrain ) );
+	retVal.push_back( createTilemapChunk( engines(), chunkPosition, move( tiles ) ) );
 
 	return retVal;
 }

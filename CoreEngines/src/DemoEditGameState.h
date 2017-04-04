@@ -4,6 +4,7 @@
 #include "InputEngine.h"
 #include "ResourceEngine.h"
 #include "PhysicsComponent.h"
+#include "EntityFactories.h"
 
 namespace nb
 {
