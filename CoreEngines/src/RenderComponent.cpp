@@ -10,6 +10,10 @@ nb::RenderComponent::RenderComponent( int zValue )
 
 void RenderComponent::init()
 {
+	sortPositionXY = component<TransformationComponent>()->getPositionXY();
+
+	/* ... update */
+
 	return;
 };
 
@@ -18,7 +22,12 @@ void RenderComponent::destroy()
 	return;
 };
 
-int nb::RenderComponent::getZValue() const
+const sf::Vector2i& nb::RenderComponent::getSortPositionXY() const
+{
+	return sortPositionXY;
+}
+
+const int& nb::RenderComponent::getZValue() const
 {
 	return m_zValue;
 }

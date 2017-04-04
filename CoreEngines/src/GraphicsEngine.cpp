@@ -55,10 +55,12 @@ bool nb::GraphicsEngine::update()
 		//sort
 		std::sort( toDraw.begin(), toDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
 			// order: z^-1,y,x
-			const auto& posLhs = lhs->getComponent<TransformationComponent>()->getPositionXY();
-			const auto& posRhs = rhs->getComponent<TransformationComponent>()->getPositionXY();
-			const auto& zVlaueLhs = lhs->getComponent<RenderComponent>()->getZValue();
-			const auto& zVlaueRhs = rhs->getComponent<RenderComponent>()->getZValue();
+			const auto& compLhs = lhs->getComponent<RenderComponent>();
+			const auto& compRhs = rhs->getComponent<RenderComponent>();
+			const auto& posLhs = compLhs->getSortPositionXY();
+			const auto& posRhs = compRhs->getSortPositionXY();
+			const auto& zVlaueLhs = compLhs->getZValue();
+			const auto& zVlaueRhs = compRhs->getZValue();
 
 			if (zVlaueRhs > zVlaueLhs)
 				return true;
