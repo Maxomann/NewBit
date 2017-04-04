@@ -6,7 +6,7 @@ namespace nb
 {
 	class RenderComponent : public Component
 	{
-		sf::Vector2i sortPositionXY;
+		const TransformationComponent* transformComponent;
 		int m_zValue = 0;
 
 		std::vector<const sf::Drawable*> m_drawables;

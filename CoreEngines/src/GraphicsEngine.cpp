@@ -7,7 +7,7 @@ using namespace nb;
 void nb::GraphicsEngine::init()
 {
 	m_window.create( sf::VideoMode( 1280, 720 ), "GraphicsEngine Window", Style::Titlebar | Style::Close );
-	m_window.setVerticalSyncEnabled( false );
+	m_window.setVerticalSyncEnabled( true );
 
 	m_gui.setWindow( m_window );
 
