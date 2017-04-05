@@ -15,6 +15,7 @@
 #include "PhysicsSystem.h"
 #include "TilePaintGameState.h"
 #include "EntityFactories.h"
+#include "PhysicsSystem.h"
 
 namespace nb
 {
@@ -26,6 +27,7 @@ namespace nb
 		ResourceEngine* r_resourceEngine;
 		ChunkSystem* r_chunkSystem;
 		WorldGenerationEngine* r_worldGenerationEngine;
+		PhysicsSystem* r_physicsSystem;
 		tgui::Gui* r_gui;
 
 		tgui::Label::Ptr fpsLabel;

@@ -67,7 +67,7 @@ std::vector<Entity> nb::EntityManager::removeEntities_move( std::vector<Entity*>
 			if (*it == &el)
 			{
 				entities.erase( remove( entities.begin(), entities.end(), &el ), entities.end() );
-				el.destroy();
+				//el.destroy();
 				retVal.push_back( move( el ) );
 				return true;
 			}

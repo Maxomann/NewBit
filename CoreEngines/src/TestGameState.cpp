@@ -14,6 +14,7 @@ void TestGameState::init()
 	r_resourceEngine = r_core->engines.getEngine<ResourceEngine>();
 	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
 	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
+	r_physicsSystem = r_core->world.getSystem<PhysicsSystem>();
 	r_gui = r_core->engines.getEngine<GraphicsEngine>()->getGui();
 
 	fpsLabel = Label::create();
@@ -166,8 +167,23 @@ void TestGameState::init()
 
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::Home].connect_track( m_connections, [&]() {
 		auto physics = world().getSystem<PhysicsSystem>();
-		cout << !physics->isDebugDrawEnabled() << endl;
 		physics->setDebugDrawEnabled( !physics->isDebugDrawEnabled() );
+	} );
+
+	r_inputEngine->s_onMouseButtonPressedInWindow[Mouse::Button::Middle].connect_track( m_connections, [&]( sf::Vector2i pixelPositionInWindow ) {
+		auto camera = r_core->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
+		auto cameraComponent = camera->getComponent<CameraComponent>();
+		auto transformationComponent = camera->getComponent<TransformationComponent>();
+		auto placementPositionXY = sf::Vector2i( r_graphicsEngine->getWindow().mapPixelToCoords( pixelPositionInWindow, cameraComponent->getView() ) );
+		auto entity = r_physicsSystem->getFirstEntityAtPixelPosition( Vector3i( placementPositionXY.x,
+																				placementPositionXY.y,
+																				transformationComponent->getLayer() ) );
+
+		if (entity)
+		{
+			auto entityBounds = entity->getComponent<RenderComponent>()->getGlobalBounds();
+			cout << entityBounds.left << ":" << entityBounds.top << "::" << entityBounds.width << ":" << entityBounds.height << endl;
+		}
 	} );
 
 	// logic

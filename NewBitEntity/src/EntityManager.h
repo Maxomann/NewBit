@@ -19,6 +19,8 @@ namespace nb
 
 		DLL_EXPORT void removeEntity( Entity* entity );
 		// void removeEntities( std::vector<Entity*> entity );
+
+		// Entity::destroy() will NOT be called
 		DLL_EXPORT std::vector<Entity> removeEntities_move( std::vector<Entity*> entities );
 
 		DLL_EXPORT int getEntityCount()const;

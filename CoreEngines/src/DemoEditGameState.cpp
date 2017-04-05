@@ -39,7 +39,7 @@ void nb::DemoEditGameState::init()
 	r_inputEngine->s_onMouseButtonPressedInWindow[Mouse::Button::Left].connect_track( m_connections, [&]( Vector2i mousePosition ) {
 		if (engine<GraphicsEngine>()->isGuiFocused())
 			return;
-		auto* camera = getCore()->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
+		auto camera = getCore()->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
 		auto placementPositionXY = static_cast<sf::Vector2i>(r_graphicsEngine->getWindow().mapPixelToCoords( mousePosition, camera->getComponent<CameraComponent>()->getView() ));
 
 		getCore()->world.addEntity( createTree( engines(), Vector3i( placementPositionXY.x,
