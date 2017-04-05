@@ -16,7 +16,7 @@ void nb::NeedsComponent::destroy()
 {
 }
 
-int nb::NeedsComponent::getHunger() const
+float nb::NeedsComponent::getHunger() const
 {
 	return hunger;
 }

@@ -13,7 +13,7 @@ namespace nb
 		virtual void init() override;
 		virtual void destroy() override;
 
-		int getHunger()const;
+		float getHunger()const;
 		void setHunger( float val );
 		void changeHunger( float change );
 

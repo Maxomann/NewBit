@@ -9,7 +9,7 @@ nb::WorldGenerationEngine::WorldGenerationEngine()
 	dist2( 0, 10 )
 {
 	noiseGenerator.SetSeed( dist( mt ) );
-	noiseGenerator.SetFrequency( 1.0 / 200.0 );
+	noiseGenerator.SetFrequency( 1.0 / 25.0 );
 }
 
 void WorldGenerationEngine::init()
@@ -45,7 +45,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 			if (noiseVal > -0.2)
 			{
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
-				if (noiseVal > 0.6 && dist2( mt ) < 1)
+				if (noiseVal > 0.4 && dist2( mt ) < 1)
 				{
 					sf::Vector3i placementPosition(
 						(positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,

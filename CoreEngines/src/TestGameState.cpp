@@ -186,6 +186,11 @@ void TestGameState::init()
 		}
 	} );
 
+	r_inputEngine->s_onKeyPressed[Keyboard::Key::H].connect_track( m_connections, [&]() {
+		if (m_debugEntity)
+			m_debugEntity->getComponent<NeedsComponent>()->changeHunger( 10 );
+	} );
+
 	// logic
 	r_resourceEngine->textures.getTextureReference( "default:texture:crosshair" )->applyTextureAndDefaultTextureRectToSprite( m_sprite );
 	m_sprite.setOrigin( 8, 8 );
