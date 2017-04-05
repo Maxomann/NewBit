@@ -3,6 +3,11 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
+nb::NeedsComponent::NeedsComponent()
+	:hunger( 100 )
+{
+}
+
 void nb::NeedsComponent::init()
 {
 }
@@ -18,18 +23,18 @@ int nb::NeedsComponent::getHunger() const
 
 void nb::NeedsComponent::setHunger( float val )
 {
+	auto oldHunger = hunger;
 	hunger = val;
+
 	if (hunger < 0)
 		hunger = 0;
 	if (hunger > 100)
 		hunger = 100;
+
+	s_hungerChanged.call( this, oldHunger );
 }
 
 void nb::NeedsComponent::changeHunger( float change )
 {
-	hunger += change;
-	if (hunger < 0)
-		hunger = 0;
-	if (hunger > 100)
-		hunger = 100;
+	setHunger( hunger + change );
 }

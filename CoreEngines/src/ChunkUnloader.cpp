@@ -13,13 +13,19 @@ void nb::ChunkUnloader::execute_internal()
 
 void nb::ChunkUnloader::finish_internal( World & world )
 {
-	world.getSystem<ChunkSystem>()->removeEntitiesInChunk( chunkPosition );
+	const auto& entitiesInChunk = world.getSystem<ChunkSystem>()->getEntitiesInChunk( chunkPosition );
+	auto entities = world.removeEntities_move( entitiesInChunk );
+	if (entities.size())
+		coreEngines.getEngine<ChunkCacheEngine>()->setCache( move( entities ), chunkPosition );
+
+	//old: world.getSystem<ChunkSystem>()->removeEntitiesInChunk( chunkPosition );
 }
 
-nb::ChunkUnloader::ChunkUnloader( sf::Vector3i position )
+nb::ChunkUnloader::ChunkUnloader( sf::Vector3i position, const CoreEngineManager& coreEngines )
 	: ChunkLoadStateChanger( position,
 							 ChunkLoadState::STATE_LOADED,
 							 ChunkLoadState::STATE_UNLOADED,
-							 ChunkLoadState::STATE_UNLOADING )
+							 ChunkLoadState::STATE_UNLOADING ),
+	coreEngines( coreEngines )
 {
 }

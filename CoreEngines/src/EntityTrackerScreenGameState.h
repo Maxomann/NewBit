@@ -4,6 +4,7 @@
 #include "TransformationComponent.h"
 #include "SpriteComponent.h"
 #include "HealthComponent.h"
+#include "NeedsComponent.h"
 
 namespace nb
 {
@@ -23,6 +24,9 @@ namespace nb
 
 		tgui::Label::Ptr m_playerHealthLabel;
 		tgui::Label::Ptr m_playerHealthValueLabel;
+
+		tgui::Label::Ptr m_playerHungerLabel;
+		tgui::Label::Ptr m_playerHungerValueLabel;
 
 		Connections m_connections;
 	public:

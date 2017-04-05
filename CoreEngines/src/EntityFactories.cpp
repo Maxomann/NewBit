@@ -31,6 +31,8 @@ Entity nb::createHuman( const CoreEngineManager& engines, sf::Vector3i position 
 										   move( shape ),
 										   fixtureDef );
 
+	entity.addComponent<NeedsComponent>();
+
 	return entity;
 }
 

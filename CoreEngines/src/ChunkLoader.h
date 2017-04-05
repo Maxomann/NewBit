@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "ChunkLoadStateChanger.h"
 #include "WorldGenerationEngine.h"
+#include "ChunkCacheEngine.h"
 
 namespace nb
 {
@@ -10,6 +11,8 @@ namespace nb
 		const CoreEngineManager& coreEngines;
 
 		std::vector<Entity> entities;
+
+		bool loadFromCache = false;
 
 	protected:
 		virtual void prepare_internal( World& world ) override;

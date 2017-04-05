@@ -20,6 +20,7 @@ namespace nb
 		virtual void destroy() override;
 
 		const sf::Vector2i& getSortPositionXY()const;
+		const int getDrawingLayer()const;
 
 		const int& getZValue()const;
 		void setZValue( int zValue );

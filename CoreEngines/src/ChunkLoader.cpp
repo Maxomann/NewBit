@@ -5,11 +5,19 @@ using namespace nb;
 
 void nb::ChunkLoader::prepare_internal( World & world )
 {
+	auto cacheEngine = coreEngines.getEngine<ChunkCacheEngine>();
+
+	if (cacheEngine->hasCache( chunkPosition ))
+	{
+		loadFromCache = true;
+		entities = cacheEngine->getCache( chunkPosition );
+	}
 }
 
 void nb::ChunkLoader::execute_internal()
 {
-	entities = coreEngines.getEngine<WorldGenerationEngine>()->generateChunk( chunkPosition );
+	if (!loadFromCache)
+		entities = coreEngines.getEngine<WorldGenerationEngine>()->generateChunk( chunkPosition );
 }
 
 void nb::ChunkLoader::finish_internal( World & world )

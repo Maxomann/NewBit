@@ -11,6 +11,7 @@ void nb::InitEngine::init()
 	world.addSystem<ChunkSystem>();
 	world.addSystem<PhysicsSystem>();
 	world.addSystem<WorldLoadStateSystem>();
+	world.addSystem<NeedsSystem>();
 }
 
 bool nb::InitEngine::update()

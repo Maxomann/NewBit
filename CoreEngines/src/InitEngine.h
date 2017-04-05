@@ -4,6 +4,7 @@
 #include "PhysicsSystem.h"
 #include "TimeSystem.h"
 #include "WorldLoadStateSystem.h"
+#include "NeedsSystem.h"
 
 namespace nb
 {

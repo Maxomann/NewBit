@@ -54,6 +54,35 @@ void nb::EntityManager::removeEntity( Entity * entity )
 	m_toDelete.push_back( entity );
 }
 
+std::vector<Entity> nb::EntityManager::removeEntities_move( std::vector<Entity*> entities )
+{
+	std::vector<Entity> retVal;
+
+	if (entities.size() > 0)
+		s_onEntitiesRemoved.call( entities );
+
+	m_entities.remove_if( [&]( auto& el ) {
+		for (auto it = entities.begin(); it != entities.end(); ++it)
+		{
+			if (*it == &el)
+			{
+				entities.erase( remove( entities.begin(), entities.end(), &el ), entities.end() );
+				el.destroy();
+				retVal.push_back( move( el ) );
+				return true;
+			}
+		}
+		return false;
+	} );
+
+	if (entities.size() != 0)
+		throw exception::EntityDoesNotExistException();
+
+	s_onEntityCountChanged.call( getEntityCount() );
+
+	return retVal;
+}
+
 int nb::EntityManager::getEntityCount() const
 {
 	return m_entities.size();

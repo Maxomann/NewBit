@@ -42,25 +42,23 @@ bool nb::GraphicsEngine::update()
 		const auto& camGlobalBounds = camComponent->getGlobalBounds();
 		m_window.setView( camView );
 
-		std::vector<Entity*> toDraw;
+		std::vector<RenderComponent*> toDraw;
 
 		//get to draw
-		for (const auto& el : r_renderSystem->getEntitiesWithRenderComponent())
+		for (const auto& el : r_renderSystem->getRenderComponentsInWorld())
 		{
-			if (el->getComponent<TransformationComponent>()->getLayer() == camLayer &&
-				 el->getComponent<RenderComponent>()->getGlobalBounds().intersects( camGlobalBounds ))
+			if (el->getDrawingLayer() == camLayer &&
+				 el->getGlobalBounds().intersects( camGlobalBounds ))
 				toDraw.push_back( el );
 		}
 
 		//sort
-		std::sort( toDraw.begin(), toDraw.end(), [&]( const Entity* lhs, const Entity* rhs ) {
+		std::sort( toDraw.begin(), toDraw.end(), [&]( const RenderComponent* lhs, const RenderComponent* rhs ) {
 			// order: z^-1,y,x
-			const auto& compLhs = lhs->getComponent<RenderComponent>();
-			const auto& compRhs = rhs->getComponent<RenderComponent>();
-			const auto& posLhs = compLhs->getSortPositionXY();
-			const auto& posRhs = compRhs->getSortPositionXY();
-			const auto& zVlaueLhs = compLhs->getZValue();
-			const auto& zVlaueRhs = compRhs->getZValue();
+			const auto& posLhs = lhs->getSortPositionXY();
+			const auto& posRhs = rhs->getSortPositionXY();
+			const auto& zVlaueLhs = lhs->getZValue();
+			const auto& zVlaueRhs = rhs->getZValue();
 
 			if (zVlaueRhs > zVlaueLhs)
 				return true;
@@ -78,7 +76,7 @@ bool nb::GraphicsEngine::update()
 
 		//draw
 		for (const auto& el : toDraw)
-			for (const auto& drawable : el->getComponent<RenderComponent>()->getDrawingData())
+			for (const auto& drawable : el->getDrawingData())
 				m_window.draw( *drawable );
 
 		for (const auto& debugEl : r_renderSystem->getDebugDrawingDataForLayer( camLayer ))

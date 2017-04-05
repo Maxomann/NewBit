@@ -75,7 +75,8 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 			{
 				if (el.second == ChunkLoadState::STATE_LOADED)
 				{
-					r_worldLoadStateSystem->changeChunkLoadState( make_unique<ChunkUnloader>( el.first ) );
+					r_worldLoadStateSystem->changeChunkLoadState( make_unique<ChunkUnloader>( el.first,
+																							  engines() ) );
 				}
 				else if (el.second == ChunkLoadState::STATE_LOADING)
 				{

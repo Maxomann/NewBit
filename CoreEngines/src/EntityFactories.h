@@ -5,6 +5,7 @@
 #include "SpriteComponent.h"
 #include "HealthComponent.h"
 #include "PhysicsComponent.h"
+#include "NeedsComponent.h"
 
 #include "ResourceEngine.h"
 

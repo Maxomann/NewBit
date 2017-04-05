@@ -8,28 +8,28 @@ void nb::RenderSystem::onEntityAdded( Entity * entity )
 	auto renderComponent = entity->getComponent_try<RenderComponent>();
 
 	if (renderComponent)
-		m_entitiesToDraw.push_back( entity );
+		renderComponentsInWorld.push_back( renderComponent );
 }
 
 void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 {
-	std::vector<const Entity*> toRemove;
+	std::vector<const RenderComponent*> toRemove;
 
 	for (const auto& entity : entities)
 	{
 		auto renderComponent = entity->getComponent_try<RenderComponent>();
 
 		if (renderComponent)
-			toRemove.push_back( entity );
+			toRemove.push_back( renderComponent );
 	}
 
-	m_entitiesToDraw.erase(
-		std::remove_if( m_entitiesToDraw.begin(),
-						m_entitiesToDraw.end(), [&]( const Entity* el ) -> bool {
-		return std::any_of( toRemove.begin(), toRemove.end(), [&]( const Entity* el2 ) -> bool {
+	renderComponentsInWorld.erase(
+		std::remove_if( renderComponentsInWorld.begin(),
+						renderComponentsInWorld.end(), [&]( const RenderComponent* el ) -> bool {
+		return std::any_of( toRemove.begin(), toRemove.end(), [&]( const RenderComponent* el2 ) -> bool {
 			return (el == el2);
 		} );
-	} ), m_entitiesToDraw.end() );
+	} ), renderComponentsInWorld.end() );
 }
 
 void RenderSystem::init()
@@ -58,9 +58,9 @@ const std::vector<Entity*>& nb::RenderSystem::getCamerasForDrawing() const
 	return m_camerasForDrawing;
 }
 
-const std::vector<Entity*>& nb::RenderSystem::getEntitiesWithRenderComponent() const
+const std::vector<RenderComponent*>& nb::RenderSystem::getRenderComponentsInWorld() const
 {
-	return m_entitiesToDraw;
+	return renderComponentsInWorld;
 }
 
 const std::vector<std::unique_ptr<sf::Drawable>>& nb::RenderSystem::getDebugDrawingDataForLayer( int layer )

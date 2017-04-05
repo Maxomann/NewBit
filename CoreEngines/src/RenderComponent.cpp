@@ -25,6 +25,11 @@ const sf::Vector2i& nb::RenderComponent::getSortPositionXY() const
 	return transformComponent->getPositionXY();
 }
 
+const int nb::RenderComponent::getDrawingLayer() const
+{
+	return transformComponent->getLayer();
+}
+
 const int& nb::RenderComponent::getZValue() const
 {
 	return m_zValue;

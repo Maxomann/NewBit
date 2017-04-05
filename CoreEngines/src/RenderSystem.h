@@ -11,7 +11,7 @@ namespace nb
 		using DrawingData = std::vector<std::pair<const sf::View*, std::vector<const sf::Drawable*>>>;
 
 		std::vector<Entity*> m_camerasForDrawing;
-		std::vector<Entity*> m_entitiesToDraw;
+		std::vector<RenderComponent*> renderComponentsInWorld;
 
 		std::vector<std::unique_ptr<sf::Drawable>> debugDrawingData;
 
@@ -27,7 +27,7 @@ namespace nb
 		void setCamerasForDrawing( std::vector<Entity*> cameras );
 		const std::vector<Entity*>& getCamerasForDrawing()const;
 
-		const std::vector<Entity*>& getEntitiesWithRenderComponent()const;
+		const std::vector<RenderComponent*>& getRenderComponentsInWorld()const;
 
 		const std::vector<std::unique_ptr<sf::Drawable>>& getDebugDrawingDataForLayer( int layer );
 

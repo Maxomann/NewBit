@@ -52,6 +52,18 @@ void nb::EntityTrackerScreenGameState::init()
 	m_playerHealthValueLabel->setText( "Not Available" );
 	m_playerStatsWindow->add( m_playerHealthValueLabel );
 
+	m_playerHungerLabel = Label::create();
+	m_playerHungerLabel->setSize( Layout2d( 200, 40 ) );
+	m_playerHungerLabel->setPosition( Layout2d( 0, 120 ) );
+	m_playerHungerLabel->setText( "Hunger:" );
+	m_playerStatsWindow->add( m_playerHungerLabel );
+
+	m_playerHungerValueLabel = Label::create();
+	m_playerHungerValueLabel->setSize( Layout2d( 200, 40 ) );
+	m_playerHungerValueLabel->setPosition( Layout2d( 200, 120 ) );
+	m_playerHungerValueLabel->setText( "Not Available" );
+	m_playerStatsWindow->add( m_playerHungerValueLabel );
+
 	r_gui->add( m_playerStatsWindow );
 }
 
@@ -101,6 +113,17 @@ void nb::EntityTrackerScreenGameState::track( const Entity* entity )
 		health->s_onChange.connect_track( m_connections, [&]( const HealthComponent* const comp,
 															  int change ) {
 			m_playerHealthValueLabel->setText( to_string( comp->getHealth() ) + " / " + to_string( comp->getMaxHealth() ) );
+		} );
+	}
+
+	auto needs = entity->getComponent_try<NeedsComponent>();
+	if (needs)
+	{
+		auto val = needs->getHunger();
+		m_playerHungerValueLabel->setText( to_string( val ) );
+		needs->s_hungerChanged.connect_track( m_connections, [&]( const NeedsComponent* const comp,
+																  float oldHunger ) {
+			m_playerHungerValueLabel->setText( to_string( comp->getHunger() ) );
 		} );
 	}
 }

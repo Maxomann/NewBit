@@ -53,7 +53,7 @@ void TestGameState::init()
 		//if (size.x < 10000 && size.y < 10000)
 		m_camera->getComponent<TransformationComponent>()->scale( abs( 1.f + (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Z].connect_track( m_connections, [&]() {
 		auto cameraTransform = m_camera->getComponent<TransformationComponent>();
 		cameraTransform->setSize( { 1280,720 } );
 		cameraTransform->setRotation( 0 );
@@ -68,6 +68,11 @@ void TestGameState::init()
 		{
 			cameraTransform->setPosition( { 0,0,0 } );
 		}
+	} );
+	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( m_connections, [&]() {
+		auto cameraTransform = m_camera->getComponent<TransformationComponent>();
+		cameraTransform->setSize( { 1280,720 } );
+		cameraTransform->setRotation( 0 );
 	} );
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::T].connect_track( m_connections, [&]() {
 		auto chunkSystem = r_core->world.getSystem<ChunkSystem>();
@@ -195,11 +200,6 @@ void nb::TestGameState::update()
 {
 	const auto frameTimeAsMilliseconds = engine<GraphicsEngine>()->getFrameTime().asMilliseconds();
 	fpsLabel->setText( to_string( frameTimeAsMilliseconds ) );
-	if (m_debugEntity)
-	{
-		auto healthComp = m_debugEntity->getComponent<HealthComponent>();
-		healthComp->damage( 0.002f*frameTimeAsMilliseconds );
-	}
 
 	return;
 }

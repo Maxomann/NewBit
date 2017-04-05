@@ -18,4 +18,9 @@ namespace nb
 		// return false to terminate process
 		DLL_EXPORT virtual bool update() = 0;
 	};
+
+	/*
+		virtual void init() override;
+		virtual bool update() override;
+	*/
 }
