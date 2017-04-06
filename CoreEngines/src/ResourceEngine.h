@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "TextureManager.h"
 #include "TileManager.h"
+#include "ItemManager.h"
 
 namespace nb
 {
@@ -15,6 +16,7 @@ namespace nb
 		PackageManager packages;
 		TextureManager textures;
 		TileManager tiles;
+		ItemManager items;
 
 		static const std::string PATH_PACKAGES;
 	};

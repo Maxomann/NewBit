@@ -12,6 +12,7 @@ void nb::ResourceEngine::init()
 
 	textures.init( packages );
 	tiles.init( packages, textures );
+	items.init( packages, textures );
 }
 
 bool nb::ResourceEngine::update()

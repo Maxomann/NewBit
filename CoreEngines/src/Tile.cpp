@@ -8,9 +8,9 @@ const int Tile::TILE_SIZE_IN_PIXEL = 32;
 nb::Tile::Tile( ID tileId,
 				std::string name,
 				const TextureReference * texture )
-	:id( tileId ),
-	name( name ),
-	texref( texture )
+	:id( move( tileId ) ),
+	name( move( name ) ),
+	texref( move( texture ) )
 {
 }
 
