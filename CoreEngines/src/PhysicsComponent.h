@@ -29,5 +29,12 @@ namespace nb
 		void updateSimulationDataToComponents();
 
 		b2Body* getBody();
+
+		// should only be called by PhysicsContactListener
+		void beginContact( PhysicsComponent* other );
+		void endContact( PhysicsComponent* other );
+
+		Signal<void( PhysicsComponent* )> s_beginCollision;
+		Signal<void( PhysicsComponent* )> s_endCollision;
 	};
 }

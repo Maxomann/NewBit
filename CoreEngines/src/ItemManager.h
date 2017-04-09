@@ -3,6 +3,12 @@
 #include "TextureManager.h"
 #include "Item.h"
 
+#include "TransformationComponent.h"
+#include "RenderComponent.h"
+#include "SpriteComponent.h"
+#include "PhysicsComponent.h"
+#include "ItemComponent.h"
+
 namespace nb
 {
 	class ItemManager
@@ -21,5 +27,8 @@ namespace nb
 		const Item* getItem( Item::ID id )const;
 
 		const std::list<Item>& getAllItems()const;
+
+		static Entity createItemEntity( const Item* item,
+										sf::Vector3i position );
 	};
 }

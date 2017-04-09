@@ -16,6 +16,7 @@ namespace nb
 		void calculateGlobalBounds();
 
 	public:
+		SpriteComponent() = default;
 		SpriteComponent( const sf::Texture& texture );
 		SpriteComponent( const TextureReference& texture );
 

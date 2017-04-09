@@ -7,6 +7,8 @@ b2World & nb::PhysicsSystem::getSimulationForLayer( int layer )
 {
 	auto emplaceRetVal = simulation.try_emplace( layer, defaultGravity );
 	auto& sim = emplaceRetVal.first->second;
+	if (emplaceRetVal.second)
+		sim.SetContactListener( &contactListener );
 	return sim;
 }
 
@@ -107,7 +109,7 @@ Entity * nb::PhysicsSystem::getFirstEntityAtPixelPosition( const sf::Vector3i & 
 	layer.QueryAABB( &callback, aabb );
 
 	if (callback.foundBodies.size())
-		return static_cast<Entity*>(callback.foundBodies.at( 0 )->GetUserData());
+		return static_cast<PhysicsComponent*>(callback.foundBodies.at( 0 )->GetUserData())->getEntity();
 	else
 		return nullptr;
 }

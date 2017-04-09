@@ -69,3 +69,35 @@ const std::list<Item>& nb::ItemManager::getAllItems() const
 {
 	return items;
 }
+
+Entity ItemManager::createItemEntity( const Item* item,
+									  sf::Vector3i position )
+{
+	Entity entity;
+	entity.addComponent<TransformationComponent>( sf::Vector2i( position.x, position.y ),
+												  position.z,
+												  Vector2f( 16, 16 ) );
+	entity.addComponent<RenderComponent>( 0 );
+	entity.addComponent<SpriteComponent>( *item->getTextureReference() );
+
+	/* Physics */
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.linearDamping = 0.5f;
+
+	unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
+	auto physicsSize = 16.f * PIXEL_TO_METER * 0.5f;
+	shape->SetAsBox( physicsSize, physicsSize, b2Vec2( 0.f, -physicsSize ), 0.f );
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+
+	entity.addComponent<PhysicsComponent>( bodyDef,
+										   move( shape ),
+										   fixtureDef );
+
+	entity.addComponent<ItemComponent>( item );
+
+	return entity;
+}

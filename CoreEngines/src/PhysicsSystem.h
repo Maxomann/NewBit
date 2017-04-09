@@ -16,6 +16,8 @@ namespace nb
 		int32 positionIterations = 2;
 		std::vector<Entity*> entitiesWithPhysicsComponentInWorld;
 
+		PhysicsContactListener contactListener;
+
 		bool drawDebugLayer = false;
 		std::unique_ptr<PhysicsDebugDraw> debugDraw;
 

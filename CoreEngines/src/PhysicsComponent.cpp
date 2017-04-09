@@ -52,8 +52,8 @@ void nb::PhysicsComponent::addToSimulation( b2World & simulation )
 	bodyDef.angle = degToRad( rotation );
 
 	body = simulation.CreateBody( &bodyDef );
-	// store a ptr to this entity in UserData
-	body->SetUserData( entity() );
+	// store a ptr to this Component in UserData
+	body->SetUserData( this );
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = shape.get();
@@ -87,4 +87,14 @@ void nb::PhysicsComponent::updateSimulationDataToComponents()
 b2Body * nb::PhysicsComponent::getBody()
 {
 	return body;
+}
+
+void nb::PhysicsComponent::beginContact( PhysicsComponent * other )
+{
+	s_beginCollision.call( other );
+}
+
+void nb::PhysicsComponent::endContact( PhysicsComponent * other )
+{
+	s_endCollision.call( other );
 }
