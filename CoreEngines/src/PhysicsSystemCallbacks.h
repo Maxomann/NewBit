@@ -14,7 +14,18 @@ namespace nb
 
 	class PhysicsContactListener : public b2ContactListener
 	{
-		void BeginContact( b2Contact* contact ) {
+		virtual void PreSolve( b2Contact* contact, const b2Manifold* oldManifold )override
+		{
+			PhysicsComponent* userDataA = static_cast<PhysicsComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
+			PhysicsComponent* userDataB = static_cast<PhysicsComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
+
+			if (userDataA->isTransparent())
+				contact->SetEnabled( false );
+			if (userDataB->isTransparent())
+				contact->SetEnabled( false );
+		}
+
+		virtual void BeginContact( b2Contact* contact )override {
 			PhysicsComponent* userDataA = static_cast<PhysicsComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
 			PhysicsComponent* userDataB = static_cast<PhysicsComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
 
@@ -25,7 +36,7 @@ namespace nb
 				userDataB->beginContact( userDataA );
 		}
 
-		void EndContact( b2Contact* contact ) {
+		virtual void EndContact( b2Contact* contact )override {
 			PhysicsComponent* userDataA = static_cast<PhysicsComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
 			PhysicsComponent* userDataB = static_cast<PhysicsComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
 

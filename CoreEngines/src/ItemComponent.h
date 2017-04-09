@@ -8,9 +8,6 @@ namespace nb
 {
 	class ItemComponent : public Component
 	{
-		SpriteComponent* r_spriteComponent;
-		PhysicsComponent* r_physicsComponent;
-
 		const Item* item;
 
 	public:
@@ -18,5 +15,7 @@ namespace nb
 
 		virtual void init() override;
 		virtual void destroy() override;
+
+		const Item* getItem()const;
 	};
 }

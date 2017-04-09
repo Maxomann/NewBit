@@ -21,7 +21,6 @@ void nb::ItemManager::parseFile( const std::string & path, const TextureManager 
 			items.push_back( Item( move( id ),
 								   move( name ),
 								   move( texref ) ) );
-			cout << items.front().getName() << endl;
 		}
 	}
 	else if (fileContent.is_object())

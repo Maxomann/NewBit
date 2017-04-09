@@ -211,7 +211,7 @@ void TestGameState::init()
 	r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
 
 	auto item = r_resourceEngine->items.getItem( 0 );
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		auto itemEntity = ItemManager::createItemEntity( item, { 60,60,0 } );
 		r_core->world.addEntity( move( itemEntity ) );

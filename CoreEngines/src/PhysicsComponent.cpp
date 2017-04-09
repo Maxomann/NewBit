@@ -98,3 +98,8 @@ void nb::PhysicsComponent::endContact( PhysicsComponent * other )
 {
 	s_endCollision.call( other );
 }
+
+bool nb::PhysicsComponent::isTransparent() const
+{
+	return true;
+}

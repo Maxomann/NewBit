@@ -10,16 +10,13 @@ nb::ItemComponent::ItemComponent( const Item * item )
 
 void nb::ItemComponent::init()
 {
-	r_spriteComponent = component<SpriteComponent>();
-	r_physicsComponent = component<PhysicsComponent>();
-
-	r_spriteComponent->setTexture( *item->getTextureReference() );
-
-	r_physicsComponent->s_beginCollision.connect( [&]( PhysicsComponent* other ) {
-		cout << "coll" << endl;
-	} );
 }
 
 void nb::ItemComponent::destroy()
 {
+}
+
+const Item* ItemComponent::getItem()const
+{
+	return item;
 }

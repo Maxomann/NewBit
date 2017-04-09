@@ -34,6 +34,8 @@ namespace nb
 		void beginContact( PhysicsComponent* other );
 		void endContact( PhysicsComponent* other );
 
+		bool isTransparent()const;
+
 		Signal<void( PhysicsComponent* )> s_beginCollision;
 		Signal<void( PhysicsComponent* )> s_endCollision;
 	};
