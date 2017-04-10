@@ -15,10 +15,13 @@ namespace nb
 		bool isUpdatingToComponents = false;
 		b2Body* body = nullptr;
 
+		bool transparent;
+
 	public:
 		PhysicsComponent( b2BodyDef bodyDef,
 						  std::unique_ptr<b2Shape> shape,
-						  b2FixtureDef fixtureDef );
+						  b2FixtureDef fixtureDef,
+						  bool transparent = false );
 
 		virtual void init() override;
 		virtual void destroy() override;

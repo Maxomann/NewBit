@@ -94,7 +94,8 @@ Entity ItemManager::createItemEntity( const Item* item,
 
 	entity.addComponent<PhysicsComponent>( bodyDef,
 										   move( shape ),
-										   fixtureDef );
+										   fixtureDef,
+										   true );
 
 	entity.addComponent<ItemComponent>( item );
 

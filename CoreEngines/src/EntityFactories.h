@@ -6,6 +6,7 @@
 #include "HealthComponent.h"
 #include "PhysicsComponent.h"
 #include "NeedsComponent.h"
+#include "InventoryComponent.h"
 
 #include "ResourceEngine.h"
 

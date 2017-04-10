@@ -14,7 +14,7 @@ void nb::InputEngine::init()
 bool nb::InputEngine::update()
 {
 	for (auto& el : s_whileKeyPressed)
-		if (isKeyPressed[el.first])
+		if (pressedKeys[el.first])
 			el.second.call();
 
 	const auto& window = r_graphicsEngine->getWindow();
@@ -38,12 +38,12 @@ void nb::InputEngine::onSfEvent( const sf::Event & event )
 {
 	if (event.type == sf::Event::KeyPressed)
 	{
-		isKeyPressed[event.key.code] = true;
+		pressedKeys[event.key.code] = true;
 		s_onKeyPressed[event.key.code].call();
 	}
 	if (event.type == sf::Event::KeyReleased)
 	{
-		isKeyPressed[event.key.code] = false;
+		pressedKeys[event.key.code] = false;
 		s_onKeyReleased[event.key.code].call();
 	}
 	if (event.type == sf::Event::MouseMoved)
@@ -72,4 +72,13 @@ void nb::InputEngine::onSfEvent( const sf::Event & event )
 			 event.mouseButton.y < windowSize.y)
 			s_onMouseButtonReleasedInWindow[event.mouseButton.button].call( { event.mouseButton.x, event.mouseButton.y } );
 	}
+}
+
+bool nb::InputEngine::isKeyPressed( sf::Keyboard::Key key ) const
+{
+	auto found = pressedKeys.find( key );
+	if (found != pressedKeys.end())
+		return found->second;
+	else
+		return false;
 }

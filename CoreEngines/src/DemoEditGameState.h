@@ -6,6 +6,7 @@
 #include "PhysicsComponent.h"
 #include "EntityFactories.h"
 #include "PhysicsSystem.h"
+#include "ItemManager.h"
 
 namespace nb
 {

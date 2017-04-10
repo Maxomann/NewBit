@@ -42,10 +42,26 @@ void nb::DemoEditGameState::init()
 		auto camera = getCore()->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
 		auto placementPositionXY = static_cast<sf::Vector2i>(r_graphicsEngine->getWindow().mapPixelToCoords( mousePosition, camera->getComponent<CameraComponent>()->getView() ));
 
-		getCore()->world.addEntity( createTree( engines(), Vector3i( placementPositionXY.x,
-																	 placementPositionXY.y,
-																	 camera->getComponent<TransformationComponent>()->getLayer() ) ) );
+		if (engine<InputEngine>()->isKeyPressed( Keyboard::Key::LShift ))
+			getCore()->world.addEntity( createTree( engines(), Vector3i( placementPositionXY.x,
+																		 placementPositionXY.y,
+																		 camera->getComponent<TransformationComponent>()->getLayer() ) ) );
+		else
+			getCore()->world.addEntity( ItemManager::createItemEntity( engine<ResourceEngine>()->items.getItem( 0 ), Vector3i( placementPositionXY.x,
+																															   placementPositionXY.y,
+																															   camera->getComponent<TransformationComponent>()->getLayer() ) ) );
 	} );
+
+	/*r_inputEngine->s_onMouseButtonPressedInWindow[Mouse::Button::Right].connect_track( m_connections, [&]( Vector2i mousePosition ) {
+		if (engine<GraphicsEngine>()->isGuiFocused())
+			return;
+		auto camera = getCore()->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
+		auto placementPositionXY = static_cast<sf::Vector2i>(r_graphicsEngine->getWindow().mapPixelToCoords( mousePosition, camera->getComponent<CameraComponent>()->getView() ));
+
+		getCore()->world.addEntity( ItemManager::createItemEntity( engine<ResourceEngine>()->items.getItem( 0 ), Vector3i( placementPositionXY.x,
+																														   placementPositionXY.y,
+																														   camera->getComponent<TransformationComponent>()->getLayer() ) ) );
+	} );*/
 
 	r_inputEngine->s_onMouseButtonPressedInWindow[Mouse::Button::Right].connect_track( m_connections, [&]( Vector2i mousePosition ) {
 		if (engine<GraphicsEngine>()->isGuiFocused())

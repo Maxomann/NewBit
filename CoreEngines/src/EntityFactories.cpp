@@ -32,6 +32,7 @@ Entity nb::createHuman( const CoreEngineManager& engines, sf::Vector3i position 
 										   fixtureDef );
 
 	entity.addComponent<NeedsComponent>();
+	entity.addComponent<InventoryComponent>();
 
 	return entity;
 }

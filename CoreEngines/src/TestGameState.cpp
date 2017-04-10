@@ -92,7 +92,7 @@ void TestGameState::init()
 		transform->moveXY( Vector2i( 0, -offset ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
 		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
-		if (Keyboard::isKeyPressed( Keyboard::LShift ))
+		if (r_inputEngine->isKeyPressed( Keyboard::Key::LShift ))
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, -force ), true );
 	} );
@@ -104,7 +104,7 @@ void TestGameState::init()
 		transform->moveXY( Vector2i( 0, offset ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
 		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
-		if (Keyboard::isKeyPressed( Keyboard::LShift ))
+		if (r_inputEngine->isKeyPressed( Keyboard::Key::LShift ))
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, force ), true );
 	} );
@@ -116,7 +116,7 @@ void TestGameState::init()
 		transform->moveXY( Vector2i( -offset, 0 ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
 		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
-		if (Keyboard::isKeyPressed( Keyboard::LShift ))
+		if (r_inputEngine->isKeyPressed( Keyboard::Key::LShift ))
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( -force, 0 ), true );
 	} );
@@ -128,7 +128,7 @@ void TestGameState::init()
 		transform->moveXY( Vector2i( offset, 0 ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
 		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
-		if (Keyboard::isKeyPressed( Keyboard::LShift ))
+		if (r_inputEngine->isKeyPressed( Keyboard::Key::LShift ))
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( force, 0 ), true );
 	} );
@@ -210,12 +210,6 @@ void TestGameState::init()
 
 	r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
 
-	auto item = r_resourceEngine->items.getItem( 0 );
-	for (int i = 0; i < 10; i++)
-	{
-		auto itemEntity = ItemManager::createItemEntity( item, { 60,60,0 } );
-		r_core->world.addEntity( move( itemEntity ) );
-	}
 	/*world().addEntities( r_worldGenerationEngine->generateChunk( { 0,0,0 } ) );
 	world().addEntities( r_worldGenerationEngine->generateChunk( { 1,0,0 } ) );
 	world().addEntities( r_worldGenerationEngine->generateChunk( { 2,0,0 } ) );

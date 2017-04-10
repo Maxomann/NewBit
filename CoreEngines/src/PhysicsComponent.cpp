@@ -5,10 +5,12 @@ using namespace nb;
 
 nb::PhysicsComponent::PhysicsComponent( b2BodyDef bodyDef,
 										std::unique_ptr<b2Shape> shape,
-										b2FixtureDef fixtureDef )
+										b2FixtureDef fixtureDef,
+										bool transparent )
 	:bodyDef( move( bodyDef ) ),
 	shape( move( shape ) ),
-	fixtureDef( move( fixtureDef ) )
+	fixtureDef( move( fixtureDef ) ),
+	transparent( transparent )
 {
 }
 
@@ -101,5 +103,5 @@ void nb::PhysicsComponent::endContact( PhysicsComponent * other )
 
 bool nb::PhysicsComponent::isTransparent() const
 {
-	return true;
+	return transparent;
 }
