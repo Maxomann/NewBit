@@ -39,7 +39,9 @@ namespace nb
 
 		bool isTransparent()const;
 
-		Signal<void( PhysicsComponent* )> s_beginCollision;
-		Signal<void( PhysicsComponent* )> s_endCollision;
+		// parameter is the other component
+		Signal<void( const PhysicsComponent* )> s_beginCollision;
+		// parameter is the other component
+		Signal<void( const PhysicsComponent* )> s_endCollision;
 	};
 }

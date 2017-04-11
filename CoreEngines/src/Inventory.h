@@ -11,7 +11,7 @@ namespace nb
 		using COUNT = unsigned int;
 
 		// map< SLOT pair< ITEM, COUNT > >
-		using ContainerType = std::vector<std::pair<Item*, COUNT>>;
+		using ContainerType = std::map<SLOT, std::pair<const Item*, COUNT>>;
 
 	private:
 		ContainerType itemsBySlot;
@@ -22,15 +22,17 @@ namespace nb
 	public:
 		Inventory( const SLOT slotCount = 0 );
 
-		COUNT addItem( Item* item, COUNT count = 1 );
+		COUNT addItem( const Item* item, COUNT count = 1 );
 
-		COUNT removeItem( Item* item, COUNT count = 1 );
+		COUNT removeItem( const Item* item, COUNT count = 1 );
 
 		SLOT getFirstFreeSlot()const;
-		SLOT getFistSlotWithItem( Item* item )const;
+		SLOT getFistSlotWithItem( const Item* item )const;
 
 		bool isSlotValid( SLOT slot )const;
 
 		const ContainerType& getContent()const;
+
+		Signal<void( const Inventory& )> s_contentChange;
 	};
 }

@@ -5,6 +5,7 @@
 #include "SpriteComponent.h"
 #include "HealthComponent.h"
 #include "NeedsComponent.h"
+#include "InventoryComponent.h"
 
 namespace nb
 {
@@ -27,6 +28,8 @@ namespace nb
 
 		tgui::Label::Ptr m_playerHungerLabel;
 		tgui::Label::Ptr m_playerHungerValueLabel;
+
+		tgui::ListBox::Ptr inventoryList;
 
 		Connections m_connections;
 	public:

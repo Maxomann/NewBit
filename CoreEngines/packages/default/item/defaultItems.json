@@ -1,7 +1,12 @@
 [
 	{
 		"id":0,
-		"name":"Testitem",
+		"name":"Testitem Wood",
 		"texture":"default:texture:item_wood"
+	},
+	{
+		"id":1,
+		"name":"Testitem Grass",
+		"texture":"default:texture:item_grass"
 	}
 ]

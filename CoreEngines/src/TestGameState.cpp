@@ -148,6 +148,17 @@ void TestGameState::init()
 	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( m_connections, [&]() {
 		m_debugEntity = getCore()->world.addEntity( createHuman( engines() ) );
 
+		m_debugEntity->getComponent<PhysicsComponent>()->s_beginCollision.connect_track( m_connections, [&]( auto physics ) {
+			auto& inventory = m_debugEntity->getComponent<InventoryComponent>()->inventory;
+			auto entity = physics->entity();
+			auto itemComp = entity->getComponent_try<ItemComponent>();
+			if (itemComp)
+			{
+				cout << inventory.addItem( itemComp->getItem() ) << endl;
+				world().removeEntity( entity );
+			}
+		} );
+
 		auto cameraPositionTracker = m_camera->getComponent<PositionTrackerComponent>();
 		cameraPositionTracker->setOffsetXY( { 0, -32 } );
 		cameraPositionTracker->trackEntity( m_debugEntity );
@@ -209,6 +220,13 @@ void TestGameState::init()
 	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
 
 	r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
+
+	auto item = r_resourceEngine->items.getItem( 1 );
+	for (int i = 0; i < 2; i++)
+	{
+		auto itemEntity = ItemManager::createItemEntity( item, { 60,60,0 } );
+		r_core->world.addEntity( move( itemEntity ) );
+	}
 
 	/*world().addEntities( r_worldGenerationEngine->generateChunk( { 0,0,0 } ) );
 	world().addEntities( r_worldGenerationEngine->generateChunk( { 1,0,0 } ) );

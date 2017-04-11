@@ -11,7 +11,7 @@ void nb::EntityTrackerScreenGameState::init()
 	// GUI
 	m_playerStatsWindow = ChildWindow::create();
 	m_playerStatsWindow->setTitle( "Entity Stats" );
-	m_playerStatsWindow->setSize( Layout2d( 400, 200 ) );
+	m_playerStatsWindow->setSize( Layout2d( 400, 300 ) );
 	m_playerStatsWindow->setPosition( Layout2d( 0, 0 ) );
 	m_playerStatsWindow->keepInParent( true );
 	m_playerStatsWindow->setTitleButtons( ChildWindow::TitleButton::None );
@@ -63,6 +63,11 @@ void nb::EntityTrackerScreenGameState::init()
 	m_playerHungerValueLabel->setPosition( Layout2d( 200, 120 ) );
 	m_playerHungerValueLabel->setText( "Not Available" );
 	m_playerStatsWindow->add( m_playerHungerValueLabel );
+
+	inventoryList = ListBox::create();
+	inventoryList->setSize( Layout2d( 400, 80 ) );
+	inventoryList->setPosition( Layout2d( 0, 160 ) );
+	m_playerStatsWindow->add( inventoryList );
 
 	r_gui->add( m_playerStatsWindow );
 }
@@ -125,5 +130,29 @@ void nb::EntityTrackerScreenGameState::track( const Entity* entity )
 																  float oldHunger ) {
 			m_playerHungerValueLabel->setText( to_string( comp->getHunger() ) );
 		} );
+	}
+
+	auto inventory = entity->getComponent_try<InventoryComponent>();
+	if (inventory)
+	{
+		auto refreshInventoryList = [&]( const Inventory& inventory ) {
+			inventoryList->removeAllItems();
+			const auto& data = inventory.getContent();
+			for (const auto& el : data)
+			{
+				auto slot = el.first;
+				auto item = el.second.first;
+				auto count = el.second.second;
+
+				auto itemId = item->getId();
+				auto itemName = item->getName();
+
+				auto str = to_string( slot ) + ": " + itemName + "(" + to_string( itemId ) + ") :: " + to_string( count );
+				inventoryList->addItem( str );
+			}
+		};
+
+		refreshInventoryList( inventory->inventory );
+		inventory->inventory.s_contentChange.connect_track( m_connections, refreshInventoryList );
 	}
 }

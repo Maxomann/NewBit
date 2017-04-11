@@ -7,33 +7,38 @@ nb::Inventory::Inventory( const SLOT slotCount )
 {
 }
 
-Inventory::COUNT nb::Inventory::addItem( Item * item, COUNT count )
+Inventory::COUNT nb::Inventory::addItem( const Item * item, COUNT count )
 {
+	auto addedCount = 0;
+
 	auto firstSlotWithItem = getFistSlotWithItem( item );
 	if (isSlotValid( firstSlotWithItem ))
 	{
 		itemsBySlot.at( firstSlotWithItem ).second += count;
-		return count;
+		addedCount = count;
 	}
 	else
 	{
 		auto firstFreeSlot = getFirstFreeSlot();
 		if (isSlotValid( firstFreeSlot ))
 		{
-			auto& foundSlot = itemsBySlot.at( firstFreeSlot );
+			auto& foundSlot = itemsBySlot[firstFreeSlot];
 			foundSlot.first = item;
 			foundSlot.second += count;
-			return count;
+			addedCount = count;
 		}
 	}
 
+	if (addedCount != 0)
+		s_contentChange.call( *this );
+
 	// no slot with item & no free slot
-	return COUNT( 0 );
+	return addedCount;
 }
 
-Inventory::COUNT nb::Inventory::removeItem( Item * item, COUNT count )
+Inventory::COUNT nb::Inventory::removeItem( const Item * item, COUNT count )
 {
-	auto removed = 0;
+	auto removed = 0u;
 	auto slotWithItem = getFistSlotWithItem( item );
 	while (isSlotValid( slotWithItem ) && removed < count)
 	{
@@ -44,10 +49,13 @@ Inventory::COUNT nb::Inventory::removeItem( Item * item, COUNT count )
 		foundSlot.second -= toRemove;
 
 		if (foundSlot.second == 0)
-			foundSlot.first == nullptr;
+			itemsBySlot.erase( slotWithItem );
 
 		slotWithItem = getFistSlotWithItem( item );
 	}
+
+	if (removed != 0)
+		s_contentChange.call( *this );
 
 	return removed;
 }
@@ -59,30 +67,24 @@ const Inventory::ContainerType & nb::Inventory::getContent() const
 
 Inventory::SLOT nb::Inventory::getFirstFreeSlot() const
 {
-	SLOT retVal = 0;
-
-	for (const auto& el : itemsBySlot)
+	for (SLOT i = 0; maxSlots == 0 || i < maxSlots; ++i)
 	{
-		if (el.second == 0)
-			return retVal;
-		else
-			retVal++;
+		auto el = itemsBySlot.find( i );
+		if (el == itemsBySlot.end() || el->second.second == 0)
+			if (maxSlots == 0 || i < maxSlots)
+				return i;
 	}
 
 	return invalidSlot();
 }
 
-Inventory::SLOT nb::Inventory::getFistSlotWithItem( Item * item ) const
+Inventory::SLOT nb::Inventory::getFistSlotWithItem( const Item * item ) const
 {
 	SLOT retVal = 0;
 
 	for (const auto& el : itemsBySlot)
-	{
-		if (el.first == item)
-			return retVal;
-		else
-			retVal++;
-	}
+		if (el.second.first == item)
+			return el.first;
 
 	return invalidSlot();
 }
