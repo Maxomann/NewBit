@@ -15,11 +15,6 @@ void RenderComponent::init()
 	return;
 };
 
-void RenderComponent::destroy()
-{
-	return;
-};
-
 const sf::Vector2i& nb::RenderComponent::getSortPositionXY() const
 {
 	return transformComponent->getPositionXY();

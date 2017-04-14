@@ -33,10 +33,6 @@ void nb::CameraComponent::init()
 	transform->s_rotationChanged.connect( this, &CameraComponent::onRotationChanged );
 }
 
-void nb::CameraComponent::destroy()
-{
-}
-
 const View & nb::CameraComponent::getView() const
 {
 	return m_view;

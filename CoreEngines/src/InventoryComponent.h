@@ -10,7 +10,6 @@ namespace nb
 		InventoryComponent( Inventory::SLOT inventorySize = 0 );
 
 		virtual void init() override;
-		virtual void destroy() override;
 
 		Inventory inventory;
 	};

@@ -17,7 +17,6 @@ namespace nb
 		RenderComponent( int zValue = 0 );
 
 		virtual void init() override;
-		virtual void destroy() override;
 
 		const sf::Vector2i& getSortPositionXY()const;
 		const int getDrawingLayer()const;

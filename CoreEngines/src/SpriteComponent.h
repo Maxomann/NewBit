@@ -22,8 +22,6 @@ namespace nb
 
 		DLL_EXPORT virtual void init()override;
 
-		DLL_EXPORT virtual void destroy()override;
-
 		void setTexture( const sf::Texture& texture );
 		void setTexture( const TextureReference& texture );
 

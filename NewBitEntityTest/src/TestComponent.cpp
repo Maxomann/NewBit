@@ -7,7 +7,7 @@ void TestComponent::init()
 	has_init = true;
 }
 
-void TestComponent::destroy()
+/*void TestComponent::destroy()
 {
 	cout << "destroy:" << (void*)getEntity() << endl;
-}
+}*/

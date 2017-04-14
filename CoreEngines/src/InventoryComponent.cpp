@@ -11,7 +11,3 @@ nb::InventoryComponent::InventoryComponent( Inventory::SLOT inventorySize )
 void nb::InventoryComponent::init()
 {
 }
-
-void nb::InventoryComponent::destroy()
-{
-}

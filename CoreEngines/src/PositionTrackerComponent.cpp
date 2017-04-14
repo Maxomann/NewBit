@@ -24,10 +24,6 @@ void nb::PositionTrackerComponent::init()
 	r_transformation = getEntity()->getComponent<TransformationComponent>();
 }
 
-void nb::PositionTrackerComponent::destroy()
-{
-}
-
 void nb::PositionTrackerComponent::trackEntity( nb::Entity * entity )
 {
 	m_connections.clear();

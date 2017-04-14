@@ -35,10 +35,3 @@ bool nb::Entity::isInit() const
 {
 	return m_isInit;
 }
-
-void nb::Entity::destroy()
-{
-	for (auto& el : m_components)
-		el.second->destroy();
-	m_isInit = false;
-}

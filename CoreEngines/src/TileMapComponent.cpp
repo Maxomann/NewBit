@@ -85,11 +85,6 @@ void TileMapComponent::init()
 	render->addDrawable( this, &globalBounds );
 };
 
-void TileMapComponent::destroy()
-{
-	return;
-};
-
 void nb::TileMapComponent::setTiles( std::map<sf::Vector2i, const Tile*> tilesByPosition )
 {
 	for (auto& el : tilesByPosition)

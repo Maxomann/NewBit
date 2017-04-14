@@ -22,8 +22,6 @@ namespace nb
 
 		virtual void init()override;
 
-		virtual void destroy()override;
-
 		void trackEntity( Entity* entity );
 
 		void setOffsetXY( sf::Vector2i offset );

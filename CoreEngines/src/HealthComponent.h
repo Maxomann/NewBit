@@ -14,8 +14,6 @@ namespace nb
 
 		virtual void init() override;
 
-		virtual void destroy() override;
-
 		void damage( float amount );
 
 		void heal( float amount );

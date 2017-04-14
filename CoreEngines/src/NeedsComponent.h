@@ -11,7 +11,6 @@ namespace nb
 		NeedsComponent();
 
 		virtual void init() override;
-		virtual void destroy() override;
 
 		float getHunger()const;
 		void setHunger( float val );

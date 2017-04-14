@@ -13,10 +13,6 @@ void nb::HealthComponent::init()
 {
 }
 
-void nb::HealthComponent::destroy()
-{
-}
-
 void nb::HealthComponent::damage( float amount )
 {
 	amount = abs( amount );

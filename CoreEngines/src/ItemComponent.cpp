@@ -12,10 +12,6 @@ void nb::ItemComponent::init()
 {
 }
 
-void nb::ItemComponent::destroy()
-{
-}
-
 const Item* ItemComponent::getItem()const
 {
 	return item;

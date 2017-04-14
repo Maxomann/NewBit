@@ -64,10 +64,6 @@ void nb::SpriteComponent::init()
 	render->addDrawable( &m_sprite, &globalBounds );
 }
 
-void nb::SpriteComponent::destroy()
-{
-}
-
 void nb::SpriteComponent::setTexture( const sf::Texture & texture )
 {
 	m_sprite.setTexture( texture, true );

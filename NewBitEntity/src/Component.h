@@ -25,12 +25,9 @@ namespace nb
 		};
 
 		virtual void init() = 0;
-		/* Not called on World::~World() */
-		virtual void destroy() = 0;
 	};
 
 	/*
 		virtual void init() override;
-		virtual void destroy() override;
 	*/
 }

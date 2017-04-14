@@ -38,10 +38,6 @@ void nb::PhysicsComponent::init()
 	} );
 }
 
-void nb::PhysicsComponent::destroy()
-{
-}
-
 void nb::PhysicsComponent::addToSimulation( b2World & simulation )
 {
 	auto transform = component<TransformationComponent>();

@@ -17,7 +17,6 @@ namespace nb
 		const sf::View& getView()const;
 
 		virtual void init() override;
-		virtual void destroy() override;
 
 		sf::FloatRect getGlobalBounds()const;
 	};

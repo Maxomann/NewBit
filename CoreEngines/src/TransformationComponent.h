@@ -18,8 +18,6 @@ namespace nb
 
 		virtual void init()override;
 
-		virtual void destroy()override;
-
 		//
 
 		sf::Vector3i getPosition()const;

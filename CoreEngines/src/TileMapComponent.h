@@ -29,7 +29,6 @@ namespace nb
 		~TileMapComponent();
 
 		virtual void init() override;
-		virtual void destroy() override;
 
 		void setTiles( std::map<sf::Vector2i, const Tile*> tilesByPosition );
 		const Tile* getTile( sf::Vector2i relativePosition )const;

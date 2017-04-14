@@ -18,10 +18,6 @@ void nb::TransformationComponent::init()
 {
 }
 
-void nb::TransformationComponent::destroy()
-{
-}
-
 sf::Vector3i nb::TransformationComponent::getPosition() const
 {
 	return Vector3i( m_position.x,

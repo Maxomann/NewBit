@@ -14,7 +14,6 @@ namespace nb
 		ItemComponent( const Item* item );
 
 		virtual void init() override;
-		virtual void destroy() override;
 
 		const Item* getItem()const;
 	};
