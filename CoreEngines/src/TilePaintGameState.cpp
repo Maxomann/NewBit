@@ -20,7 +20,8 @@ void nb::TilePaintGameState::init()
 	tileListBox->setSize( "{parent.width, parent.height}" );
 	tileListBox->connect( "ItemSelected", [&]( const sf::String& itemName,
 											   const sf::String& id ) {
-		tileToPaint = std::stoi( id.toAnsiString() );
+		if (tileListBox->getSelectedItem().getSize())
+			tileToPaint = std::stoi( id.toAnsiString() );
 	} );
 
 	//add tiles to list

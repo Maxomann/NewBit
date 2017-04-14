@@ -20,7 +20,6 @@ namespace nb
 		std::uniform_int_distribution<int> dist2;
 
 		noise::module::Perlin noiseGenerator;
-		noise::module::ScaleBias bias;
 
 		const CoreRef* r_core;
 		ResourceEngine* r_resourceEngine;
