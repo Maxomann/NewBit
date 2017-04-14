@@ -6,19 +6,14 @@ using namespace nb;
 nb::WorldGenerationEngine::WorldGenerationEngine()
 	: mt( rd() ),
 	dist( -999999, 999999 ),
-	dist2( 0, 10 )
+	dist2( 0, 19 )
 {
-	con.SetConstValue( -1 );
-
 	noiseGenerator.SetSeed( dist( mt ) );
-	noiseGenerator.SetFrequency( 1.0 / 25.0 );
+	noiseGenerator.SetFrequency( 1.0 / 80.0 );
 
-	spheres.SetFrequency( 40000 );
-
-	select.SetSourceModule( 0, con );
-	select.SetSourceModule( 1, noiseGenerator );
-	select.SetControlModule( spheres );
-	select.SetBounds( 0, 1 );
+	bias.SetScale( 2 );
+	bias.SetBias( -0.5 );
+	bias.SetSourceModule( 0, noiseGenerator );
 }
 
 void WorldGenerationEngine::init()
@@ -47,30 +42,33 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 			double positionInTilesY = static_cast<double>((chunkPosition.y*TileMapComponent::TILES_PER_TERRAIN) + y);
 			double positionInTilesZ = static_cast<double>(std::hash<int>{}(chunkPosition.z));
 
-			auto noiseVal = select.GetValue( positionInTilesX,
-											 positionInTilesY,
-											 positionInTilesZ );
+			auto noiseVal = bias.GetValue( positionInTilesX,
+										   positionInTilesY,
+										   positionInTilesZ );
 
-			if (noiseVal > -0.2)
+			if (noiseVal > 0.f)
 			{
-				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
-				if (noiseVal > 0.4 && dist2( mt ) < 1)
+				if (noiseVal > 0.3)
 				{
-					sf::Vector3i placementPosition(
-						(positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
-						(positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
-						chunkPosition.z );
+					tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
+					if (noiseVal > 0.6 && dist2( mt ) < 1)
+					{
+						sf::Vector3i placementPosition(
+							(positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
+							(positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
+							chunkPosition.z );
 
-					retVal.push_back( createTree( engines(), placementPosition ) );
-					/*
-					Entity entity = r_resourceEngine->blueprints.getEntity( 0 );
-					entity->setPosition( {...} );
-					entity->setZValue( 0 );
-					*/
+						retVal.push_back( createTree( engines(), placementPosition ) );
+						/*
+						Entity entity = r_resourceEngine->blueprints.getEntity( 0 );
+						entity->setPosition( {...} );
+						entity->setZValue( 0 );
+						*/
+					}
 				}
+				else
+					tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 1 ) );
 			}
-			else if (noiseVal > -0.5)
-				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 1 ) );
 			else
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 2 ) );
 		}

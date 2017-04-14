@@ -19,11 +19,8 @@ namespace nb
 		std::uniform_int_distribution<int> dist;
 		std::uniform_int_distribution<int> dist2;
 
-		noise::module::Const con;
 		noise::module::Perlin noiseGenerator;
-		noise::module::Spheres spheres;
-		noise::module::Add add;
-		noise::module::Select select;
+		noise::module::ScaleBias bias;
 
 		const CoreRef* r_core;
 		ResourceEngine* r_resourceEngine;
