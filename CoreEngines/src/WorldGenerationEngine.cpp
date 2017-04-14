@@ -52,7 +52,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 						(positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
 						chunkPosition.z );
 
-					//retVal.push_back( createTree( engines(), placementPosition ) );
+					retVal.push_back( createTree( engines(), placementPosition ) );
 					/*
 					Entity entity = r_resourceEngine->blueprints.getEntity( 0 );
 					entity->setPosition( {...} );
