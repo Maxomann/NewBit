@@ -154,8 +154,8 @@ void TestGameState::init()
 			auto itemComp = entity->getComponent_try<ItemComponent>();
 			if (itemComp)
 			{
-				cout << inventory.addItem( itemComp->getItem() ) << endl;
-				world().removeEntity( entity );
+				if (inventory.addItem( itemComp->getItem() ))
+					world().removeEntity( entity );
 			}
 		} );
 

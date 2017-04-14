@@ -8,8 +8,17 @@ nb::WorldGenerationEngine::WorldGenerationEngine()
 	dist( -999999, 999999 ),
 	dist2( 0, 10 )
 {
+	con.SetConstValue( -1 );
+
 	noiseGenerator.SetSeed( dist( mt ) );
 	noiseGenerator.SetFrequency( 1.0 / 25.0 );
+
+	spheres.SetFrequency( 40000 );
+
+	select.SetSourceModule( 0, con );
+	select.SetSourceModule( 1, noiseGenerator );
+	select.SetControlModule( spheres );
+	select.SetBounds( 0, 1 );
 }
 
 void WorldGenerationEngine::init()
@@ -38,9 +47,9 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 			double positionInTilesY = static_cast<double>((chunkPosition.y*TileMapComponent::TILES_PER_TERRAIN) + y);
 			double positionInTilesZ = static_cast<double>(std::hash<int>{}(chunkPosition.z));
 
-			auto noiseVal = noiseGenerator.GetValue( positionInTilesX,
-													 positionInTilesY,
-													 positionInTilesZ );
+			auto noiseVal = select.GetValue( positionInTilesX,
+											 positionInTilesY,
+											 positionInTilesZ );
 
 			if (noiseVal > -0.2)
 			{

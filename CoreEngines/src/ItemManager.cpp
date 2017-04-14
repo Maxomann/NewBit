@@ -75,7 +75,7 @@ Entity ItemManager::createItemEntity( const Item* item,
 	Entity entity;
 	entity.addComponent<TransformationComponent>( sf::Vector2i( position.x, position.y ),
 												  position.z,
-												  Vector2f( 16, 16 ) );
+												  Vector2f( 32, 32 ) );
 	entity.addComponent<RenderComponent>( 0 );
 	entity.addComponent<SpriteComponent>( *item->getTextureReference() );
 
@@ -85,7 +85,7 @@ Entity ItemManager::createItemEntity( const Item* item,
 	bodyDef.linearDamping = 0.5f;
 
 	unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
-	auto physicsSize = 16.f * PIXEL_TO_METER * 0.5f;
+	auto physicsSize = 32.f * PIXEL_TO_METER * 0.5f;
 	shape->SetAsBox( physicsSize, physicsSize, b2Vec2( 0.f, -physicsSize ), 0.f );
 
 	b2FixtureDef fixtureDef;
