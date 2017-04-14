@@ -12,7 +12,7 @@ nb::WorldGenerationEngine::WorldGenerationEngine()
 	noiseGenerator.SetFrequency( 1.0 / 80.0 );
 
 	bias.SetScale( 2 );
-	bias.SetBias( -0.5 );
+	bias.SetBias( -0.6 );
 	bias.SetSourceModule( 0, noiseGenerator );
 }
 
