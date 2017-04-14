@@ -97,5 +97,12 @@ namespace nb
 
 		/* Not called on World::~World() */
 		void destroy();
+
+		/*
+			Gets cleared by EntityManager, when this Entity is removed from world.
+			If any System registers callbacks to a component of this Entity,
+			use this container for tracking.
+		*/
+		Connections outsideConnections;
 	};
 }

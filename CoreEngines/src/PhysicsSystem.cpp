@@ -35,8 +35,9 @@ void nb::PhysicsSystem::init()
 			physics->addToSimulation( getSimulationForLayer( entityLayer ) );
 			entitiesWithPhysicsComponentInWorld.push_back( entity );
 
-			transform->s_layerChanged.connect( [&, physics]( const TransformationComponent* comp,
-															 int oldLayer ) {
+			transform->s_layerChanged.connect_track( entity->outsideConnections,
+													 [&, physics]( const TransformationComponent* comp,
+																   int oldLayer ) {
 				physics->removeFromSimulation( getSimulationForLayer( oldLayer ) );
 				checkSimulationLayerForRemoval( oldLayer );
 				physics->addToSimulation( getSimulationForLayer( comp->getLayer() ) );

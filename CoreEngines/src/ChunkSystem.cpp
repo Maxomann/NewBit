@@ -27,7 +27,9 @@ void nb::ChunkSystem::onEntityAdded( Entity * entity )
 	auto transform = entity->getComponent_try<TransformationComponent>();
 	if (transform)
 	{
-		transform->s_positionChanged.connect( this, &ChunkSystem::onEntityPositionChanged );
+		transform->s_positionChanged.connect_track( entity->outsideConnections,
+													this,
+													&ChunkSystem::onEntityPositionChanged );
 		auto chunkPositon = calculateChunkPositionForPixelPosition( transform->getPosition() );
 		auto& chunk = m_entitiesByChunk[chunkPositon];
 		chunk.push_back( entity );

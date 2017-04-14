@@ -88,6 +88,8 @@ bool nb::EntityTrackerScreenGameState::shouldDestroy()
 
 void nb::EntityTrackerScreenGameState::track( const Entity* entity )
 {
+	m_connections.clear();
+
 	auto transform = entity->getComponent_try<TransformationComponent>();
 	if (transform)
 	{
