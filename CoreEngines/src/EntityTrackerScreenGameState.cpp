@@ -149,7 +149,7 @@ void nb::EntityTrackerScreenGameState::track( const Entity* entity )
 				auto itemId = item->getId();
 				auto itemName = item->getName();
 
-				auto str = to_string( slot ) + ": " + itemName + "(" + to_string( itemId ) + ") :: " + to_string( count );
+				auto str = to_string( slot ) + ": " + itemName + "(id:" + to_string( itemId ) + ") :: " + to_string( count );
 				inventoryList->addItem( str );
 			}
 		};

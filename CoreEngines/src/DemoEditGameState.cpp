@@ -36,7 +36,7 @@ void nb::DemoEditGameState::init()
 	m_childWindow->add( objectListBox );
 
 	for (const auto& el : r_resourceEngine->entitiyFactories.getAllFactories())
-		objectListBox->addItem( el.second->getName(), to_string( el.second->getId() ) );
+		objectListBox->addItem( el.second->getName() + "(id:" + to_string( el.second->getId() ) + ")", to_string( el.second->getId() ) );
 
 	r_gui->add( m_childWindow );
 
