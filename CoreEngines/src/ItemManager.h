@@ -28,7 +28,7 @@ namespace nb
 
 		const std::list<Item>& getAllItems()const;
 
-		static Entity createItemEntity( const Item* item,
-										sf::Vector3i position );
+		[[deprecated( "Use EntityFactory instead" )]] static Entity createItemEntity( const Item* item,
+																					  sf::Vector3i position );
 	};
 }

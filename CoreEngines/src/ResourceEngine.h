@@ -3,6 +3,7 @@
 #include "TextureManager.h"
 #include "TileManager.h"
 #include "ItemManager.h"
+#include "EntityFactoryManager.h"
 
 namespace nb
 {
@@ -17,6 +18,7 @@ namespace nb
 		TextureManager textures;
 		TileManager tiles;
 		ItemManager items;
+		EntityFactoryManager entitiyFactories;
 
 		static const std::string PATH_PACKAGES;
 	};

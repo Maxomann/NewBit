@@ -51,7 +51,7 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 				{
 					sf::Vector3i placementPosition(
 						(positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
-						(positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
+						(positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL) + TileMapComponent::TILE_SIZE_IN_PIXEL,
 						chunkPosition.z );
 
 					retVal.push_back( createTree( engines(), placementPosition ) );
@@ -66,6 +66,8 @@ std::vector<Entity> nb::WorldGenerationEngine::generateChunk( const sf::Vector3i
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
 			else if (noiseVal > 0.25f)
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 1 ) );
+			else if (noiseVal > 0.16f)
+				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 5 ) );
 			else
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 2 ) );
 		}

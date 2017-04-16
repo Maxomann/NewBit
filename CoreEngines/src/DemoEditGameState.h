@@ -22,6 +22,8 @@ namespace nb
 		tgui::Label::Ptr m_EntityCountLabel;
 		tgui::Label::Ptr m_EntityCountValueLabel;
 
+		tgui::ListBox::Ptr objectListBox;
+
 		bool m_shouldDestroy = false;
 
 		Connections m_connections;

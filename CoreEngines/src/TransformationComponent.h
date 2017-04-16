@@ -5,10 +5,10 @@ namespace nb
 {
 	class TransformationComponent : public Component
 	{
-		sf::Vector2i m_position;
+		sf::Vector2i m_position = { 0, 0 };
 		int m_layer = 0;
-		sf::Vector2f m_size;
-		float m_rotation;
+		sf::Vector2f m_size = { 0.f, 0.f };
+		float m_rotation = 0.f;
 
 	public:
 		TransformationComponent( sf::Vector2i position,
