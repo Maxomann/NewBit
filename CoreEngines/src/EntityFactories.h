@@ -40,4 +40,12 @@ namespace nb
 
 		virtual Entity create( const ResourceEngine& resources )const override;
 	};
+
+	class WallFactory : public EntityFactory
+	{
+	public:
+		WallFactory();
+
+		virtual Entity create( const ResourceEngine& resources )const override;
+	};
 }

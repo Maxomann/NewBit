@@ -154,3 +154,40 @@ Entity ItemWoodFactory::create( const ResourceEngine& resources )const
 
 	return entity;
 }
+
+WallFactory::WallFactory()
+	: EntityFactory( 1,
+					 "Wall",
+					 {  } )
+{
+}
+
+Entity WallFactory::create( const ResourceEngine& resources )const
+{
+	Entity entity;
+	entity.addComponent<TransformationComponent>( sf::Vector2i( 0, 0 ),
+												  0,
+												  Vector2f( 32, 64 ) );
+	entity.addComponent<RenderComponent>( 0 );
+	entity.addComponent<SpriteComponent>( *resources.textures.getTextureReference( "default:texture:object_wall" ) );
+
+	/* Physics */
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_staticBody;
+	bodyDef.linearDamping = 0.5f;
+
+	unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
+	auto physicsSizeX = 32.f * PIXEL_TO_METER * 0.5;
+	auto physicsSizeY = 4.f * PIXEL_TO_METER * 0.5;
+	shape->SetAsBox( physicsSizeX, physicsSizeY, b2Vec2( 0.f, -physicsSizeY ), 0.f );
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+
+	entity.addComponent<PhysicsComponent>( bodyDef,
+										   move( shape ),
+										   fixtureDef );
+
+	return entity;
+}
