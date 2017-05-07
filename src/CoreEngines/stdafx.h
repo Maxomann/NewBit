@@ -1,5 +1,5 @@
 #pragma once
-#include <NewBitCore/src/_PluginCreator.h>
+#include <NewBitCore/_PluginCreator.h>
 
 #include <nlohmann/json.hpp>
 
@@ -10,9 +10,9 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include <NewBitEntity/src/NewBitEntity.h>
-#include <NewBitPackageManager\src\PackageManager.h>
-#include <NewBitTexturePacker\src\NewBitTexturePacker.h>
+#include <NewBitEntity/NewBitEntity.h>
+#include <NewBitPackageManager\PackageManager.h>
+#include <NewBitTexturePacker\NewBitTexturePacker.h>
 
 #include <TGUI\TGUI.hpp>
 #include <Box2D/Box2D.h>

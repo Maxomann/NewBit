@@ -1,3 +1,3 @@
 #pragma once
 
-#include <NewBitPackageManager\src\PackageManager.h>
+#include <NewBitPackageManager\PackageManager.h>

@@ -1,4 +1,4 @@
-#include <NewBitSignals\src\Signal.h>
+#include <NewBitSignals\Signal.h>
 
 using namespace std;
 using namespace nb;
@@ -49,7 +49,7 @@ int main()
 		signal2.connect_track( cons2, teststruct3.get(), &Teststruct::testmemfunc );
 
 		cout << "Cons2:" << endl;
-		for (const auto& el : cons2)
+		for( const auto& el : cons2 )
 			cout << "isValid: " << el.is_valid() << endl;
 	}
 
@@ -60,7 +60,7 @@ int main()
 	signal1.call( 90 );
 
 	cout << "Cons2:" << endl;
-	for (const auto& el : cons2)
+	for( const auto& el : cons2 )
 		cout << "isValid: " << el.is_valid() << endl;
 
 	system( "pause" );

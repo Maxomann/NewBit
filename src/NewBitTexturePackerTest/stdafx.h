@@ -2,7 +2,7 @@
 
 #include <UnitTest++\UnitTest++.h>
 
-#include <NewBitTexturePacker\src\NewBitTexturePacker.h>
+#include <NewBitTexturePacker\NewBitTexturePacker.h>
 
 #include <iostream>
 #include <fstream>
