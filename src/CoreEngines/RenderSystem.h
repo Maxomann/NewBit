@@ -24,9 +24,6 @@ namespace nb
 		virtual void update() override;
 		virtual void destroy() override;
 
-		void setCamerasForDrawing( std::vector<Entity*> cameras );
-		const std::vector<Entity*>& getCamerasForDrawing()const;
-
 		const std::vector<RenderComponent*>& getRenderComponentsInWorld()const;
 
 		const std::vector<std::unique_ptr<sf::Drawable>>& getDebugDrawingDataForLayer( int layer );

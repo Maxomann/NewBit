@@ -14,16 +14,18 @@ namespace nb
 		tgui::Gui m_gui;
 
 		std::vector<sf::Drawable*> m_toDrawNextFrame;
+		std::vector<std::pair<sf::View, std::vector<const sf::Drawable*const>>> m_toDrawNextFrameWithView;
 
 		sf::Clock m_clock;
 		sf::Time m_frameTime;
 
 	public:
-		virtual void init() override;
+		virtual void init( const CoreEngineManager& coreEngines ) override;
 
 		virtual bool update() override;
 
 		void drawNextFrame( sf::Drawable& drawable );
+		void drawNextFrame( std::vector<const sf::Drawable*const> drawables, sf::View view );
 
 		nb::Signal<void( const sf::Event& )> s_onEvent;
 

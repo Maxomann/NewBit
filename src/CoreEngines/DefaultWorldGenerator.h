@@ -1,5 +1,7 @@
 #pragma once
 #include "stdafx.h"
+#include "WorldGenerator.h"
+
 #include "ResourceEngine.h"
 #include "TransformationComponent.h"
 #include "RenderComponent.h"
@@ -12,7 +14,7 @@
 
 namespace nb
 {
-	class WorldGenerationEngine : public CoreEngine
+	class DefaultWorldGenerator : public WorldGenerator
 	{
 		std::random_device rd;
 		std::mt19937 mt;
@@ -21,17 +23,12 @@ namespace nb
 
 		noise::module::Perlin noiseGenerator;
 
-		const CoreRef* r_core;
-		ResourceEngine* r_resourceEngine;
+		const ResourceEngine*const r_resourceEngine;
 
 	public:
-		DLL_EXPORT WorldGenerationEngine();
-
-		DLL_EXPORT virtual void init()override;
-
-		DLL_EXPORT virtual bool update()override;
+		DefaultWorldGenerator( const ResourceEngine*const resourceEngine );
 
 		// thread safe
-		DLL_EXPORT std::vector<Entity> generateChunk( const sf::Vector3i& chunkPosition );
+		DLL_EXPORT virtual std::vector<Entity> generateChunk( const sf::Vector3i& chunkPosition )const override;
 	};
 }

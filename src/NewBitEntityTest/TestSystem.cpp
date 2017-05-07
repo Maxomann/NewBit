@@ -5,7 +5,7 @@ void TestSystem::init()
 	has_init = true;
 }
 
-void TestSystem::update()
+void TestSystem::( )
 {
 	has_update = true;
 }

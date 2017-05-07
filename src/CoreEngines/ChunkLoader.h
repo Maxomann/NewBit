@@ -1,14 +1,15 @@
 #pragma once
 #include "stdafx.h"
 #include "ChunkLoadStateChanger.h"
-#include "WorldGenerationEngine.h"
-#include "ChunkCacheEngine.h"
+#include "ChunkCache.h"
+#include "WorldGenerator.h"
 
 namespace nb
 {
 	class ChunkLoader : public ChunkLoadStateChanger
 	{
-		const CoreEngineManager& coreEngines;
+		const std::shared_ptr<const WorldGenerator>& chunkGenerator;
+		ChunkCache& chunkCache;
 
 		std::vector<Entity> entities;
 
@@ -22,6 +23,8 @@ namespace nb
 		virtual void finish_internal( World& world ) override;
 
 	public:
-		ChunkLoader( sf::Vector3i position, const CoreEngineManager& coreEngines );
+		ChunkLoader( const std::shared_ptr<const WorldGenerator>& chunkGenerator,
+					 ChunkCache& chunkCache,
+					 sf::Vector3i position );
 	};
 }

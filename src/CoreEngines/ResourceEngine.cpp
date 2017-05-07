@@ -5,7 +5,7 @@ using namespace nb;
 
 const std::string ResourceEngine::PATH_PACKAGES = "./Packages";
 
-void nb::ResourceEngine::init()
+void nb::ResourceEngine::init( const CoreEngineManager& coreEngines )
 {
 	packages.initFromFolder( PATH_PACKAGES );
 	packages.save();

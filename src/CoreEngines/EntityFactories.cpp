@@ -5,14 +5,14 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-Entity nb::createHuman( const CoreEngineManager& engines, sf::Vector3i position )
+Entity nb::createHuman( const ResourceEngine*const resources, sf::Vector3i position )
 {
 	Entity entity;
 	entity.addComponent<TransformationComponent>( sf::Vector2i( position.x, position.y ),
 												  position.z,
 												  Vector2f( 32, 64 ) );
 	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *engines.getEngine<ResourceEngine>()->textures.getTextureReference( "default:texture:player" ) );
+	entity.addComponent<SpriteComponent>( *resources->textures.getTextureReference( "default:texture:player" ) );
 	entity.addComponent<HealthComponent>( 200, 100 );
 
 	/* Physics */
@@ -38,7 +38,7 @@ Entity nb::createHuman( const CoreEngineManager& engines, sf::Vector3i position 
 	return entity;
 }
 
-Entity nb::createTilemapChunk( const CoreEngineManager & engines, sf::Vector3i positionInChunks, std::vector<std::vector<const Tile*>> tiles )
+Entity nb::createTilemapChunk( const ResourceEngine*const resources, sf::Vector3i positionInChunks, std::vector<std::vector<const Tile*>> tiles )
 {
 	Entity terrain;
 	terrain.addComponent<TransformationComponent>(
@@ -55,14 +55,14 @@ Entity nb::createTilemapChunk( const CoreEngineManager & engines, sf::Vector3i p
 	return terrain;
 }
 
-Entity nb::createTree( const CoreEngineManager & engines, sf::Vector3i position )
+Entity nb::createTree( const ResourceEngine*const resources, sf::Vector3i position )
 {
 	Entity entity;
 	entity.addComponent<TransformationComponent>( sf::Vector2i( position.x, position.y ),
 												  position.z,
 												  Vector2f( 48 * 2, 64 * 2 ) );
 	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *engines.getEngine<ResourceEngine>()->textures.getTextureReference( "default:texture:object_tree" ) );
+	entity.addComponent<SpriteComponent>( *resources->textures.getTextureReference( "default:texture:object_tree" ) );
 	/* Physics */
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
@@ -85,8 +85,7 @@ TreeFactory::TreeFactory()
 	: EntityFactory( 0,
 					 "Tree",
 					 {} )
-{
-}
+{}
 
 Entity TreeFactory::create( const ResourceEngine& resources )const
 {
@@ -117,9 +116,8 @@ Entity TreeFactory::create( const ResourceEngine& resources )const
 ItemWoodFactory::ItemWoodFactory()
 	: EntityFactory( 10'000,
 					 "Item: Wood",
-					 { "item" } )
-{
-}
+					 {"item"} )
+{}
 
 Entity ItemWoodFactory::create( const ResourceEngine& resources )const
 {
@@ -159,8 +157,7 @@ WallFactory::WallFactory()
 	: EntityFactory( 1,
 					 "Wall",
 					 {  } )
-{
-}
+{}
 
 Entity WallFactory::create( const ResourceEngine& resources )const
 {

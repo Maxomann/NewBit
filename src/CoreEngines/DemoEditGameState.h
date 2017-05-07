@@ -17,6 +17,9 @@ namespace nb
 		GraphicsEngine* r_graphicsEngine;
 		ResourceEngine* r_resourceEngine;
 
+		World& world;
+		Entity* camera;
+
 		tgui::ChildWindow::Ptr m_childWindow;
 
 		tgui::Label::Ptr m_EntityCountLabel;
@@ -24,17 +27,16 @@ namespace nb
 
 		tgui::ListBox::Ptr objectListBox;
 
-		bool m_shouldDestroy = false;
-
 		Connections m_connections;
 
 	public:
-		virtual void init() override;
+		DemoEditGameState( World& world, Entity* camera );
 
-		virtual void update() override;
+		virtual void init( const CoreEngineManager& coreEngines,
+						   GameStateManager& gameStates ) override;
 
-		virtual void destroy() override;
+		virtual void update( GameStateManager& gameStates ) override;
 
-		virtual bool shouldDestroy() override;
+		virtual void destroy( GameStateManager& gameStates ) override;
 	};
 }

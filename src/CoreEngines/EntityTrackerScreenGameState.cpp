@@ -4,9 +4,10 @@ using namespace sf;
 using namespace tgui;
 using namespace nb;
 
-void nb::EntityTrackerScreenGameState::init()
+void nb::EntityTrackerScreenGameState::init( const CoreEngineManager& coreEngines,
+											 GameStateManager& gameStates )
 {
-	r_gui = getCore()->engines.getEngine<GraphicsEngine>()->getGui();
+	r_gui = coreEngines.getEngine<GraphicsEngine>()->getGui();
 
 	// GUI
 	m_playerStatsWindow = ChildWindow::create();
@@ -72,18 +73,12 @@ void nb::EntityTrackerScreenGameState::init()
 	r_gui->add( m_playerStatsWindow );
 }
 
-void nb::EntityTrackerScreenGameState::update()
-{
-}
+void nb::EntityTrackerScreenGameState::update( GameStateManager& gameStates )
+{}
 
-void nb::EntityTrackerScreenGameState::destroy()
+void nb::EntityTrackerScreenGameState::destroy( GameStateManager& gameStates )
 {
 	r_gui->remove( m_playerStatsWindow );
-}
-
-bool nb::EntityTrackerScreenGameState::shouldDestroy()
-{
-	return false;
 }
 
 void nb::EntityTrackerScreenGameState::track( const Entity* entity )
@@ -91,14 +86,14 @@ void nb::EntityTrackerScreenGameState::track( const Entity* entity )
 	m_connections.clear();
 
 	auto transform = entity->getComponent_try<TransformationComponent>();
-	if (transform)
+	if( transform )
 	{
 		auto position = transform->getPosition();
 		m_playerPositionValueLabel->setText( "X: " + to_string( position.x ) +
 											 " Y: " + to_string( position.y ) +
 											 " Z: " + to_string( position.z ) );
-		transform->s_positionChanged.connect_track( m_connections, [&]( const TransformationComponent* const comp,
-																		sf::Vector3i oldPosition ) {
+		transform->s_positionChanged.connect_track( m_connections, [&] ( const TransformationComponent* const comp,
+																		 sf::Vector3i oldPosition ){
 			auto position = comp->getPosition();
 			m_playerPositionValueLabel->setText( "X: " + to_string( position.x ) +
 												 " Y: " + to_string( position.y ) +
@@ -107,40 +102,40 @@ void nb::EntityTrackerScreenGameState::track( const Entity* entity )
 	}
 
 	auto sprite = entity->getComponent_try<SpriteComponent>();
-	if (sprite)
+	if( sprite )
 	{
 		m_playerSpritePathValueLabel->setText( to_string( sprite->getSprite().getTexture()->getNativeHandle() ) );
 	}
 
 	auto health = entity->getComponent_try<HealthComponent>();
-	if (health)
+	if( health )
 	{
 		auto val = health->getHealth();
 		m_playerHealthValueLabel->setText( to_string( val ) );
-		health->s_onChange.connect_track( m_connections, [&]( const HealthComponent* const comp,
-															  int change ) {
+		health->s_onChange.connect_track( m_connections, [&] ( const HealthComponent* const comp,
+															   int change ){
 			m_playerHealthValueLabel->setText( to_string( comp->getHealth() ) + " / " + to_string( comp->getMaxHealth() ) );
 		} );
 	}
 
 	auto needs = entity->getComponent_try<NeedsComponent>();
-	if (needs)
+	if( needs )
 	{
 		auto val = needs->getHunger();
 		m_playerHungerValueLabel->setText( to_string( val ) );
-		needs->s_hungerChanged.connect_track( m_connections, [&]( const NeedsComponent* const comp,
-																  float oldHunger ) {
+		needs->s_hungerChanged.connect_track( m_connections, [&] ( const NeedsComponent* const comp,
+																   float oldHunger ){
 			m_playerHungerValueLabel->setText( to_string( comp->getHunger() ) );
 		} );
 	}
 
 	auto inventory = entity->getComponent_try<InventoryComponent>();
-	if (inventory)
+	if( inventory )
 	{
-		auto refreshInventoryList = [&]( const Inventory& inventory ) {
+		auto refreshInventoryList = [&] ( const Inventory& inventory ){
 			inventoryList->removeAllItems();
 			const auto& data = inventory.getContent();
-			for (const auto& el : data)
+			for( const auto& el : data )
 			{
 				auto slot = el.first;
 				auto item = el.second.first;

@@ -4,7 +4,7 @@ using namespace sf;
 using namespace tgui;
 using namespace nb;
 
-void nb::GraphicsEngine::init()
+void nb::GraphicsEngine::init( const CoreEngineManager& coreEngines )
 {
 	m_window.create( sf::VideoMode( 1280, 720 ), "GraphicsEngine Window", Style::Titlebar | Style::Close );
 	m_window.setVerticalSyncEnabled( true );
@@ -32,58 +32,18 @@ bool nb::GraphicsEngine::update()
 	// draw
 	m_window.clear( sf::Color::Green );
 
-	for( const auto& cam : r_renderSystem->getCamerasForDrawing() )
+	for( const auto& el : m_toDrawNextFrameWithView )
 	{
-		const auto& camLayer = cam->getComponent<TransformationComponent>()->getLayer();
-		const auto& camComponent = cam->getComponent<CameraComponent>();
-		const auto& camView = camComponent->getView();
-		const auto& camGlobalBounds = camComponent->getGlobalBounds();
-		m_window.setView( camView );
-
-		std::vector<RenderComponent*> toDraw;
-
-		//get to draw
-		for( const auto& el : r_renderSystem->getRenderComponentsInWorld() )
-		{
-			if( el->getDrawingLayer() == camLayer &&
-				el->getGlobalBounds().intersects( camGlobalBounds ) )
-				toDraw.push_back( el );
-		}
-
-		//sort
-		std::sort( toDraw.begin(), toDraw.end(), [&] ( const RenderComponent* lhs, const RenderComponent* rhs ){
-			// order: z^-1,y,x
-			const auto& posLhs = lhs->getSortPositionXY();
-			const auto& posRhs = rhs->getSortPositionXY();
-			const auto& zVlaueLhs = lhs->getZValue();
-			const auto& zVlaueRhs = rhs->getZValue();
-
-			if( zVlaueRhs > zVlaueLhs )
-				return true;
-			else if( zVlaueRhs < zVlaueLhs )
-				return false;
-			else if( posRhs.y > posLhs.y )
-				return true;
-			else if( posRhs.y < posLhs.y )
-				return false;
-			else if( posRhs.x > posLhs.x )
-				return true;
-			else
-				return false;
-		} );
-
 		//draw
-		for( const auto& el : toDraw )
-			for( const auto& drawable : el->getDrawingData() )
-				m_window.draw( *drawable );
+		m_window.setView( el.first );
 
-		for( const auto& debugEl : r_renderSystem->getDebugDrawingDataForLayer( camLayer ) )
-			m_window.draw( *debugEl );
-
-		m_window.setView( m_window.getDefaultView() );
-		for( const auto& drawable : m_toDrawNextFrame )
+		for( const auto& drawable : el.second )
 			m_window.draw( *drawable );
 	}
+	m_window.setView( m_window.getDefaultView() );
+
+	for( const auto& drawable : m_toDrawNextFrame )
+		m_window.draw( *drawable );
 
 	m_gui.draw();
 
@@ -96,6 +56,11 @@ bool nb::GraphicsEngine::update()
 void nb::GraphicsEngine::drawNextFrame( sf::Drawable& drawable )
 {
 	m_toDrawNextFrame.push_back( &drawable );
+}
+
+void nb::GraphicsEngine::drawNextFrame( std::vector<const sf::Drawable*const> drawables, sf::View view )
+{
+	m_toDrawNextFrameWithView.push_back( make_pair( move( view ), move( drawables ) ) );
 }
 
 sf::RenderWindow & nb::GraphicsEngine::getWindow()

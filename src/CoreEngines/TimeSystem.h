@@ -11,7 +11,7 @@ namespace nb
 
 	public:
 		virtual void init() override;
-		virtual void update() override;
+		virtual void() override;
 		virtual void destroy() override;
 
 		const sf::Time& getFrameTime()const;

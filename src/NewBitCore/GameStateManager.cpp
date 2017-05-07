@@ -21,7 +21,7 @@ void nb::GameStateManager::checkDestroyGameStates()
 	m_states.erase( std::remove_if( m_states.begin(), m_states.end(), [&] ( std::unique_ptr<GameState>& el ) -> bool{
 		if( el->shouldDestroy() )
 		{
-			el->destroy( coreEnginesRef, *this );
+			el->destroy( *this );
 			return true;
 		}
 		else
@@ -43,7 +43,7 @@ void nb::GameStateManager::removeGameState( const GameState* state )
 	m_states.erase( remove_if( m_states.begin(), m_states.end(), [&] ( const std::unique_ptr<GameState>& el ){
 		if( state == el.get() )
 		{
-			el->destroy( coreEnginesRef, *this );
+			el->destroy( *this );
 			return true;
 		}
 		else
@@ -54,12 +54,12 @@ void nb::GameStateManager::removeGameState( const GameState* state )
 void nb::GameStateManager::update()
 {
 	for( auto& el : m_states )
-		el->update( coreEnginesRef, *this );
+		el->update( *this );
 }
 
 void nb::GameStateManager::destroy_all()
 {
 	for( auto& el : m_states )
-		el->destroy( coreEnginesRef, *this );
+		el->destroy( *this );
 	m_states.clear();
 }

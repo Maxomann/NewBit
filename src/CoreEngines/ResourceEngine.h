@@ -10,7 +10,7 @@ namespace nb
 	class ResourceEngine : public CoreEngine
 	{
 	public:
-		virtual void init()override;
+		virtual void init( const CoreEngineManager& coreEngines )override;
 
 		virtual bool update()override;
 

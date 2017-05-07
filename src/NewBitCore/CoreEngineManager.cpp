@@ -14,7 +14,7 @@ namespace nb
 	{
 		bool continueRunning = true;
 		for( auto& el : m_enginesVector )
-			if( !el->update( *this ) )
+			if( !el->update() )
 				continueRunning = false;
 		return continueRunning;
 	}

@@ -7,7 +7,7 @@ void nb::RenderSystem::onEntityAdded( Entity * entity )
 {
 	auto renderComponent = entity->getComponent_try<RenderComponent>();
 
-	if (renderComponent)
+	if( renderComponent )
 		renderComponentsInWorld.push_back( renderComponent );
 }
 
@@ -15,19 +15,19 @@ void nb::RenderSystem::onEntitiesRemoved( const std::vector<Entity*>& entities )
 {
 	std::vector<const RenderComponent*> toRemove;
 
-	for (const auto& entity : entities)
+	for( const auto& entity : entities )
 	{
 		auto renderComponent = entity->getComponent_try<RenderComponent>();
 
-		if (renderComponent)
+		if( renderComponent )
 			toRemove.push_back( renderComponent );
 	}
 
 	renderComponentsInWorld.erase(
 		std::remove_if( renderComponentsInWorld.begin(),
-						renderComponentsInWorld.end(), [&]( const RenderComponent* el ) -> bool {
-		return std::any_of( toRemove.begin(), toRemove.end(), [&]( const RenderComponent* el2 ) -> bool {
-			return (el == el2);
+						renderComponentsInWorld.end(), [&] ( const RenderComponent* el ) -> bool{
+		return std::any_of( toRemove.begin(), toRemove.end(), [&] ( const RenderComponent* el2 ) -> bool{
+			return ( el == el2 );
 		} );
 	} ), renderComponentsInWorld.end() );
 }
@@ -41,22 +41,11 @@ void RenderSystem::init()
 
 void RenderSystem::update()
 {
+	debugDrawingData.clear();
 };
 
 void RenderSystem::destroy()
-{
-};
-
-void nb::RenderSystem::setCamerasForDrawing( std::vector<Entity*> cameras )
-{
-	m_camerasForDrawing = cameras;
-	s_camerasForDrawingChanged.call( m_camerasForDrawing );
-}
-
-const std::vector<Entity*>& nb::RenderSystem::getCamerasForDrawing() const
-{
-	return m_camerasForDrawing;
-}
+{};
 
 const std::vector<RenderComponent*>& nb::RenderSystem::getRenderComponentsInWorld() const
 {
@@ -65,7 +54,6 @@ const std::vector<RenderComponent*>& nb::RenderSystem::getRenderComponentsInWorl
 
 const std::vector<std::unique_ptr<sf::Drawable>>& nb::RenderSystem::getDebugDrawingDataForLayer( int layer )
 {
-	debugDrawingData.clear();
 	s_collectDebugDrawingData.call( debugDrawingData, layer );
 	return debugDrawingData;
 }

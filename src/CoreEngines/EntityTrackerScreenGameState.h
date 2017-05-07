@@ -34,13 +34,12 @@ namespace nb
 		Connections m_connections;
 	public:
 
-		virtual void init() override;
+		virtual void init( const CoreEngineManager& coreEngines,
+						   GameStateManager& gameStates ) override;
 
-		virtual void update() override;
+		virtual void update( GameStateManager& gameStates ) override;
 
-		virtual void destroy() override;
-
-		virtual bool shouldDestroy() override;
+		virtual void destroy( GameStateManager& gameStates ) override;
 
 		void track( const Entity* entity );
 	};

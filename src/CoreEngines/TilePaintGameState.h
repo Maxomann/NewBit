@@ -10,7 +10,13 @@ namespace nb
 {
 	class TilePaintGameState : public GameState
 	{
+		ResourceEngine* r_resourceEngine;
+		InputEngine* r_inputEngine;
+		GraphicsEngine* r_graphicsEngine;
 		tgui::Gui* r_gui;
+
+		World& world;
+		Entity* camera;
 
 		tgui::ChildWindow::Ptr childWindow;
 
@@ -23,13 +29,14 @@ namespace nb
 		Connections connections;
 
 	public:
+		TilePaintGameState( World& world,
+							Entity* camera );
 
-		virtual void init() override;
+		virtual void init( const CoreEngineManager& coreEngines,
+						   GameStateManager& gameStates ) override;
 
-		virtual void update() override;
+		virtual void update( GameStateManager& gameStates ) override;
 
-		virtual void destroy() override;
-
-		virtual bool shouldDestroy() override;
+		virtual void destroy( GameStateManager& gameStates ) override;
 	};
 }

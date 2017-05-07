@@ -20,11 +20,9 @@ namespace nb
 		DLL_EXPORT virtual void init( const CoreEngineManager& coreEngines,
 									  GameStateManager& gameStates ) = 0;
 
-		DLL_EXPORT virtual void update( const CoreEngineManager& coreEngines,
-										GameStateManager& gameStates ) = 0;
+		DLL_EXPORT virtual void update( GameStateManager& gameStates ) = 0;
 
-		DLL_EXPORT virtual void destroy( const CoreEngineManager& coreEngines,
-										 GameStateManager& gameStates ) = 0;
+		DLL_EXPORT virtual void destroy( GameStateManager& gameStates ) = 0;
 
 		bool shouldDestroy()const
 		{
@@ -41,10 +39,8 @@ namespace nb
 	virtual void init( const CoreEngineManager& coreEngines,
 					   GameStateManager& gameStates ) override;
 
-	virtual void update( const CoreEngineManager& coreEngines,
-						 GameStateManager& gameStates ) override;
+	virtual void update( GameStateManager& gameStates ) override;
 
-	virtual void destroy( const CoreEngineManager& coreEngines,
-						  GameStateManager& gameStates ) override;
+	virtual void destroy( GameStateManager& gameStates ) override;
 	*/
 }

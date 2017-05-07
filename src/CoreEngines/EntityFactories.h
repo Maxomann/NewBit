@@ -15,14 +15,14 @@ namespace nb
 	class ResourceEngine;
 	class Tile;
 
-	Entity createHuman( const CoreEngineManager& engines,
-						sf::Vector3i position = { 0,0,0 } );
+	Entity createHuman( const ResourceEngine*const resources,
+						sf::Vector3i position = {0,0,0} );
 
-	Entity createTilemapChunk( const CoreEngineManager& engines,
+	Entity createTilemapChunk( const ResourceEngine*const resources,
 							   sf::Vector3i positionInChunks,
 							   std::vector<std::vector<const Tile*>> tiles );
 
-	Entity createTree( const CoreEngineManager& engines,
+	Entity createTree( const ResourceEngine*const resources,
 					   sf::Vector3i position );
 
 	class TreeFactory : public EntityFactory

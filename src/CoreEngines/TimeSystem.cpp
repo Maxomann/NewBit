@@ -8,10 +8,10 @@ void nb::TimeSystem::init()
 	frameTime = sf::milliseconds( 8 );
 }
 
-void nb::TimeSystem::update()
+void nb::TimeSystem::( )
 {
 	frameTime = clock.restart();
-	if (isFirstIteartion)
+	if( isFirstIteartion )
 	{
 		frameTime = sf::milliseconds( 8 );
 		isFirstIteartion = false;
@@ -19,8 +19,7 @@ void nb::TimeSystem::update()
 }
 
 void nb::TimeSystem::destroy()
-{
-}
+{}
 
 const sf::Time & nb::TimeSystem::getFrameTime() const
 {

@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "RenderSystem.h"
 #include "ChunkSystem.h"
-#include "WorldGenerationEngine.h"
+#include "DefaultWorldGenerator.h"
 #include "WorldLoadStateSystem.h"
 #include "ChunkLoader.h"
 #include "ChunkUnloader.h"
