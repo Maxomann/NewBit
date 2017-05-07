@@ -3,12 +3,18 @@
 
 namespace nb
 {
-	class GameStateManager : public CoreRefContainer
+	class CoreEngineManager;
+
+	class GameStateManager
 	{
+		const CoreEngineManager& coreEnginesRef;
+
 		std::list<std::unique_ptr<GameState>> m_uninitializedStates;
 		std::vector<std::unique_ptr<GameState>> m_states;
 
 	public:
+		GameStateManager( const CoreEngineManager& coreEnginesRef );
+
 		template< class T >
 		void pushState( std::unique_ptr<T>&& ptr )
 		{
@@ -19,10 +25,9 @@ namespace nb
 		template< class T >
 		T* pushState_instant( std::unique_ptr<T>&& ptr )
 		{
-			ptr->linkToCore( core() );
-			ptr->init();
+			ptr->init( coreEnginesRef, *this );
 			m_states.push_back( std::move( ptr ) );
-			return static_cast<T*>(m_states.back().get());
+			return static_cast<T*>( m_states.back().get() );
 		}
 
 		void initNewStates();

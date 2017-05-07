@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "CoreRef.h"
 
 namespace nb
 {
@@ -8,30 +7,44 @@ namespace nb
 	class GameStateManager;
 	class World;
 
-	class GameState : public CoreRefContainer
+	class GameState
 	{
+		bool shouldDestroyFlag = false;
+
 	public:
 		DLL_EXPORT GameState() = default;
 		DLL_EXPORT GameState( const GameState& ) = delete;
 		DLL_EXPORT GameState( GameState&& ) = delete;
 		DLL_EXPORT virtual ~GameState() = default;
 
-		DLL_EXPORT virtual void init() = 0;
+		DLL_EXPORT virtual void init( const CoreEngineManager& coreEngines,
+									  GameStateManager& gameStates ) = 0;
 
-		DLL_EXPORT virtual void update() = 0;
+		DLL_EXPORT virtual void update( const CoreEngineManager& coreEngines,
+										GameStateManager& gameStates ) = 0;
 
-		DLL_EXPORT virtual void destroy() = 0;
+		DLL_EXPORT virtual void destroy( const CoreEngineManager& coreEngines,
+										 GameStateManager& gameStates ) = 0;
 
-		DLL_EXPORT virtual bool shouldDestroy() = 0;
+		bool shouldDestroy()const
+		{
+			return shouldDestroyFlag;
+		};
+
+		DLL_EXPORT void close()
+		{
+			shouldDestroyFlag = true;
+		}
 	};
 
 	/*
-	virtual void init() override;
+	virtual void init( const CoreEngineManager& coreEngines,
+					   GameStateManager& gameStates ) override;
 
-	virtual void update() override;
+	virtual void update( const CoreEngineManager& coreEngines,
+						 GameStateManager& gameStates ) override;
 
-	virtual void destroy() override;
-
-	virtual bool shouldDestroy() override;
+	virtual void destroy( const CoreEngineManager& coreEngines,
+						  GameStateManager& gameStates ) override;
 	*/
 }

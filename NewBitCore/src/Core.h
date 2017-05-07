@@ -2,18 +2,21 @@
 #include "stdafx.h"
 #include "CoreEngineManager.h"
 #include "GameStateManager.h"
-#include "CoreRef.h"
 
 namespace nb
 {
 	class Core
 	{
+		using connectFunctionSignature = void( CoreEngineManager*, GameStateManager* );
+
 		CoreEngineManager m_engines;
 		GameStateManager m_gameStates;
 
-		World m_world;
+		void loadPluginsFromFolder( std::string pathToFolder );
 
 	public:
+		Core();
+
 		void run();
 	};
 }

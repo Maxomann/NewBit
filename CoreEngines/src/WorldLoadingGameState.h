@@ -6,6 +6,7 @@
 #include "WorldLoadStateSystem.h"
 #include "ChunkLoader.h"
 #include "ChunkUnloader.h"
+#include "ChunkCache.h"
 
 namespace nb
 {
@@ -15,6 +16,8 @@ namespace nb
 		WorldLoadStateSystem* r_worldLoadStateSystem;
 		WorldGenerationEngine* r_worldGenerationEngine;
 		ChunkSystem* r_chunkSystem;
+
+		ChunkCache chunkCache;
 
 		// cameraChunkPositions
 		std::map<sf::Vector3i, int> m_cameraChunkPositionCounts;

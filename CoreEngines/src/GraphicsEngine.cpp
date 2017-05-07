@@ -10,8 +10,6 @@ void nb::GraphicsEngine::init()
 	m_window.setVerticalSyncEnabled( true );
 
 	m_gui.setWindow( m_window );
-
-	r_renderSystem = getCore()->world.addSystem<RenderSystem>();
 }
 
 bool nb::GraphicsEngine::update()
@@ -20,11 +18,11 @@ bool nb::GraphicsEngine::update()
 
 	// events
 	sf::Event event;
-	while (m_window.pollEvent( event ))
+	while( m_window.pollEvent( event ) )
 	{
-		if (event.type == sf::Event::Closed)
+		if( event.type == sf::Event::Closed )
 			m_window.close();
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape)
+		if( event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape )
 			m_window.close();
 
 		m_gui.handleEvent( event );
@@ -34,7 +32,7 @@ bool nb::GraphicsEngine::update()
 	// draw
 	m_window.clear( sf::Color::Green );
 
-	for (const auto& cam : r_renderSystem->getCamerasForDrawing())
+	for( const auto& cam : r_renderSystem->getCamerasForDrawing() )
 	{
 		const auto& camLayer = cam->getComponent<TransformationComponent>()->getLayer();
 		const auto& camComponent = cam->getComponent<CameraComponent>();
@@ -45,45 +43,45 @@ bool nb::GraphicsEngine::update()
 		std::vector<RenderComponent*> toDraw;
 
 		//get to draw
-		for (const auto& el : r_renderSystem->getRenderComponentsInWorld())
+		for( const auto& el : r_renderSystem->getRenderComponentsInWorld() )
 		{
-			if (el->getDrawingLayer() == camLayer &&
-				 el->getGlobalBounds().intersects( camGlobalBounds ))
+			if( el->getDrawingLayer() == camLayer &&
+				el->getGlobalBounds().intersects( camGlobalBounds ) )
 				toDraw.push_back( el );
 		}
 
 		//sort
-		std::sort( toDraw.begin(), toDraw.end(), [&]( const RenderComponent* lhs, const RenderComponent* rhs ) {
+		std::sort( toDraw.begin(), toDraw.end(), [&] ( const RenderComponent* lhs, const RenderComponent* rhs ){
 			// order: z^-1,y,x
 			const auto& posLhs = lhs->getSortPositionXY();
 			const auto& posRhs = rhs->getSortPositionXY();
 			const auto& zVlaueLhs = lhs->getZValue();
 			const auto& zVlaueRhs = rhs->getZValue();
 
-			if (zVlaueRhs > zVlaueLhs)
+			if( zVlaueRhs > zVlaueLhs )
 				return true;
-			else if (zVlaueRhs < zVlaueLhs)
+			else if( zVlaueRhs < zVlaueLhs )
 				return false;
-			else if (posRhs.y > posLhs.y)
+			else if( posRhs.y > posLhs.y )
 				return true;
-			else if (posRhs.y < posLhs.y)
+			else if( posRhs.y < posLhs.y )
 				return false;
-			else if (posRhs.x > posLhs.x)
+			else if( posRhs.x > posLhs.x )
 				return true;
 			else
 				return false;
 		} );
 
 		//draw
-		for (const auto& el : toDraw)
-			for (const auto& drawable : el->getDrawingData())
+		for( const auto& el : toDraw )
+			for( const auto& drawable : el->getDrawingData() )
 				m_window.draw( *drawable );
 
-		for (const auto& debugEl : r_renderSystem->getDebugDrawingDataForLayer( camLayer ))
+		for( const auto& debugEl : r_renderSystem->getDebugDrawingDataForLayer( camLayer ) )
 			m_window.draw( *debugEl );
 
 		m_window.setView( m_window.getDefaultView() );
-		for (const auto& drawable : m_toDrawNextFrame)
+		for( const auto& drawable : m_toDrawNextFrame )
 			m_window.draw( *drawable );
 	}
 
@@ -123,5 +121,5 @@ tgui::Gui * nb::GraphicsEngine::getGui()
 bool nb::GraphicsEngine::isGuiFocused() const
 {
 	const auto& widgets = m_gui.getWidgets();
-	return any_of( widgets.begin(), widgets.end(), [&]( const shared_ptr<Widget>& el ) {return el->isFocused(); } );
+	return any_of( widgets.begin(), widgets.end(), [&] ( const shared_ptr<Widget>& el ){return el->isFocused(); } );
 }

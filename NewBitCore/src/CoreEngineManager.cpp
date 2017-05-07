@@ -4,52 +4,17 @@ using namespace experimental;
 
 namespace nb
 {
-	void nb::CoreEngineManager::loadFromFolder( std::string pathToFolder )
+	void nb::CoreEngineManager::initEngines()
 	{
-#ifdef _WIN32
-		for (auto& directoryEntry : filesystem::recursive_directory_iterator( pathToFolder ))
-		{
-			auto path = directoryEntry.path();
-			auto extension = path.extension().string();
-			//make extension lowercase
-			std::transform( begin( extension ), end( extension ), begin( extension ), ::tolower );
-			if (extension == ".dll")
-			{
-				HMODULE libraryHandle = LoadLibrary( path.string().c_str() );
-				if (!libraryHandle)
-				{
-					cout << GetLastError() << endl;
-					throw std::runtime_error( "libraryHandle is null" );
-				}
-				auto connectFunctionPtr = GetProcAddress( libraryHandle, "nbConnectCore" );
-				if (!connectFunctionPtr)
-				{
-					cout << GetLastError() << endl;
-					throw std::runtime_error( "connectFunctionPtr is null" );
-				}
-				std::function<connectFunctionSignature> connectFuntion( reinterpret_cast<connectFunctionSignature*>(connectFunctionPtr) );
-				connectFuntion( this );
-			}
-		}
-#else
-#error
-#endif
-	}
-
-	void nb::CoreEngineManager::initEngines( const CoreRef& core )
-	{
-		for (auto& el : m_enginesVector)
-		{
-			el->linkToCore( &core );
-			el->init();
-		}
+		for( auto& el : m_enginesVector )
+			el->init( *this );
 	}
 
 	bool nb::CoreEngineManager::update()
 	{
 		bool continueRunning = true;
-		for (auto& el : m_enginesVector)
-			if (!el->update())
+		for( auto& el : m_enginesVector )
+			if( !el->update( *this ) )
 				continueRunning = false;
 		return continueRunning;
 	}

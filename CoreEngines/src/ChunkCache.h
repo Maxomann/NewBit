@@ -4,13 +4,11 @@
 
 namespace nb
 {
-	class ChunkCacheEngine : public CoreEngine
+	class ChunkCache
 	{
 		std::map<sf::Vector3i, std::vector<Entity>> cache;
 
 	public:
-		virtual void init() override;
-		virtual bool update() override;
 
 		void setCache( std::vector<Entity>&& entities, sf::Vector3i chunkPosition );
 
