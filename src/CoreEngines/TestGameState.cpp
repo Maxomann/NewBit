@@ -25,163 +25,163 @@ void TestGameState::init()
 	r_gui->add( fpsLabel );
 
 	// Input
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Tab].connect_track( m_connections, this, &TestGameState::drawTestsprite );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Up].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::Tab ].connect_track( m_connections, this, &TestGameState::drawTestsprite );
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::Up ].connect_track( m_connections, [&] (){
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, -1 * r_graphicsEngine->getFrameTime().asMilliseconds() ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Down].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::Down ].connect_track( m_connections, [&] (){
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( 0, r_graphicsEngine->getFrameTime().asMilliseconds() ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Left].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::Left ].connect_track( m_connections, [&] (){
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( -1 * r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Right].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::Right ].connect_track( m_connections, [&] (){
 		m_camera->getComponent<TransformationComponent>()->moveXY( Vector2i( r_graphicsEngine->getFrameTime().asMilliseconds(), 0 ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Q].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::Q ].connect_track( m_connections, [&] (){
 		m_camera->getComponent<TransformationComponent>()->rotate( -1 * r_graphicsEngine->getFrameTime().asMilliseconds() );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::E].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::E ].connect_track( m_connections, [&] (){
 		m_camera->getComponent<TransformationComponent>()->rotate( r_graphicsEngine->getFrameTime().asMilliseconds() );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Add].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::Add ].connect_track( m_connections, [&] (){
 		auto size = m_camera->getComponent<TransformationComponent>()->getSize();
 		//if (size.x > 200 && size.y > 200)
-		m_camera->getComponent<TransformationComponent>()->scale( abs( 1.f - (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) ) );
+		m_camera->getComponent<TransformationComponent>()->scale( abs( 1.f - ( r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f ) ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Subtract].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::Subtract ].connect_track( m_connections, [&] (){
 		auto size = m_camera->getComponent<TransformationComponent>()->getSize();
 		//if (size.x < 10000 && size.y < 10000)
-		m_camera->getComponent<TransformationComponent>()->scale( abs( 1.f + (r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f) ) );
+		m_camera->getComponent<TransformationComponent>()->scale( abs( 1.f + ( r_graphicsEngine->getFrameTime().asMilliseconds() / 120.f ) ) );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::Z].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::Z ].connect_track( m_connections, [&] (){
 		auto cameraTransform = m_camera->getComponent<TransformationComponent>();
-		cameraTransform->setSize( { 1280,720 } );
+		cameraTransform->setSize( {1280,720} );
 		cameraTransform->setRotation( 0 );
 
-		if (m_debugEntity)
+		if( m_debugEntity )
 		{
 			auto playerTransform = m_debugEntity->getComponent<TransformationComponent>();
-			playerTransform->setPosition( { 0,0,0 } );
+			playerTransform->setPosition( {0,0,0} );
 			playerTransform->setRotation( 0 );
 		}
 		else
 		{
-			cameraTransform->setPosition( { 0,0,0 } );
+			cameraTransform->setPosition( {0,0,0} );
 		}
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::R].connect_track( m_connections, [&]() {
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::R ].connect_track( m_connections, [&] (){
 		auto cameraTransform = m_camera->getComponent<TransformationComponent>();
-		cameraTransform->setSize( { 1280,720 } );
+		cameraTransform->setSize( {1280,720} );
 		cameraTransform->setRotation( 0 );
 	} );
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::T].connect_track( m_connections, [&]() {
+	r_inputEngine->s_onKeyPressed[ Keyboard::Key::T ].connect_track( m_connections, [&] (){
 		auto chunkSystem = r_core->world.getSystem<ChunkSystem>();
-		chunkSystem->removeEntitiesInChunk_if( { 0,0,0 }, [&]( const Entity* entity ) {
-			if (entity != m_debugEntity && entity != m_camera)
+		chunkSystem->removeEntitiesInChunk_if( {0,0,0}, [&] ( const Entity* entity ){
+			if( entity != m_debugEntity && entity != m_camera )
 				return true;
 			else
 				return false;
 		} );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::W].connect_track( m_connections, [&]() {
-		if (!m_debugEntity)
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::W ].connect_track( m_connections, [&] (){
+		if( !m_debugEntity )
 			return;
 		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
 		transform->moveXY( Vector2i( 0, -offset ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
-		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
-		if (r_inputEngine->isKeyPressed( Keyboard::Key::LShift ))
+		auto force = 0.0003f * static_cast<float>( r_graphicsEngine->getFrameTime().asMilliseconds() );
+		if( r_inputEngine->isKeyPressed( Keyboard::Key::LShift ) )
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, -force ), true );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::S].connect_track( m_connections, [&]() {
-		if (!m_debugEntity)
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::S ].connect_track( m_connections, [&] (){
+		if( !m_debugEntity )
 			return;
 		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
 		transform->moveXY( Vector2i( 0, offset ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
-		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
-		if (r_inputEngine->isKeyPressed( Keyboard::Key::LShift ))
+		auto force = 0.0003f * static_cast<float>( r_graphicsEngine->getFrameTime().asMilliseconds() );
+		if( r_inputEngine->isKeyPressed( Keyboard::Key::LShift ) )
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( 0, force ), true );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::A].connect_track( m_connections, [&]() {
-		if (!m_debugEntity)
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::A ].connect_track( m_connections, [&] (){
+		if( !m_debugEntity )
 			return;
 		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
 		transform->moveXY( Vector2i( -offset, 0 ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
-		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
-		if (r_inputEngine->isKeyPressed( Keyboard::Key::LShift ))
+		auto force = 0.0003f * static_cast<float>( r_graphicsEngine->getFrameTime().asMilliseconds() );
+		if( r_inputEngine->isKeyPressed( Keyboard::Key::LShift ) )
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( -force, 0 ), true );
 	} );
-	r_inputEngine->s_whileKeyPressed[Keyboard::Key::D].connect_track( m_connections, [&]() {
-		if (!m_debugEntity)
+	r_inputEngine->s_whileKeyPressed[ Keyboard::Key::D ].connect_track( m_connections, [&] (){
+		if( !m_debugEntity )
 			return;
 		/*auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		auto offset = (int)(0.5f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds()));
 		transform->moveXY( Vector2i( offset, 0 ) );*/
 		auto physics = m_debugEntity->getComponent<PhysicsComponent>();
-		auto force = 0.0003f * static_cast<float>(r_graphicsEngine->getFrameTime().asMilliseconds());
-		if (r_inputEngine->isKeyPressed( Keyboard::Key::LShift ))
+		auto force = 0.0003f * static_cast<float>( r_graphicsEngine->getFrameTime().asMilliseconds() );
+		if( r_inputEngine->isKeyPressed( Keyboard::Key::LShift ) )
 			force *= 3.f;
 		physics->getBody()->ApplyForceToCenter( b2Vec2( force, 0 ), true );
 	} );
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::K].connect_track( m_connections, [&]() {
-		if (!m_debugEntity)
+	r_inputEngine->s_onKeyPressed[ Keyboard::Key::K ].connect_track( m_connections, [&] (){
+		if( !m_debugEntity )
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		transform->moveLayer( 1 );
 	} );
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::L].connect_track( m_connections, [&]() {
-		if (!m_debugEntity)
+	r_inputEngine->s_onKeyPressed[ Keyboard::Key::L ].connect_track( m_connections, [&] (){
+		if( !m_debugEntity )
 			return;
 		auto transform = m_debugEntity->getComponent<TransformationComponent>();
 		transform->moveLayer( -1 );
 	} );
 
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::Return].connect_track( m_connections, [&]() {
+	r_inputEngine->s_onKeyPressed[ Keyboard::Key::Return ].connect_track( m_connections, [&] (){
 		m_debugEntity = getCore()->world.addEntity( createHuman( engines() ) );
 
-		m_debugEntity->getComponent<PhysicsComponent>()->s_beginCollision.connect_track( m_connections, [&]( auto physics ) {
+		m_debugEntity->getComponent<PhysicsComponent>()->s_beginCollision.connect_track( m_connections, [&] ( auto physics ){
 			auto& inventory = m_debugEntity->getComponent<InventoryComponent>()->inventory;
 			auto entity = physics->entity();
 			auto itemComp = entity->getComponent_try<ItemComponent>();
-			if (itemComp)
+			if( itemComp )
 			{
-				if (inventory.addItem( itemComp->getItem() ))
+				if( inventory.addItem( itemComp->getItem() ) )
 					world().removeEntity( entity );
 			}
 		} );
 
 		auto cameraPositionTracker = m_camera->getComponent<PositionTrackerComponent>();
-		cameraPositionTracker->setOffsetXY( { 0, -32 } );
+		cameraPositionTracker->setOffsetXY( {0, -32} );
 		cameraPositionTracker->trackEntity( m_debugEntity );
 
 		// EntityTrackerScreenGameState
-		if (!r_entityTrackerScreenGameState)
+		if( !r_entityTrackerScreenGameState )
 			r_entityTrackerScreenGameState = gameStates().pushState_instant( make_unique<EntityTrackerScreenGameState>() );
 		r_entityTrackerScreenGameState->track( m_debugEntity );
 	} );
 
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::O].connect_track( m_connections, [&]() {
+	r_inputEngine->s_onKeyPressed[ Keyboard::Key::O ].connect_track( m_connections, [&] (){
 		r_core->gameStates.pushState_instant( make_unique<DemoEditGameState>() );
 	} );
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::P].connect_track( m_connections, [&]() {
+	r_inputEngine->s_onKeyPressed[ Keyboard::Key::P ].connect_track( m_connections, [&] (){
 		r_core->gameStates.pushState_instant( make_unique<TilePaintGameState>() );
 	} );
 
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::Home].connect_track( m_connections, [&]() {
+	r_inputEngine->s_onKeyPressed[ Keyboard::Key::Home ].connect_track( m_connections, [&] (){
 		auto physics = world().getSystem<PhysicsSystem>();
 		physics->setDebugDrawEnabled( !physics->isDebugDrawEnabled() );
 	} );
 
-	r_inputEngine->s_onMouseButtonPressedInWindow[Mouse::Button::Middle].connect_track( m_connections, [&]( sf::Vector2i pixelPositionInWindow ) {
+	r_inputEngine->s_onMouseButtonPressedInWindow[ Mouse::Button::Middle ].connect_track( m_connections, [&] ( sf::Vector2i pixelPositionInWindow ){
 		auto camera = r_core->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
 		auto cameraComponent = camera->getComponent<CameraComponent>();
 		auto transformationComponent = camera->getComponent<TransformationComponent>();
@@ -190,15 +190,15 @@ void TestGameState::init()
 																				placementPositionXY.y,
 																				transformationComponent->getLayer() ) );
 
-		if (entity)
+		if( entity )
 		{
 			auto entityBounds = entity->getComponent<RenderComponent>()->getGlobalBounds();
 			cout << entityBounds.left << ":" << entityBounds.top << "::" << entityBounds.width << ":" << entityBounds.height << endl;
 		}
 	} );
 
-	r_inputEngine->s_onKeyPressed[Keyboard::Key::H].connect_track( m_connections, [&]() {
-		if (m_debugEntity)
+	r_inputEngine->s_onKeyPressed[ Keyboard::Key::H ].connect_track( m_connections, [&] (){
+		if( m_debugEntity )
 			m_debugEntity->getComponent<NeedsComponent>()->changeHunger( 10 );
 	} );
 
@@ -217,14 +217,12 @@ void TestGameState::init()
 	cameraEntity.addComponent<PositionTrackerComponent>();
 	m_camera = getCore()->world.addEntity( move( cameraEntity ) );
 
-	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( { m_camera } );
-
-	r_worldLoadingGameState = r_core->gameStates.pushState_instant( make_unique<WorldLoadingGameState>() );
+	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( {m_camera} );
 
 	auto item = r_resourceEngine->items.getItem( 1 );
-	for (int i = 0; i < 2; i++)
+	for( int i = 0; i < 2; i++ )
 	{
-		auto itemEntity = ItemManager::createItemEntity( item, { 60,60,0 } );
+		auto itemEntity = ItemManager::createItemEntity( item, {60,60,0} );
 		r_core->world.addEntity( move( itemEntity ) );
 	}
 

@@ -8,7 +8,7 @@ void nb::TimeSystem::init()
 	frameTime = sf::milliseconds( 8 );
 }
 
-void nb::TimeSystem::( )
+void nb::TimeSystem::update()
 {
 	frameTime = clock.restart();
 	if( isFirstIteartion )

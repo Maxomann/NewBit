@@ -13,6 +13,7 @@
 #include "RenderSystem.h"
 
 #include "WorldLoadingGameState.h"
+#include "TestGameState.h"
 
 namespace nb
 {

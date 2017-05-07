@@ -12,12 +12,11 @@ namespace nb
 {
 	class WorldLoadingGameState : public GameState
 	{
-		const CoreRef* r_core;
 		WorldLoadStateSystem* r_worldLoadStateSystem;
-		WorldGenerationEngine* r_worldGenerationEngine;
 		ChunkSystem* r_chunkSystem;
 
 		ChunkCache chunkCache;
+		std::shared_ptr<WorldGenerator> chunkGenerator;
 
 		// cameraChunkPositions
 		std::map<sf::Vector3i, int> m_cameraChunkPositionCounts;
@@ -32,13 +31,14 @@ namespace nb
 		Connections m_connections;
 
 	public:
-		virtual void init() override;
+		WorldLoadingGameState();
 
-		virtual void update() override;
+		virtual void init( const CoreEngineManager& coreEngines,
+						   GameStateManager& gameStates ) override;
 
-		virtual void destroy() override;
+		virtual void update( GameStateManager& gameStates ) override;
 
-		virtual bool shouldDestroy() override;
+		virtual void destroy( GameStateManager& gameStates ) override;
 
 		static const int CHUNK_LOADING_RADIUS;
 	};

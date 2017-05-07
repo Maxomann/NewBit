@@ -18,6 +18,7 @@ void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
 	r_renderSystem = world.getSystem<RenderSystem>();
 
 	gameStates.pushState( make_unique<WorldLoadingGameState>() );
+	gameStates.pushState( make_unique<TestGameState>() );
 
 	Entity cameraEntity;
 	cameraEntity.addComponent<TransformationComponent>(

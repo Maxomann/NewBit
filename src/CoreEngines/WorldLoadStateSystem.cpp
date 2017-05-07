@@ -17,7 +17,7 @@ void nb::WorldLoadStateSystem::init()
 	return;
 }
 
-void nb::WorldLoadStateSystem::( )
+void nb::WorldLoadStateSystem::update()
 {
 	int count = 0;
 

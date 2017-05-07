@@ -37,7 +37,6 @@ namespace nb
 		Entity* m_camera;
 
 		EntityTrackerScreenGameState* r_entityTrackerScreenGameState;
-		WorldLoadingGameState* r_worldLoadingGameState;
 
 		Connections m_connections;
 
