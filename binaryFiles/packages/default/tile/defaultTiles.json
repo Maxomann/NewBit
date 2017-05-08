@@ -1,0 +1,32 @@
+[
+	{
+		"id":0,
+		"name":"Grass",
+		"texture":"default:texture:field_grass"
+	},
+	{
+		"id":1,
+		"name":"Sand",
+		"texture":"default:texture:field_sand"
+	},
+	{
+		"id":2,
+		"name":"Water",
+		"texture":"default:texture:field_water"
+	},
+	{
+		"id":3,
+		"name":"Wood",
+		"texture":"default:texture:field_wood"
+	},
+	{
+		"id":4,
+		"name":"Stone",
+		"texture":"default:texture:field_stone"
+	},
+	{
+		"id":5,
+		"name":"Low Water",
+		"texture":"default:texture:field_water_low"
+	}
+]

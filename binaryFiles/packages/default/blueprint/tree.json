@@ -1,0 +1,21 @@
+{
+  "id": 0,
+  "name": "Tree",
+  "components": {
+    "TransformationComponent": {
+      "sizeX": 48,
+      "sizeY": 64
+    },
+    "RenderComponent": {},
+    "SpriteComponent": {
+      "texture": "default:texture:object_tree"
+    },
+    "PhysicsComponent": {
+      "body_type": "static",
+      "shape_type": "box",
+      "box_size": 0.3,
+      "fixture_density": 1,
+      "fixture_friction": 0.3
+    }
+  }
+}
