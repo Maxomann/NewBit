@@ -5,8 +5,10 @@ using namespace nb;
 
 const int WorldLoadingGameState::CHUNK_LOADING_RADIUS = 2;
 
-nb::WorldLoadingGameState::WorldLoadingGameState()
-	: chunkGenerator( make_shared<DefaultWorldGenerator>() )
+nb::WorldLoadingGameState::WorldLoadingGameState( World& world, Entity* camera )
+	: chunkGenerator( make_shared<DefaultWorldGenerator>() ),
+	world( world ),
+	camera( camera )
 {}
 
 void nb::WorldLoadingGameState::onCameraPositionChanged( const TransformationComponent * transform,
@@ -79,8 +81,8 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 			{
 				if( el.second == ChunkLoadState::STATE_LOADED )
 				{
-					r_worldLoadStateSystem->changeChunkLoadState( make_unique<ChunkUnloader>( el.first,
-																							  engines() ) );
+					r_worldLoadStateSystem->changeChunkLoadState( make_unique<ChunkUnloader>( chunkCache,
+																							  el.first ) );
 				}
 				else if( el.second == ChunkLoadState::STATE_LOADING )
 				{
@@ -101,8 +103,9 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 		if( loadState == ChunkLoadState::STATE_UNLOADED )
 		{
 			//load
-			r_worldLoadStateSystem->changeChunkLoadState( make_unique<ChunkLoader>( el,
-																					engines() ) );
+			r_worldLoadStateSystem->changeChunkLoadState( make_unique<ChunkLoader>( chunkGenerator,
+																					chunkCache,
+																					el ) );
 		}
 		else if( loadState == ChunkLoadState::STATE_UNLOADING )
 		{
@@ -114,16 +117,9 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 void nb::WorldLoadingGameState::init( const CoreEngineManager& coreEngines,
 									  GameStateManager& gameStates )
 {
-	r_core = getCore();
-	r_worldLoadStateSystem = r_core->world.getSystem<WorldLoadStateSystem>();
-	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
-	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
+	r_worldLoadStateSystem = world.getSystem<WorldLoadStateSystem>();
 
-	auto renderSystem = r_core->world.getSystem<RenderSystem>();
-	renderSystem->s_camerasForDrawingChanged.connect_track( m_connections,
-															this,
-															&WorldLoadingGameState::connectCams );
-	connectCams( renderSystem->getCamerasForDrawing() );
+	connectCams( {camera} );
 }
 
 void nb::WorldLoadingGameState::update( GameStateManager& gameStates )

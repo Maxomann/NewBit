@@ -17,9 +17,6 @@ void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
 
 	r_renderSystem = world.getSystem<RenderSystem>();
 
-	gameStates.pushState( make_unique<WorldLoadingGameState>() );
-	gameStates.pushState( make_unique<TestGameState>() );
-
 	Entity cameraEntity;
 	cameraEntity.addComponent<TransformationComponent>(
 		Vector2i( 0, 0 ),
@@ -28,6 +25,9 @@ void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
 	cameraEntity.addComponent<CameraComponent>();
 	cameraEntity.addComponent<PositionTrackerComponent>();
 	cam = world.addEntity( move( cameraEntity ) );
+
+	gameStates.pushState( make_unique<WorldLoadingGameState>( world, cam ) );
+	gameStates.pushState( make_unique<TestGameState>( world, cam ) );
 }
 
 void nb::BaseGameState::update( GameStateManager & gameStates )

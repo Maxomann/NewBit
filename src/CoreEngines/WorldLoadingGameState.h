@@ -13,7 +13,9 @@ namespace nb
 	class WorldLoadingGameState : public GameState
 	{
 		WorldLoadStateSystem* r_worldLoadStateSystem;
-		ChunkSystem* r_chunkSystem;
+
+		World& world;
+		Entity* camera;
 
 		ChunkCache chunkCache;
 		std::shared_ptr<WorldGenerator> chunkGenerator;
@@ -31,7 +33,7 @@ namespace nb
 		Connections m_connections;
 
 	public:
-		WorldLoadingGameState();
+		WorldLoadingGameState( World& world, Entity* camera );
 
 		virtual void init( const CoreEngineManager& coreEngines,
 						   GameStateManager& gameStates ) override;

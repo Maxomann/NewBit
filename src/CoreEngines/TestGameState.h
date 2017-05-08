@@ -21,33 +21,34 @@ namespace nb
 {
 	class TestGameState : public nb::GameState
 	{
-		const CoreRef* r_core;
 		GraphicsEngine* r_graphicsEngine;
 		InputEngine* r_inputEngine;
 		ResourceEngine* r_resourceEngine;
 		ChunkSystem* r_chunkSystem;
-		WorldGenerationEngine* r_worldGenerationEngine;
 		PhysicsSystem* r_physicsSystem;
 		tgui::Gui* r_gui;
+
+		World& world;
+		Entity* camera;
 
 		tgui::Label::Ptr fpsLabel;
 
 		sf::Sprite m_sprite;
 		Entity* m_debugEntity;
-		Entity* m_camera;
 
 		EntityTrackerScreenGameState* r_entityTrackerScreenGameState;
 
 		Connections m_connections;
 
 	public:
-		DLL_EXPORT virtual void init() override;
+		TestGameState( World& world, Entity* camera );
 
-		DLL_EXPORT virtual void update() override;
+		virtual void init( const CoreEngineManager& coreEngines,
+						   GameStateManager& gameStates ) override;
 
-		DLL_EXPORT virtual void destroy() override;
+		virtual void update( GameStateManager& gameStates ) override;
 
-		DLL_EXPORT virtual bool shouldDestroy() override;
+		virtual void destroy( GameStateManager& gameStates ) override;
 
 		void drawTestsprite();
 	};

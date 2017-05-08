@@ -4,18 +4,21 @@ using namespace sf;
 using namespace tgui;
 using namespace nb;
 
-void TestGameState::init()
+nb::TestGameState::TestGameState( World & world, Entity * camera )
+{}
+
+void TestGameState::init( const CoreEngineManager& coreEngines,
+						  GameStateManager& gameStates )
 {
 	cout << "TestGameState init()" << endl;
 
-	r_core = getCore();
-	r_graphicsEngine = r_core->engines.getEngine<GraphicsEngine>();
-	r_inputEngine = r_core->engines.getEngine<InputEngine>();
-	r_resourceEngine = r_core->engines.getEngine<ResourceEngine>();
-	r_chunkSystem = r_core->world.getSystem<ChunkSystem>();
-	r_worldGenerationEngine = r_core->engines.getEngine<WorldGenerationEngine>();
-	r_physicsSystem = r_core->world.getSystem<PhysicsSystem>();
-	r_gui = r_core->engines.getEngine<GraphicsEngine>()->getGui();
+	r_graphicsEngine = coreEngines.getEngine<GraphicsEngine>();
+	r_gui = r_graphicsEngine->getGui();
+	r_inputEngine = coreEngines.getEngine<InputEngine>();
+	r_resourceEngine = coreEngines.getEngine<ResourceEngine>();
+
+	r_chunkSystem = world.getSystem<ChunkSystem>();
+	r_physicsSystem = world.getSystem<PhysicsSystem>();
 
 	fpsLabel = Label::create();
 	fpsLabel->setSize( Layout2d( 100, 40 ) );
@@ -76,7 +79,7 @@ void TestGameState::init()
 		cameraTransform->setRotation( 0 );
 	} );
 	r_inputEngine->s_onKeyPressed[ Keyboard::Key::T ].connect_track( m_connections, [&] (){
-		auto chunkSystem = r_core->world.getSystem<ChunkSystem>();
+		auto chunkSystem = world.getSystem<ChunkSystem>();
 		chunkSystem->removeEntitiesInChunk_if( {0,0,0}, [&] ( const Entity* entity ){
 			if( entity != m_debugEntity && entity != m_camera )
 				return true;
@@ -146,7 +149,7 @@ void TestGameState::init()
 	} );
 
 	r_inputEngine->s_onKeyPressed[ Keyboard::Key::Return ].connect_track( m_connections, [&] (){
-		m_debugEntity = getCore()->world.addEntity( createHuman( engines() ) );
+		m_debugEntity = world.addEntity( createHuman( r_resourceEngine ) );
 
 		m_debugEntity->getComponent<PhysicsComponent>()->s_beginCollision.connect_track( m_connections, [&] ( auto physics ){
 			auto& inventory = m_debugEntity->getComponent<InventoryComponent>()->inventory;
@@ -165,24 +168,23 @@ void TestGameState::init()
 
 		// EntityTrackerScreenGameState
 		if( !r_entityTrackerScreenGameState )
-			r_entityTrackerScreenGameState = gameStates().pushState_instant( make_unique<EntityTrackerScreenGameState>() );
+			r_entityTrackerScreenGameState = gameStates.pushState_instant( make_unique<EntityTrackerScreenGameState>() );
 		r_entityTrackerScreenGameState->track( m_debugEntity );
 	} );
 
 	r_inputEngine->s_onKeyPressed[ Keyboard::Key::O ].connect_track( m_connections, [&] (){
-		r_core->gameStates.pushState_instant( make_unique<DemoEditGameState>() );
+		gameStates.pushState_instant( make_unique<DemoEditGameState>() );
 	} );
 	r_inputEngine->s_onKeyPressed[ Keyboard::Key::P ].connect_track( m_connections, [&] (){
-		r_core->gameStates.pushState_instant( make_unique<TilePaintGameState>() );
+		gameStates.pushState_instant( make_unique<TilePaintGameState>() );
 	} );
 
 	r_inputEngine->s_onKeyPressed[ Keyboard::Key::Home ].connect_track( m_connections, [&] (){
-		auto physics = world().getSystem<PhysicsSystem>();
+		auto physics = world.getSystem<PhysicsSystem>();
 		physics->setDebugDrawEnabled( !physics->isDebugDrawEnabled() );
 	} );
 
 	r_inputEngine->s_onMouseButtonPressedInWindow[ Mouse::Button::Middle ].connect_track( m_connections, [&] ( sf::Vector2i pixelPositionInWindow ){
-		auto camera = r_core->world.getSystem<RenderSystem>()->getCamerasForDrawing().at( 0 );
 		auto cameraComponent = camera->getComponent<CameraComponent>();
 		auto transformationComponent = camera->getComponent<TransformationComponent>();
 		auto placementPositionXY = sf::Vector2i( r_graphicsEngine->getWindow().mapPixelToCoords( pixelPositionInWindow, cameraComponent->getView() ) );
@@ -208,22 +210,11 @@ void TestGameState::init()
 	auto windowSize = r_graphicsEngine->getWindow().getSize();
 	m_sprite.setPosition( windowSize.x / 2.f, windowSize.y / 2.f );
 
-	Entity cameraEntity;
-	cameraEntity.addComponent<TransformationComponent>(
-		Vector2i( 0, 0 ),
-		0,
-		Vector2f( 1280, 720 ) );
-	cameraEntity.addComponent<CameraComponent>();
-	cameraEntity.addComponent<PositionTrackerComponent>();
-	m_camera = getCore()->world.addEntity( move( cameraEntity ) );
-
-	r_core->world.getSystem<RenderSystem>()->setCamerasForDrawing( {m_camera} );
-
 	auto item = r_resourceEngine->items.getItem( 1 );
 	for( int i = 0; i < 2; i++ )
 	{
 		auto itemEntity = ItemManager::createItemEntity( item, {60,60,0} );
-		r_core->world.addEntity( move( itemEntity ) );
+		world.addEntity( move( itemEntity ) );
 	}
 
 	/*world().addEntities( r_worldGenerationEngine->generateChunk( { 0,0,0 } ) );
@@ -234,23 +225,18 @@ void TestGameState::init()
 	return;
 }
 
-void nb::TestGameState::update()
+void nb::TestGameState::update( GameStateManager& gameStates )
 {
-	const auto frameTimeAsMilliseconds = engine<GraphicsEngine>()->getFrameTime().asMilliseconds();
+	const auto frameTimeAsMilliseconds = r_graphicsEngine->getFrameTime().asMilliseconds();
 	fpsLabel->setText( to_string( frameTimeAsMilliseconds ) );
 
 	return;
 }
 
-void TestGameState::destroy()
+void TestGameState::destroy( GameStateManager& gameStates )
 {
 	r_gui->remove( fpsLabel );
 	cout << "TestGameState destroy()" << endl;
-}
-
-bool TestGameState::shouldDestroy()
-{
-	return false;
 }
 
 void nb::TestGameState::drawTestsprite()
