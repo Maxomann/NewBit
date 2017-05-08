@@ -3,38 +3,8 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
-							  GameStateManager & gameStates )
+void nb::BaseGameState::drawWorld()
 {
-	r_graphicsEngine = coreEngines.getEngine<GraphicsEngine>();
-
-	world.addSystem<RenderSystem>();
-	world.addSystem<TimeSystem>();
-	world.addSystem<ChunkSystem>();
-	world.addSystem<PhysicsSystem>();
-	world.addSystem<WorldLoadStateSystem>();
-	world.addSystem<NeedsSystem>();
-	world.initSystems();
-
-	r_renderSystem = world.getSystem<RenderSystem>();
-
-	Entity cameraEntity;
-	cameraEntity.addComponent<TransformationComponent>(
-		Vector2i( 0, 0 ),
-		0,
-		Vector2f( 1280, 720 ) );
-	cameraEntity.addComponent<CameraComponent>();
-	cameraEntity.addComponent<PositionTrackerComponent>();
-	cam = world.addEntity( move( cameraEntity ) );
-
-	gameStates.pushState( make_unique<WorldLoadingGameState>( world, cam ) );
-	gameStates.pushState( make_unique<TestGameState>( world, cam ) );
-}
-
-void nb::BaseGameState::update( GameStateManager & gameStates )
-{
-	world.update();
-
 	// draw
 	const auto& camLayer = cam->getComponent<TransformationComponent>()->getLayer();
 	const auto& camComponent = cam->getComponent<CameraComponent>();
@@ -83,6 +53,41 @@ void nb::BaseGameState::update( GameStateManager & gameStates )
 		toDraw.push_back( debugEl.get() );
 
 	r_graphicsEngine->drawNextFrame( move( toDraw ), camView );
+}
+
+void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
+							  GameStateManager & gameStates )
+{
+	r_graphicsEngine = coreEngines.getEngine<GraphicsEngine>();
+
+	world.addSystem<RenderSystem>();
+	world.addSystem<TimeSystem>();
+	world.addSystem<ChunkSystem>();
+	world.addSystem<PhysicsSystem>();
+	world.addSystem<WorldLoadStateSystem>();
+	world.addSystem<NeedsSystem>();
+	world.initSystems();
+
+	r_renderSystem = world.getSystem<RenderSystem>();
+
+	Entity cameraEntity;
+	cameraEntity.addComponent<TransformationComponent>(
+		Vector2i( 0, 0 ),
+		0,
+		Vector2f( 1280, 720 ) );
+	cameraEntity.addComponent<CameraComponent>();
+	cameraEntity.addComponent<PositionTrackerComponent>();
+	cam = world.addEntity( move( cameraEntity ) );
+
+	gameStates.pushState( make_unique<WorldLoadingGameState>( world, cam ) );
+	gameStates.pushState( make_unique<TestGameState>( world, cam ) );
+}
+
+void nb::BaseGameState::update( GameStateManager & gameStates )
+{
+	world.update();
+
+	drawWorld();
 }
 
 void nb::BaseGameState::destroy( GameStateManager & gameStates )

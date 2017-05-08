@@ -26,6 +26,8 @@ namespace nb
 
 		Entity* cam;
 
+		void drawWorld();
+
 	public:
 		virtual void init( const CoreEngineManager& coreEngines,
 						   GameStateManager& gameStates ) override;
