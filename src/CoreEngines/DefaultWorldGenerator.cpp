@@ -4,17 +4,22 @@ using namespace sf;
 using namespace nb;
 
 nb::DefaultWorldGenerator::DefaultWorldGenerator( const ResourceEngine*const resourceEngine )
-	: mt( rd() ),
-	dist( -999999, 999999 ),
-	dist2( 0, 19 ),
-	r_resourceEngine( resourceEngine )
+	: r_resourceEngine( resourceEngine )
 {
+	std::random_device rd;
+	std::mt19937 mt( rd() );
+	std::uniform_int_distribution<int> dist( -999999, 999999 );
+
 	noiseGenerator.SetSeed( dist( mt ) );
 	noiseGenerator.SetFrequency( 1.0 / 140.0 );
 }
 
 std::vector<Entity> nb::DefaultWorldGenerator::generateChunk( const sf::Vector3i& chunkPosition )const
 {
+	std::random_device rd;
+	std::mt19937 mt( rd() );
+	std::uniform_int_distribution<int> dist2( 0, 19 );
+
 	std::vector<Entity> retVal;
 
 	std::vector<std::vector<const Tile*>> tiles;

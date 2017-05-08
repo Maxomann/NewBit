@@ -14,6 +14,7 @@ void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
 	world.addSystem<PhysicsSystem>();
 	world.addSystem<WorldLoadStateSystem>();
 	world.addSystem<NeedsSystem>();
+	world.initSystems();
 
 	r_renderSystem = world.getSystem<RenderSystem>();
 
@@ -43,7 +44,8 @@ void nb::BaseGameState::update( GameStateManager & gameStates )
 	std::vector<RenderComponent*> componentsToDraw;
 
 	//get to draw
-	for( const auto& el : r_renderSystem->getRenderComponentsInWorld() )
+	const auto& renderComponentsInWorld = r_renderSystem->getRenderComponentsInWorld();
+	for( const auto& el : renderComponentsInWorld )
 	{
 		if( el->getDrawingLayer() == camLayer &&
 			el->getGlobalBounds().intersects( camGlobalBounds ) )
@@ -72,7 +74,7 @@ void nb::BaseGameState::update( GameStateManager & gameStates )
 			return false;
 	} );
 
-	std::vector<const sf::Drawable*const> toDraw;
+	std::vector<const sf::Drawable*> toDraw;
 	for( const auto& el : componentsToDraw )
 		for( const auto& drawable : el->getDrawingData() )
 			toDraw.push_back( drawable );

@@ -16,11 +16,6 @@ namespace nb
 {
 	class DefaultWorldGenerator : public WorldGenerator
 	{
-		std::random_device rd;
-		std::mt19937 mt;
-		std::uniform_int_distribution<int> dist;
-		std::uniform_int_distribution<int> dist2;
-
 		noise::module::Perlin noiseGenerator;
 
 		const ResourceEngine*const r_resourceEngine;

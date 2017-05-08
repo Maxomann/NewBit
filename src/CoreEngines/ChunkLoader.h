@@ -8,7 +8,7 @@ namespace nb
 {
 	class ChunkLoader : public ChunkLoadStateChanger
 	{
-		const std::shared_ptr<const WorldGenerator>& chunkGenerator;
+		const std::shared_ptr<const WorldGenerator> chunkGenerator;
 		ChunkCache& chunkCache;
 
 		std::vector<Entity> entities;

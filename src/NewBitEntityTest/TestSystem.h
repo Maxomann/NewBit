@@ -4,7 +4,7 @@ class TestSystem : public nb::System
 {
 public:
 	virtual void init() override;
-	virtual void() override;
+	virtual void update() override;
 	virtual void destroy() override;
 
 	bool has_init = false;

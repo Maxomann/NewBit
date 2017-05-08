@@ -12,7 +12,7 @@ void nb::GameStateManager::initNewStates()
 		auto& el = m_uninitializedStates.front();
 		el->init( coreEnginesRef, *this );
 		m_states.push_back( move( el ) );
-		m_uninitializedStates.pop_back();
+		m_uninitializedStates.pop_front();
 	}
 }
 

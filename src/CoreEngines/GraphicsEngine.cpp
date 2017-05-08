@@ -49,6 +49,7 @@ bool nb::GraphicsEngine::update()
 
 	m_window.display();
 	m_toDrawNextFrame.clear();
+	m_toDrawNextFrameWithView.clear();
 
 	return m_window.isOpen();
 }
@@ -58,7 +59,7 @@ void nb::GraphicsEngine::drawNextFrame( sf::Drawable& drawable )
 	m_toDrawNextFrame.push_back( &drawable );
 }
 
-void nb::GraphicsEngine::drawNextFrame( std::vector<const sf::Drawable*const> drawables, sf::View view )
+void nb::GraphicsEngine::drawNextFrame( std::vector<const sf::Drawable*> drawables, sf::View view )
 {
 	m_toDrawNextFrameWithView.push_back( make_pair( move( view ), move( drawables ) ) );
 }

@@ -36,7 +36,7 @@ namespace nb
 		sf::Sprite m_sprite;
 		Entity* m_debugEntity;
 
-		EntityTrackerScreenGameState* r_entityTrackerScreenGameState;
+		EntityTrackerScreenGameState* r_entityTrackerScreenGameState = nullptr;
 
 		Connections m_connections;
 

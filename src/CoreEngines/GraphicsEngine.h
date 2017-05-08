@@ -8,13 +8,11 @@ namespace nb
 {
 	class GraphicsEngine : public CoreEngine
 	{
-		RenderSystem* r_renderSystem;
-
 		sf::RenderWindow m_window;
 		tgui::Gui m_gui;
 
 		std::vector<sf::Drawable*> m_toDrawNextFrame;
-		std::vector<std::pair<sf::View, std::vector<const sf::Drawable*const>>> m_toDrawNextFrameWithView;
+		std::vector<std::pair<sf::View, std::vector<const sf::Drawable*>>> m_toDrawNextFrameWithView;
 
 		sf::Clock m_clock;
 		sf::Time m_frameTime;
@@ -25,7 +23,7 @@ namespace nb
 		virtual bool update() override;
 
 		void drawNextFrame( sf::Drawable& drawable );
-		void drawNextFrame( std::vector<const sf::Drawable*const> drawables, sf::View view );
+		void drawNextFrame( std::vector<const sf::Drawable*> drawables, sf::View view );
 
 		nb::Signal<void( const sf::Event& )> s_onEvent;
 

@@ -6,8 +6,7 @@ using namespace nb;
 const int WorldLoadingGameState::CHUNK_LOADING_RADIUS = 2;
 
 nb::WorldLoadingGameState::WorldLoadingGameState( World& world, Entity* camera )
-	: chunkGenerator( make_shared<DefaultWorldGenerator>() ),
-	world( world ),
+	: world( world ),
 	camera( camera )
 {}
 
@@ -117,6 +116,8 @@ void nb::WorldLoadingGameState::loadAndUnloadChunks()
 void nb::WorldLoadingGameState::init( const CoreEngineManager& coreEngines,
 									  GameStateManager& gameStates )
 {
+	chunkGenerator = make_shared<DefaultWorldGenerator>( coreEngines.getEngine<ResourceEngine>() );
+
 	r_worldLoadStateSystem = world.getSystem<WorldLoadStateSystem>();
 
 	connectCams( {camera} );
