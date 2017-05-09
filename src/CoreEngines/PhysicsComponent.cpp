@@ -11,25 +11,24 @@ nb::PhysicsComponent::PhysicsComponent( b2BodyDef bodyDef,
 	shape( move( shape ) ),
 	fixtureDef( move( fixtureDef ) ),
 	transparent( transparent )
-{
-}
+{}
 
 void nb::PhysicsComponent::init()
 {
 	auto transform = component<TransformationComponent>();
 
-	transform->s_positionXYChanged.connect( [&]( const auto& comp, const auto& oldPosition ) {
-		if (!isUpdatingToComponents)
+	transform->s_positionXYChanged.connect( [&] ( const auto& comp, const auto& oldPosition ){
+		if( !isUpdatingToComponents )
 		{
 			auto newPositionXY = comp->getPositionXY();
-			body->SetTransform( b2Vec2( static_cast<float>(newPositionXY.x)*PIXEL_TO_METER,
-										static_cast<float>(newPositionXY.y)*PIXEL_TO_METER ),
+			body->SetTransform( b2Vec2( newPositionXY.x*PIXEL_TO_METER,
+										newPositionXY.y*PIXEL_TO_METER ),
 								body->GetAngle() );
 		}
 	} );
 
-	transform->s_rotationChanged.connect( [&]( const auto& comp, const auto& oldRotation ) {
-		if (!isUpdatingToComponents)
+	transform->s_rotationChanged.connect( [&] ( const auto& comp, const auto& oldRotation ){
+		if( !isUpdatingToComponents )
 		{
 			auto newRotation = comp->getRotation();
 			body->SetTransform( body->GetPosition(),
@@ -61,7 +60,7 @@ void nb::PhysicsComponent::addToSimulation( b2World & simulation )
 
 void nb::PhysicsComponent::removeFromSimulation( b2World & simulation )
 {
-	if (body)
+	if( body )
 	{
 		simulation.DestroyBody( body );
 		body = nullptr;
@@ -75,7 +74,7 @@ void nb::PhysicsComponent::updateSimulationDataToComponents()
 	auto transform = component<TransformationComponent>();
 
 	auto position = body->GetPosition();
-	transform->setPositionXY( Vector2i( position.x*METER_TO_PIXEL,
+	transform->setPositionXY( Vector2f( position.x*METER_TO_PIXEL,
 										position.y*METER_TO_PIXEL ) );
 	transform->setRotation( radToDeg( body->GetAngle() ) );
 
