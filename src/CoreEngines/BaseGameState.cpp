@@ -72,7 +72,7 @@ void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
 
 	Entity cameraEntity;
 	cameraEntity.addComponent<TransformationComponent>(
-		Vector2i( 0, 0 ),
+		Vector2f( 0, 0 ),
 		0,
 		Vector2f( 1280, 720 ) );
 	cameraEntity.addComponent<CameraComponent>();

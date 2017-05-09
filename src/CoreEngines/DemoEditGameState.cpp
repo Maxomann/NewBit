@@ -80,13 +80,11 @@ void nb::DemoEditGameState::init( const CoreEngineManager & coreEngines,
 					( newPosition.y * Tile::TILE_SIZE_IN_PIXEL ) +
 					Tile::TILE_SIZE_IN_PIXEL;
 
-				transformComponent->setPosition( newPosition );
+				transformComponent->setPosition( Position( newPosition.x, newPosition.y, newPosition.z ) );
 			}
 			else
 			{
-				transformComponent->setPosition( sf::Vector3i( placementPositionXY.x,
-															   placementPositionXY.y,
-															   placementLayer ) );
+				transformComponent->setPosition( Position( placementPositionXY.x, placementPositionXY.y, placementLayer ) );
 			}
 		}
 		world.addEntity( move( entity ) );

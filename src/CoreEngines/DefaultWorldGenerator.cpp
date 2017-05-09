@@ -44,7 +44,7 @@ std::vector<Entity> nb::DefaultWorldGenerator::generateChunk( const sf::Vector3i
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
 				if( dist2( mt ) < 1 )
 				{
-					sf::Vector3i placementPosition(
+					Position placementPosition(
 						( positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL ) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
 						( positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL ),
 						chunkPosition.z );

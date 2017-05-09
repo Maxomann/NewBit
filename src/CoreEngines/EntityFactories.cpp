@@ -8,7 +8,7 @@ using namespace nb;
 Entity nb::createHuman( const ResourceEngine*const resources, sf::Vector3i position )
 {
 	Entity entity;
-	entity.addComponent<TransformationComponent>( sf::Vector2i( position.x, position.y ),
+	entity.addComponent<TransformationComponent>( sf::Vector2f( position.x, position.y ),
 												  position.z,
 												  Vector2f( 32, 64 ) );
 	entity.addComponent<RenderComponent>( 0 );
@@ -42,7 +42,7 @@ Entity nb::createTilemapChunk( const ResourceEngine*const resources, sf::Vector3
 {
 	Entity terrain;
 	terrain.addComponent<TransformationComponent>(
-		Vector2i( ChunkSystem::CHUNK_SIZE_IN_PIXEL * positionInChunks.x,
+		Vector2f( ChunkSystem::CHUNK_SIZE_IN_PIXEL * positionInChunks.x,
 				  ChunkSystem::CHUNK_SIZE_IN_PIXEL * positionInChunks.y ),
 		positionInChunks.z,
 		Vector2f( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
@@ -58,7 +58,7 @@ Entity nb::createTilemapChunk( const ResourceEngine*const resources, sf::Vector3
 Entity nb::createTree( const ResourceEngine*const resources, sf::Vector3i position )
 {
 	Entity entity;
-	entity.addComponent<TransformationComponent>( sf::Vector2i( position.x, position.y ),
+	entity.addComponent<TransformationComponent>( sf::Vector2f( position.x, position.y ),
 												  position.z,
 												  Vector2f( 48 * 2, 64 * 2 ) );
 	entity.addComponent<RenderComponent>( 0 );
@@ -90,7 +90,7 @@ TreeFactory::TreeFactory()
 Entity TreeFactory::create( const ResourceEngine& resources )const
 {
 	Entity entity;
-	entity.addComponent<TransformationComponent>( sf::Vector2i( 0, 0 ),
+	entity.addComponent<TransformationComponent>( sf::Vector2f( 0, 0 ),
 												  0,
 												  Vector2f( 48 * 2, 64 * 2 ) );
 	entity.addComponent<RenderComponent>( 0 );
@@ -124,7 +124,7 @@ Entity ItemWoodFactory::create( const ResourceEngine& resources )const
 	const auto& item = resources.items.getItem( 0 );
 
 	Entity entity;
-	entity.addComponent<TransformationComponent>( sf::Vector2i( 0, 0 ),
+	entity.addComponent<TransformationComponent>( sf::Vector2f( 0, 0 ),
 												  0,
 												  Vector2f( 32, 32 ) );
 	entity.addComponent<RenderComponent>( 0 );
@@ -162,7 +162,7 @@ WallFactory::WallFactory()
 Entity WallFactory::create( const ResourceEngine& resources )const
 {
 	Entity entity;
-	entity.addComponent<TransformationComponent>( sf::Vector2i( 0, 0 ),
+	entity.addComponent<TransformationComponent>( sf::Vector2f( 0, 0 ),
 												  0,
 												  Vector2f( 32, 64 ) );
 	entity.addComponent<RenderComponent>( 0 );

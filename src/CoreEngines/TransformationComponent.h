@@ -1,17 +1,19 @@
 #pragma once
 #include "stdafx.h"
+#include "Position.h"
 
 namespace nb
 {
 	class TransformationComponent : public Component
 	{
-		sf::Vector2i m_position = { 0, 0 };
-		int m_layer = 0;
-		sf::Vector2f m_size = { 0.f, 0.f };
-		float m_rotation = 0.f;
+	private:
+
+		Position position;
+		sf::Vector2f size = {0.f, 0.f};
+		float rotation = 0.f;
 
 	public:
-		TransformationComponent( sf::Vector2i position,
+		TransformationComponent( sf::Vector2f positionXY,
 								 int layer,
 								 sf::Vector2f size,
 								 float rotation = 0 );
@@ -20,8 +22,8 @@ namespace nb
 
 		//
 
-		sf::Vector3i getPosition()const;
-		const sf::Vector2i& getPositionXY()const;
+		Position getPosition()const;
+		const sf::Vector2f& getPositionXY()const;
 
 		int getLayer()const;
 
@@ -31,8 +33,10 @@ namespace nb
 
 		//
 
-		void setPosition( sf::Vector3i position );
+		void setPosition( Position position );
+		void setPositionXY( sf::Vector2f position );
 		void setPositionXY( sf::Vector2i position );
+		void moveXY( sf::Vector2f offset );
 		void moveXY( sf::Vector2i offset );
 
 		void setLayer( int layer );
@@ -47,9 +51,9 @@ namespace nb
 		//
 
 		// Second parameter is old value
-		Signal<void( const TransformationComponent* const, sf::Vector3i )> s_positionChanged;
+		Signal<void( const TransformationComponent* const, const Position& )> s_positionChanged;
 		// Second parameter is old value
-		Signal<void( const TransformationComponent* const, sf::Vector2i )> s_positionXYChanged;
+		Signal<void( const TransformationComponent* const, sf::Vector2f )> s_positionXYChanged;
 		// Second parameter is old value
 		Signal<void( const TransformationComponent* const, int )> s_layerChanged;
 		// Second parameter is old value

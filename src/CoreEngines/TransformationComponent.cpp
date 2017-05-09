@@ -3,94 +3,99 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-nb::TransformationComponent::TransformationComponent( sf::Vector2i position,
+nb::TransformationComponent::TransformationComponent( sf::Vector2f positionXY,
 													  int layer,
 													  sf::Vector2f size,
 													  float rotation )
-	: m_position( position ),
-	m_layer( layer ),
-	m_size( size ),
-	m_rotation( rotation )
-{
-}
+	: position( move( positionXY ), layer ),
+	size( size ),
+	rotation( rotation )
+{}
 
 void nb::TransformationComponent::init()
+{}
+
+nb::Position nb::TransformationComponent::getPosition() const
 {
+	return position;
 }
 
-sf::Vector3i nb::TransformationComponent::getPosition() const
+const sf::Vector2f& nb::TransformationComponent::getPositionXY() const
 {
-	return Vector3i( m_position.x,
-					 m_position.y,
-					 m_layer );
-}
-
-const sf::Vector2i& nb::TransformationComponent::getPositionXY() const
-{
-	return m_position;
+	return position.xy;
 }
 
 int nb::TransformationComponent::getLayer() const
 {
-	return m_layer;
+	return position.layer;
 }
 
 sf::Vector2f nb::TransformationComponent::getSize() const
 {
-	return m_size;
+	return size;
 }
 
 float nb::TransformationComponent::getRotation() const
 {
-	return m_rotation;
+	return rotation;
 }
 
-void nb::TransformationComponent::setPosition( sf::Vector3i position )
+void nb::TransformationComponent::setPosition( Position position )
 {
 	auto oldPosition = getPosition();
 	auto oldPositionXY = getPositionXY();
-	auto oldLayer = m_layer;
+	auto oldLayer = getLayer();
 
-	m_position = Vector2i( position.x, position.y );
-	m_layer = position.z;
+	this->position = move( position );
 
-	if (oldPosition != position)
+	if( oldPosition != getPosition() )
 	{
 		s_positionChanged.call( this, oldPosition );
-		if (oldPositionXY != Vector2i( position.x, position.y ))
+		if( oldPositionXY != getPositionXY() )
 			s_positionXYChanged.call( this, oldPositionXY );
-		if (oldLayer != position.z)
+		if( oldLayer != getLayer() )
 			s_layerChanged.call( this, oldLayer );
 	}
 }
 
-void nb::TransformationComponent::setPositionXY( sf::Vector2i position )
+void nb::TransformationComponent::setPositionXY( sf::Vector2f position )
 {
 	auto oldPosition = getPosition();
 	auto oldPositionXY = getPositionXY();
 
-	m_position = position;
+	this->position.xy = move( position );
 
-	if (oldPositionXY != Vector2i( position.x, position.y ))
+	if( oldPositionXY != getPositionXY() )
 	{
 		s_positionChanged.call( this, oldPosition );
 		s_positionXYChanged.call( this, oldPositionXY );
 	}
 }
 
+void nb::TransformationComponent::setPositionXY( sf::Vector2i position )
+{
+	setPositionXY( sf::Vector2f( position ) );
+}
+
+void nb::TransformationComponent::moveXY( sf::Vector2f offset )
+{
+	setPositionXY( Vector2f( position.xy.x + offset.x,
+							 position.xy.y + offset.y ) );
+}
+
 void nb::TransformationComponent::moveXY( sf::Vector2i offset )
 {
-	setPositionXY( Vector2i( m_position.x + offset.x, m_position.y + offset.y ) );
+	moveXY( sf::Vector2f( offset ) );
 }
 
 void nb::TransformationComponent::setLayer( int layer )
 {
 	auto oldPosition = getPosition();
-	auto oldLayer = m_layer;
+	auto oldLayer = getLayer();
 
-	m_layer = layer;
+	this->position.layer = layer;
 
-	if (oldLayer != layer)
+	if( oldLayer != getLayer() )
 	{
 		s_positionChanged.call( this, oldPosition );
 		s_layerChanged.call( this, oldLayer );
@@ -99,38 +104,38 @@ void nb::TransformationComponent::setLayer( int layer )
 
 void nb::TransformationComponent::moveLayer( int offset )
 {
-	setLayer( m_layer + offset );
+	setLayer( getLayer() + offset );
 }
 
 void nb::TransformationComponent::setSize( sf::Vector2f size )
 {
-	auto oldSize = m_size;
+	auto oldSize = getSize();
 
-	m_size = size;
+	this->size = size;
 
-	if (oldSize != size)
+	if( oldSize != getSize() )
 		s_sizeChanged.call( this, oldSize );
 }
 
 void nb::TransformationComponent::scale( float factor )
 {
 	auto newSize = Vector2f(
-		m_size.x*factor,
-		m_size.y*factor );
+		size.x*factor,
+		size.y*factor );
 	setSize( newSize );
 }
 
 void nb::TransformationComponent::setRotation( float rotation )
 {
-	auto oldRotation = m_rotation;
+	auto oldRotation = getRotation();
 
-	m_rotation = rotation;
+	this->rotation = rotation;
 
-	if (oldRotation != rotation)
+	if( oldRotation != getRotation() )
 		s_rotationChanged.call( this, oldRotation );
 }
 
 void nb::TransformationComponent::rotate( float offset )
 {
-	setRotation( m_rotation + offset );
+	setRotation( rotation + offset );
 }

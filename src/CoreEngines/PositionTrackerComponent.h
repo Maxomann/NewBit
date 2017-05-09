@@ -9,12 +9,12 @@ namespace nb
 		TransformationComponent* r_transformation;
 
 		TransformationComponent* r_track = nullptr;
-		sf::Vector2i m_offset = { 0,0 };
+		sf::Vector2f m_offset = {0,0};
 
 		void onTrackedPositionChanged( const TransformationComponent* transform,
-									   sf::Vector3i oldPosition );
+									   const Position& oldPosition );
 
-		void applyPositionWithOffset( const sf::Vector3i& positionWithoutOffset );
+		void applyPositionWithOffset( const Position& positionWithoutOffset );
 
 		Connections m_connections;
 
@@ -24,6 +24,6 @@ namespace nb
 
 		void trackEntity( Entity* entity );
 
-		void setOffsetXY( sf::Vector2i offset );
+		void setOffsetXY( sf::Vector2f offset );
 	};
 }

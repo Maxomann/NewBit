@@ -12,7 +12,8 @@ namespace nb
 
 		std::map<sf::Vector3i, std::vector<Entity*>> m_entitiesByChunk;
 
-		void onEntityPositionChanged( const TransformationComponent*const transform, sf::Vector3i oldPosition );
+		void onEntityPositionChanged( const TransformationComponent*const transform,
+									  const Position& oldPosition );
 		void onEntityAdded( Entity* entity );
 		void onEntitiesRemoved( const std::vector<Entity*>& entities );
 
@@ -29,10 +30,10 @@ namespace nb
 			std::vector<Entity*> retVal;
 
 			auto result = m_entitiesByChunk.find( chunkPosition );
-			if (result != m_entitiesByChunk.end())
-				for (const auto& el : result->second)
+			if( result != m_entitiesByChunk.end() )
+				for( const auto& el : result->second )
 				{
-					if (pred( el ))
+					if( pred( el ) )
 						retVal.push_back( el );
 				}
 			return retVal;
@@ -43,9 +44,9 @@ namespace nb
 		template<class UnaryPredicate>
 		void removeEntitiesInChunk_if( sf::Vector3i chunkPosition, const UnaryPredicate& pred )
 		{
-			for (const auto& el : m_entitiesByChunk[chunkPosition])
+			for( const auto& el : m_entitiesByChunk[ chunkPosition ] )
 			{
-				if (pred( el ))
+				if( pred( el ) )
 					r_world->removeEntity( el );
 			}
 		};

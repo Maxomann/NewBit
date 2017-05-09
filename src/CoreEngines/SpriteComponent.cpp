@@ -9,8 +9,8 @@ void nb::SpriteComponent::setSize( sf::Vector2f newSize )
 	auto& scale = m_sprite.getScale();
 
 	Vector2f spritesOldSize;
-	spritesOldSize.x = (static_cast<float>(texrect.width)*scale.x);
-	spritesOldSize.y = (static_cast<float>(texrect.height)*scale.y);
+	spritesOldSize.x = ( static_cast<float>( texrect.width )*scale.x );
+	spritesOldSize.y = ( static_cast<float>( texrect.height )*scale.y );
 
 	m_sprite.setScale( newSize.x / spritesOldSize.x, newSize.y / spritesOldSize.y );
 	calculateGlobalBounds();
@@ -42,17 +42,17 @@ void nb::SpriteComponent::init()
 	m_sprite.setRotation( transform->getRotation() );
 
 	//connections
-	transform->s_positionXYChanged.connect( [&]( const TransformationComponent*const transform,
-												 sf::Vector2i oldPositionXY ) {
-		m_sprite.setPosition( Vector2f( transform->getPositionXY() ) );
+	transform->s_positionXYChanged.connect( [&] ( const TransformationComponent*const transform,
+												  const sf::Vector2f& oldPositionXY ){
+		m_sprite.setPosition( transform->getPositionXY() );
 		calculateGlobalBounds();
 	} );
-	transform->s_sizeChanged.connect( [&]( const TransformationComponent*const transform,
-										   sf::Vector2f oldSize ) {
+	transform->s_sizeChanged.connect( [&] ( const TransformationComponent*const transform,
+											sf::Vector2f oldSize ){
 		setSize( transform->getSize() );
 	} );
-	transform->s_rotationChanged.connect( [&]( const TransformationComponent*const transform,
-											   float oldRotation ) {
+	transform->s_rotationChanged.connect( [&] ( const TransformationComponent*const transform,
+												float oldRotation ){
 		m_sprite.setRotation( transform->getRotation() );
 		calculateGlobalBounds();
 	} );
@@ -68,7 +68,7 @@ void nb::SpriteComponent::setTexture( const sf::Texture & texture )
 {
 	m_sprite.setTexture( texture, true );
 	auto& size = texture.getSize();
-	m_sprite.setOrigin( static_cast<float>(size.x) / 2.f, static_cast<float>(size.y) );
+	m_sprite.setOrigin( static_cast<float>( size.x ) / 2.f, static_cast<float>( size.y ) );
 	calculateGlobalBounds();
 }
 
@@ -76,8 +76,8 @@ void nb::SpriteComponent::setTexture( const TextureReference & texture )
 {
 	texture.applyTextureAndDefaultTextureRectToSprite( m_sprite );
 	auto& defaultRect = texture.getDefaultTextureRect();
-	m_sprite.setOrigin( static_cast<float>(defaultRect.width) / 2.f,
-						static_cast<float>(defaultRect.height) );
+	m_sprite.setOrigin( static_cast<float>( defaultRect.width ) / 2.f,
+						static_cast<float>( defaultRect.height ) );
 	calculateGlobalBounds();
 }
 

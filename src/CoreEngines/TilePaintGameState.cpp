@@ -53,7 +53,7 @@ void nb::TilePaintGameState::init( const CoreEngineManager& coreEngines,
 																			  cameraView );
 		auto pixelPositionInWorld = Vector3i( mappedPosition.x,
 											  mappedPosition.y,
-											  cameraPosition.z );
+											  cameraPosition.layer );
 		auto chunkPositionInWorld = ChunkSystem::calculateChunkPositionForPixelPosition( pixelPositionInWorld );
 		auto tilePositionInWorld = Tile::calculateTilePositionForPixelPosition( pixelPositionInWorld );
 		auto terrainToModifyVec = world.getSystem<ChunkSystem>()->getEntitiesInChunk_if( chunkPositionInWorld, [&] ( const Entity* entity ){

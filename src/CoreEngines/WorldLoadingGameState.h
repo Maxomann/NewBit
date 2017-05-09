@@ -24,7 +24,7 @@ namespace nb
 		std::map<sf::Vector3i, int> m_cameraChunkPositionCounts;
 
 		void onCameraPositionChanged( const TransformationComponent* transform,
-									  sf::Vector3i oldPosition );
+									  const Position& oldPosition );
 
 		void connectCams( const std::vector<Entity*>& cams );
 

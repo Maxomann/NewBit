@@ -11,10 +11,10 @@ nb::WorldLoadingGameState::WorldLoadingGameState( World& world, Entity* camera )
 {}
 
 void nb::WorldLoadingGameState::onCameraPositionChanged( const TransformationComponent * transform,
-														 sf::Vector3i oldPosition )
+														 const Position& oldPosition )
 {
-	auto oldChunkPosition = ChunkSystem::calculateChunkPositionForPixelPosition( oldPosition );
-	auto newChunkPosition = ChunkSystem::calculateChunkPositionForPixelPosition( transform->getPosition() );
+	auto oldChunkPosition = ChunkSystem::calculateChunkPositionForPixelPosition( oldPosition.asPixelPosition() );
+	auto newChunkPosition = ChunkSystem::calculateChunkPositionForPixelPosition( transform->getPosition().asPixelPosition() );
 
 	if( oldChunkPosition != newChunkPosition )
 	{
@@ -39,7 +39,7 @@ void nb::WorldLoadingGameState::connectCams( const std::vector<Entity*>& cams )
 													&WorldLoadingGameState::onCameraPositionChanged );
 
 		// first time init m_cameraChunkPositionCounts
-		auto chunkPosition = ChunkSystem::calculateChunkPositionForPixelPosition( transform->getPosition() );
+		auto chunkPosition = ChunkSystem::calculateChunkPositionForPixelPosition( transform->getPosition().asPixelPosition() );
 		m_cameraChunkPositionCounts[ chunkPosition ] += 1;
 	}
 }

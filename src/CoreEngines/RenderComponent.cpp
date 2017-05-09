@@ -5,8 +5,7 @@ using namespace nb;
 
 nb::RenderComponent::RenderComponent( int zValue )
 	: m_zValue( zValue )
-{
-}
+{}
 
 void RenderComponent::init()
 {
@@ -15,9 +14,9 @@ void RenderComponent::init()
 	return;
 };
 
-const sf::Vector2i& nb::RenderComponent::getSortPositionXY() const
+sf::Vector2i nb::RenderComponent::getSortPositionXY() const
 {
-	return transformComponent->getPositionXY();
+	return Vector2i( transformComponent->getPositionXY() );
 }
 
 const int nb::RenderComponent::getDrawingLayer() const
@@ -38,7 +37,7 @@ void nb::RenderComponent::setZValue( int zValue )
 void RenderComponent::addDrawable( const sf::Drawable* drawable, const sf::FloatRect* globalBoundsPtr )
 {
 	m_drawables.push_back( drawable );
-	globalBounds[drawable] = globalBoundsPtr;
+	globalBounds[ drawable ] = globalBoundsPtr;
 };
 
 void RenderComponent::removeDrawable( const sf::Drawable* drawable )
@@ -56,20 +55,20 @@ const sf::FloatRect& nb::RenderComponent::getGlobalBounds() const
 	// If clipping issues occur, this might be the cause :D
 
 	const sf::FloatRect* biggestRect = nullptr;
-	for (const auto& el : globalBounds)
+	for( const auto& el : globalBounds )
 	{
-		if (biggestRect == nullptr)
+		if( biggestRect == nullptr )
 			biggestRect = el.second;
 		else
 		{
 			auto areaA = el.second->width*el.second->height;
 			auto areaB = biggestRect->width*biggestRect->height;
-			if (areaA > areaB)
+			if( areaA > areaB )
 				biggestRect = el.second;
 		}
 	}
 
-	if (biggestRect == nullptr)
+	if( biggestRect == nullptr )
 		return defaultRect;
 	else
 		return *biggestRect;

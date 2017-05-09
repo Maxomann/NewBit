@@ -11,14 +11,14 @@ namespace nb
 
 		std::vector<const sf::Drawable*> m_drawables;
 		std::map<const sf::Drawable*, const sf::FloatRect*> globalBounds;
-		const sf::FloatRect defaultRect = { 0, 0, 0, 0 };
+		const sf::FloatRect defaultRect = {0, 0, 0, 0};
 
 	public:
 		RenderComponent( int zValue = 0 );
 
 		virtual void init() override;
 
-		const sf::Vector2i& getSortPositionXY()const;
+		sf::Vector2i getSortPositionXY()const;
 		const int getDrawingLayer()const;
 
 		const int& getZValue()const;

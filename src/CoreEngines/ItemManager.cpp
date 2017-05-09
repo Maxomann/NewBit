@@ -9,9 +9,9 @@ void nb::ItemManager::parseFile( const std::string & path, const TextureManager 
 	json::json fileContent;
 	file >> fileContent;
 
-	if (fileContent.is_array())
+	if( fileContent.is_array() )
 	{
-		for (const auto& el : fileContent)
+		for( const auto& el : fileContent )
 		{
 			Item::ID id( el.at( "id" ).get<Item::ID>() );
 			string name( el.at( "name" ).get<string>() );
@@ -23,7 +23,7 @@ void nb::ItemManager::parseFile( const std::string & path, const TextureManager 
 								   move( texref ) ) );
 		}
 	}
-	else if (fileContent.is_object())
+	else if( fileContent.is_object() )
 	{
 		Item::ID id( fileContent.at( "id" ).get<Item::ID>() );
 		string name( fileContent.at( "name" ).get<string>() );
@@ -40,13 +40,13 @@ void nb::ItemManager::parseFile( const std::string & path, const TextureManager 
 
 void nb::ItemManager::init( const PackageManager & packages, const TextureManager & textures )
 {
-	for (const Package& package : packages.getLoadedPackages())
+	for( const Package& package : packages.getLoadedPackages() )
 	{
-		for (const auto& file : package.getLoadedMetaFiles())
+		for( const auto& file : package.getLoadedMetaFiles() )
 		{
 			auto& localId = file.getId();
 
-			if (localId.containsComponent( "item" ))
+			if( localId.containsComponent( "item" ) )
 				parseFile( file.getConnectedFilePath(), textures );
 		}
 	}
@@ -54,12 +54,12 @@ void nb::ItemManager::init( const PackageManager & packages, const TextureManage
 
 const Item * nb::ItemManager::getItem( Item::ID id ) const
 {
-	auto found = find_if( items.begin(), items.end(), [&]( const Item& el ) {
-		return (el.getId() == id);
+	auto found = find_if( items.begin(), items.end(), [&] ( const Item& el ){
+		return ( el.getId() == id );
 	} );
 
-	if (found != items.end())
-		return &(*found);
+	if( found != items.end() )
+		return &( *found );
 	else
 		return nullptr;
 }
@@ -73,7 +73,7 @@ Entity ItemManager::createItemEntity( const Item* item,
 									  sf::Vector3i position )
 {
 	Entity entity;
-	entity.addComponent<TransformationComponent>( sf::Vector2i( position.x, position.y ),
+	entity.addComponent<TransformationComponent>( sf::Vector2f( position.x, position.y ),
 												  position.z,
 												  Vector2f( 32, 32 ) );
 	entity.addComponent<RenderComponent>( 0 );
