@@ -5,15 +5,15 @@ namespace nb
 {
 	class TimeSystem : public System
 	{
-		sf::Clock clock;
-		sf::Time frameTime;
-		bool isFirstIteartion = true;
+		sf::Time timestep;
 
 	public:
 		virtual void init() override;
 		virtual void update() override;
 		virtual void destroy() override;
 
-		const sf::Time& getFrameTime()const;
+		void updateTimestep( const sf::Time& step );
+
+		const sf::Time& getTimestep()const;
 	};
 }

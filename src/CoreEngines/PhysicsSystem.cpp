@@ -7,14 +7,14 @@ b2World & nb::PhysicsSystem::getSimulationForLayer( int layer )
 {
 	auto emplaceRetVal = simulation.try_emplace( layer, defaultGravity );
 	auto& sim = emplaceRetVal.first->second;
-	if (emplaceRetVal.second)
+	if( emplaceRetVal.second )
 		sim.SetContactListener( &contactListener );
 	return sim;
 }
 
 void nb::PhysicsSystem::checkSimulationLayerForRemoval( int layer )
 {
-	if (simulation.at( layer ).GetBodyCount() <= 0)
+	if( simulation.at( layer ).GetBodyCount() <= 0 )
 		simulation.erase( layer );
 }
 
@@ -26,29 +26,29 @@ nb::PhysicsSystem::PhysicsSystem()
 
 void nb::PhysicsSystem::init()
 {
-	world()->s_onEntityAdded.connect( [&]( Entity* entity ) {
+	world()->s_onEntityAdded.connect( [&] ( Entity* entity ){
 		auto transform = entity->getComponent<TransformationComponent>();
 		auto physics = entity->getComponent_try<PhysicsComponent>();
-		if (physics)
+		if( physics )
 		{
 			auto entityLayer = transform->getLayer();
 			physics->addToSimulation( getSimulationForLayer( entityLayer ) );
 			entitiesWithPhysicsComponentInWorld.push_back( entity );
 
 			transform->s_layerChanged.connect_track( entity->outsideConnections,
-													 [&, physics]( const TransformationComponent* comp,
-																   int oldLayer ) {
+													 [&, physics] ( const TransformationComponent* comp,
+																	int oldLayer ){
 				physics->removeFromSimulation( getSimulationForLayer( oldLayer ) );
 				checkSimulationLayerForRemoval( oldLayer );
 				physics->addToSimulation( getSimulationForLayer( comp->getLayer() ) );
 			} );
 		}
 	} );
-	world()->s_onEntitiesRemoved.connect( [&]( const std::vector<Entity*>& vec ) {
-		for (const auto& entity : vec)
+	world()->s_onEntitiesRemoved.connect( [&] ( const std::vector<Entity*>& vec ){
+		for( const auto& entity : vec )
 		{
 			auto physics = entity->getComponent_try<PhysicsComponent>();
-			if (physics)
+			if( physics )
 			{
 				auto entityLayer = entity->getComponent<TransformationComponent>()->getLayer();
 				physics->removeFromSimulation( getSimulationForLayer( entityLayer ) );
@@ -57,14 +57,14 @@ void nb::PhysicsSystem::init()
 		}
 		entitiesWithPhysicsComponentInWorld.erase( remove_if( entitiesWithPhysicsComponentInWorld.begin(),
 															  entitiesWithPhysicsComponentInWorld.end(),
-															  [&]( const Entity* el ) {
-			return any_of( vec.begin(), vec.end(), [&]( const Entity* el2 ) {
+															  [&] ( const Entity* el ){
+			return any_of( vec.begin(), vec.end(), [&] ( const Entity* el2 ){
 				return el == el2;
 			} );
 		} ), entitiesWithPhysicsComponentInWorld.end() );
 	} );
-	system<RenderSystem>()->s_collectDebugDrawingData.connect( [&]( auto& vec, int layer ) {
-		if (drawDebugLayer)
+	system<RenderSystem>()->s_collectDebugDrawingData.connect( [&] ( auto& vec, int layer ){
+		if( drawDebugLayer )
 		{
 			debugDraw->setDrawContainer( vec );
 			auto& sim = getSimulationForLayer( layer );
@@ -76,17 +76,16 @@ void nb::PhysicsSystem::init()
 
 void nb::PhysicsSystem::update()
 {
-	auto& frameTime = system<TimeSystem>()->getFrameTime();
-	for (auto& sim : simulation)
+	auto& frameTime = system<TimeSystem>()->getTimestep();
+	for( auto& sim : simulation )
 		sim.second.Step( frameTime.asMilliseconds(), velocityIterations, positionIterations );
 
-	for (auto& el : entitiesWithPhysicsComponentInWorld)
+	for( auto& el : entitiesWithPhysicsComponentInWorld )
 		el->getComponent<PhysicsComponent>()->updateSimulationDataToComponents();
 }
 
 void nb::PhysicsSystem::destroy()
-{
-}
+{}
 
 void nb::PhysicsSystem::setDebugDrawEnabled( bool enabled )
 {
@@ -109,8 +108,8 @@ Entity * nb::PhysicsSystem::getFirstEntityAtPixelPosition( const sf::Vector3i & 
 	PhysicsAABBCallback callback;
 	layer.QueryAABB( &callback, aabb );
 
-	if (callback.foundBodies.size())
-		return static_cast<PhysicsComponent*>(callback.foundBodies.at( 0 )->GetUserData())->getEntity();
+	if( callback.foundBodies.size() )
+		return static_cast<PhysicsComponent*>( callback.foundBodies.at( 0 )->GetUserData() )->getEntity();
 	else
 		return nullptr;
 }

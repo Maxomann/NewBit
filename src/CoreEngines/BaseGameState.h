@@ -23,8 +23,11 @@ namespace nb
 
 		World world;
 		RenderSystem* r_renderSystem;
+		TimeSystem* r_timeSystem;
 
 		Entity* cam;
+
+		bool isFirstIteration = true;
 
 		void drawWorld();
 

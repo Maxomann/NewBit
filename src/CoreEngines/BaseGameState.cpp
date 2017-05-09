@@ -69,6 +69,7 @@ void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
 	world.initSystems();
 
 	r_renderSystem = world.getSystem<RenderSystem>();
+	r_timeSystem = world.getSystem<TimeSystem>();
 
 	Entity cameraEntity;
 	cameraEntity.addComponent<TransformationComponent>(
@@ -85,6 +86,14 @@ void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
 
 void nb::BaseGameState::update( GameStateManager & gameStates )
 {
+	if( isFirstIteration )
+	{
+		isFirstIteration = false;
+		r_timeSystem->updateTimestep( sf::milliseconds( 8 ) );
+	}
+	else
+		r_timeSystem->updateTimestep( r_graphicsEngine->getFrameTime() );
+
 	world.update();
 
 	drawWorld();

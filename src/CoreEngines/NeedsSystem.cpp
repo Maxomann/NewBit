@@ -12,14 +12,13 @@ void nb::NeedsSystem::init()
 
 void nb::NeedsSystem::update()
 {
-	for (auto& el : needsComponentCache.get())
+	for( auto& el : needsComponentCache.get() )
 	{
-		auto change = -1 * 0.0002f * timeSystem->getFrameTime().asMilliseconds();
+		auto change = -1 * 0.0002f * timeSystem->getTimestep().asMilliseconds();
 
 		el->changeHunger( change );
 	}
 }
 
 void nb::NeedsSystem::destroy()
-{
-}
+{}

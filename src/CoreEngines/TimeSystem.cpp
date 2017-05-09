@@ -4,24 +4,20 @@ using namespace sf;
 using namespace nb;
 
 void nb::TimeSystem::init()
-{
-	frameTime = sf::milliseconds( 8 );
-}
+{}
 
 void nb::TimeSystem::update()
-{
-	frameTime = clock.restart();
-	if( isFirstIteartion )
-	{
-		frameTime = sf::milliseconds( 8 );
-		isFirstIteartion = false;
-	}
-}
+{}
 
 void nb::TimeSystem::destroy()
 {}
 
-const sf::Time & nb::TimeSystem::getFrameTime() const
+void nb::TimeSystem::updateTimestep( const sf::Time & step )
 {
-	return frameTime;
+	timestep = step;
+}
+
+const sf::Time & nb::TimeSystem::getTimestep() const
+{
+	return timestep;
 }
