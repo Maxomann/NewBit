@@ -18,12 +18,13 @@ namespace nb
 
 		void heal( float amount );
 
-		int getHealth()const;
+		float getHealth()const;
 		int getMaxHealth()const;
 
 		bool isDead()const;
 
-		Signal<void( const HealthComponent*const, int )> s_onChange;
+		//second parameter: health difference
+		Signal<void( const HealthComponent*const, float )> s_onChange;
 		Signal<void( const HealthComponent*const, float )> s_onDamage;
 		Signal<void( const HealthComponent*const, float )> s_onHeal;
 		Signal<void( const HealthComponent*const )> s_onDie;
