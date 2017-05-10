@@ -81,7 +81,8 @@ void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
 	cam = world.addEntity( move( cameraEntity ) );
 
 	gameStates.pushState( make_unique<WorldLoadingGameState>( world, cam ) );
-	gameStates.pushState( make_unique<TestGameState>( world, cam ) );
+	//gameStates.pushState( make_unique<TestGameState>( world, cam ) );
+	gameStates.pushState( make_unique<PlayingGameState>( world, cam ) );
 }
 
 void nb::BaseGameState::update( GameStateManager & gameStates )

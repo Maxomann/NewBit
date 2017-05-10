@@ -14,6 +14,7 @@
 
 #include "WorldLoadingGameState.h"
 #include "TestGameState.h"
+#include "PlayingGameState.h"
 
 namespace nb
 {
