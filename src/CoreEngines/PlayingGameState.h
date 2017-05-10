@@ -1,11 +1,14 @@
 #pragma once
 #include "stdafx.h"
 
-#include "EntityFactories.h"
+#include "PositionTrackerComponent.h"
 
 #include "GraphicsEngine.h"
 #include "InputEngine.h"
 #include "ResourceEngine.h"
+
+#include "EntityFactories.h"
+#include "sfmlExtensions.h"
 
 namespace nb
 {
@@ -29,6 +32,8 @@ namespace nb
 		PhysicsComponent* playerPhysics;
 
 		Connections connections;
+
+		std::pair<bool, float> getWSADMovement( bool w, bool s, bool a, bool d )const;
 
 	public:
 		PlayingGameState( World& world,

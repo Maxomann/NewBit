@@ -14,9 +14,9 @@ void nb::NeedsSystem::update()
 {
 	for( auto& el : needsComponentCache.get() )
 	{
-		auto change = -1 * 0.0002f * timeSystem->getTimestep().asMilliseconds();
+		const auto& timestep = timeSystem->getTimestep();
 
-		el->changeHunger( change );
+		el->changeValuesOverTime( timestep );
 	}
 }
 

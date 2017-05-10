@@ -4,13 +4,19 @@ using namespace sf;
 using namespace nb;
 
 nb::NeedsComponent::NeedsComponent()
-	: hunger( 100 ),
-	thirst( 100 ),
-	energy( 100 )
 {}
 
 void nb::NeedsComponent::init()
 {}
+
+void nb::NeedsComponent::changeValuesOverTime( const sf::Time & time )
+{
+	auto asMilliseconds = time.asMilliseconds();
+
+	changeHunger( -1 * baseHungerRate * asMilliseconds );
+	changeThirst( -1 * baseThirstRate * asMilliseconds );
+	changeEnergy( -1 * baseEnergyRate * asMilliseconds );
+}
 
 float nb::NeedsComponent::getHunger() const
 {
