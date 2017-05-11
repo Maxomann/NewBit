@@ -2,25 +2,13 @@
 #include "stdafx.h"
 #include "EntityFactory.h"
 #include "EntityFactories.h"
+#include "FactoryManager.h"
 
 namespace nb
 {
-	class EntityFactoryManager
+	class EntityFactoryManager : public FactoryManager<EntityFactory>
 	{
 	public:
-		using FACTORY_PTR = std::unique_ptr<EntityFactory>;
-		using FACTORIES = std::map<EntityFactory::ID, FACTORY_PTR>;
-
-	private:
-		FACTORIES factories;
-
-	public:
 		void init();
-
-		void addFactory( FACTORY_PTR factory );
-
-		const FACTORY_PTR& getFactoryById( EntityFactory::ID id )const;
-
-		const FACTORIES& getAllFactories()const;
 	};
 }

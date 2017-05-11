@@ -9,8 +9,7 @@ nb::TextureReference::TextureReference( GlobalId id,
 	: m_id( id ),
 	m_texture( &texture ),
 	m_defaultTextureRect( defaultTextureRect )
-{
-};
+{};
 
 const sf::Texture& nb::TextureReference::getTexture()const
 {
@@ -20,6 +19,11 @@ const sf::IntRect& nb::TextureReference::getDefaultTextureRect()const
 {
 	return m_defaultTextureRect;
 };
+
+const nb::GlobalId& nb::TextureReference::getId() const
+{
+	return m_id;
+}
 
 const void nb::TextureReference::applyTextureAndDefaultTextureRectToSprite( sf::Sprite & sprite )const
 {

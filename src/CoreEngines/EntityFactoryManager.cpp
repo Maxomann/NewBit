@@ -8,18 +8,3 @@ void nb::EntityFactoryManager::init()
 	addFactory( make_unique<WallFactory>() );
 	addFactory( make_unique<ItemEntityWoodFactory>() );
 }
-
-void nb::EntityFactoryManager::addFactory( FACTORY_PTR factory )
-{
-	factories.emplace( make_pair( factory->getId(), move( factory ) ) );
-}
-
-const EntityFactoryManager::FACTORY_PTR & nb::EntityFactoryManager::getFactoryById( EntityFactory::ID id ) const
-{
-	return factories.at( id );
-}
-
-const EntityFactoryManager::FACTORIES & nb::EntityFactoryManager::getAllFactories() const
-{
-	return factories;
-}

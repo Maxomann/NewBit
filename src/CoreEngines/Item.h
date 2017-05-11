@@ -10,22 +10,21 @@ namespace nb
 		using ID = unsigned int;
 
 	private:
-		const ID id;
-
 		const TextureReference*const texref;
 
 		const std::string name;
 
 	public:
-		Item( ID id,
-			  std::string name,
+		Item( std::string name,
 			  const TextureReference* texture );
 		Item( const Item& item ) = delete;
 		Item( Item&& item ) = default;
+		virtual ~Item() = default;
 
-		ID getId()const;
 		const std::string& getName()const;
 
 		const TextureReference* getTextureReference()const;
+
+		virtual void use( Entity* entity ) = 0;
 	};
 }
