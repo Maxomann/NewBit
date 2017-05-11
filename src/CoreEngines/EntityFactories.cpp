@@ -113,13 +113,13 @@ Entity TreeFactory::create( const ResourceEngine& resources )const
 	return entity;
 }
 
-ItemWoodFactory::ItemWoodFactory()
+ItemEntityWoodFactory::ItemEntityWoodFactory()
 	: EntityFactory( 10'000,
 					 "Item: Wood",
 					 {"item"} )
 {}
 
-Entity ItemWoodFactory::create( const ResourceEngine& resources )const
+Entity ItemEntityWoodFactory::create( const ResourceEngine& resources )const
 {
 	const auto& item = resources.items.getItem( 0 );
 
