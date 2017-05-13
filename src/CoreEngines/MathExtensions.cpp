@@ -15,3 +15,8 @@ sf::Vector2f nb::rotateVector( const sf::Vector2f& vec, float angleDeg )
 
 	return retVal;
 }
+
+float nb::vectorMagnitude( const sf::Vector2f & vec )
+{
+	return sqrt( pow( vec.x, 2.f ) + pow( vec.y, 2.f ) );
+}

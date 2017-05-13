@@ -19,4 +19,6 @@ namespace nb
 	}
 
 	sf::Vector2f rotateVector( const sf::Vector2f& vec, float angleDeg );
+
+	float vectorMagnitude( const sf::Vector2f& vec );
 }

@@ -35,5 +35,6 @@ namespace nb
 		bool isDebugDrawEnabled()const;
 
 		Entity* getFirstEntityAtPixelPosition( const sf::Vector3i& position );
+		Entity* getFirstEntityAtPixelPosition( const Position& position );
 	};
 }

@@ -99,10 +99,15 @@ bool nb::PhysicsSystem::isDebugDrawEnabled() const
 
 Entity * nb::PhysicsSystem::getFirstEntityAtPixelPosition( const sf::Vector3i & position )
 {
-	const auto& layer = getSimulationForLayer( position.z );
+	getFirstEntityAtPixelPosition( Position( position ) );
+}
+
+Entity * nb::PhysicsSystem::getFirstEntityAtPixelPosition( const Position& position )
+{
+	const auto& layer = getSimulationForLayer( position.layer );
 	b2AABB aabb;
-	aabb.upperBound = b2Vec2( position.x * PIXEL_TO_METER,
-							  position.y * PIXEL_TO_METER );
+	aabb.upperBound = b2Vec2( position.xy.x * PIXEL_TO_METER,
+							  position.xy.y * PIXEL_TO_METER );
 	aabb.lowerBound = aabb.upperBound;
 
 	PhysicsAABBCallback callback;

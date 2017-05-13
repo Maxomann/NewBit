@@ -14,6 +14,7 @@ namespace nb
 		Position( float x,
 				  float y,
 				  int layer );
+		Position( sf::Vector3i position );
 		Position( const Position& ) = default;
 		Position( Position&& ) = default;
 

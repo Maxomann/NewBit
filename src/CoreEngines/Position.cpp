@@ -12,6 +12,12 @@ nb::Position::Position( float x, float y, int layer )
 	: Position( {x,y}, layer )
 {}
 
+nb::Position::Position( sf::Vector3i position )
+	: Position( position.x,
+				position.y,
+				position.z )
+{}
+
 sf::Vector3i nb::Position::asPixelPosition()const
 {
 	return sf::Vector3i( static_cast<int>( xy.x ),

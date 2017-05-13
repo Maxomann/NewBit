@@ -8,5 +8,10 @@
 		"id":1,
 		"name":"Testitem Grass",
 		"texture":"default:texture:item_grass"
+	},
+	{
+		"id":2,
+		"name":"Apple",
+		"texture":"default:texture:item_apple"
 	}
 ]
