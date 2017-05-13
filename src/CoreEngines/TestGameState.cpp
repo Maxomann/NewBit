@@ -153,14 +153,14 @@ void TestGameState::init( const CoreEngineManager& coreEngines,
 	r_inputEngine->s_onKeyPressed[ Keyboard::Key::Return ].connect_track( m_connections, [&] (){
 		m_debugEntity = world.addEntity( createHuman( r_resourceEngine ) );
 
-		m_debugEntity->getComponent<PhysicsComponent>()->s_beginCollision.connect_track( m_connections, [&] ( auto physics ){
-			auto& inventory = m_debugEntity->getComponent<InventoryComponent>()->inventory;
-			auto entity = physics->entity();
-			auto itemComp = entity->getComponent_try<ItemComponent>();
+		m_debugEntity->getComponent<PhysicsComponent>()->s_beginCollision.connect_track( m_connections, [&] ( const nb::PhysicsComponent* physics ){
+			Inventory& inventory = m_debugEntity->getComponent<InventoryComponent>()->inventory;
+			Entity* entity = physics->entity();
+			ItemComponent* itemComp = entity->getComponent_try<ItemComponent>();
 			if( itemComp )
 			{
-				if( inventory.addItem( itemComp->getItem() ) )
-					world.removeEntity( entity );
+				inventory.addItem( itemComp->moveItem() );
+				world.removeEntity( entity );
 			}
 		} );
 
@@ -211,13 +211,6 @@ void TestGameState::init( const CoreEngineManager& coreEngines,
 	m_sprite.setOrigin( 8, 8 );
 	auto windowSize = r_graphicsEngine->getWindow().getSize();
 	m_sprite.setPosition( windowSize.x / 2.f, windowSize.y / 2.f );
-
-	auto item = r_resourceEngine->items.getItem( 1 );
-	for( int i = 0; i < 2; i++ )
-	{
-		auto itemEntity = ItemManager::createItemEntity( item, {60,60,0} );
-		world.addEntity( move( itemEntity ) );
-	}
 
 	/*world().addEntities( r_worldGenerationEngine->generateChunk( { 0,0,0 } ) );
 	world().addEntities( r_worldGenerationEngine->generateChunk( { 1,0,0 } ) );

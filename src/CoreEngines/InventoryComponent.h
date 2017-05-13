@@ -7,8 +7,6 @@ namespace nb
 	class InventoryComponent : public Component
 	{
 	public:
-		InventoryComponent( Inventory::SLOT inventorySize = 0 );
-
 		virtual void init() override;
 
 		Inventory inventory;

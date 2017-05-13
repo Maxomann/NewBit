@@ -135,16 +135,11 @@ void nb::EntityTrackerScreenGameState::track( const Entity* entity )
 		auto refreshInventoryList = [&] ( const Inventory& inventory ){
 			inventoryList->removeAllItems();
 			const auto& data = inventory.getContent();
-			for( const auto& el : data )
+			for( const auto& item : data )
 			{
-				auto slot = el.first;
-				auto item = el.second.first;
-				auto count = el.second.second;
-
-				auto itemId = item->getId();
 				auto itemName = item->getName();
 
-				auto str = to_string( slot ) + ": " + itemName + "(id:" + to_string( itemId ) + ") :: " + to_string( count );
+				auto str = itemName + " : " + to_string( item->canBeUsed() );
 				inventoryList->addItem( str );
 			}
 		};

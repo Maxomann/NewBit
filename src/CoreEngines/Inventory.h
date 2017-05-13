@@ -7,29 +7,13 @@ namespace nb
 	class Inventory
 	{
 	public:
-		using SLOT = unsigned int;
-		using COUNT = unsigned int;
-
-		// map< SLOT pair< ITEM, COUNT > >
-		using ContainerType = std::map<SLOT, std::pair<const Item*, COUNT>>;
+		using ContainerType = std::vector<std::unique_ptr<Item>>;
 
 	private:
-		ContainerType itemsBySlot;
+		ContainerType items;
 
-		SLOT maxSlots;
-
-		SLOT invalidSlot()const;
 	public:
-		Inventory( const SLOT slotCount = 0 );
-
-		COUNT addItem( const Item* item, COUNT count = 1 );
-
-		COUNT removeItem( const Item* item, COUNT count = 1 );
-
-		SLOT getFirstFreeSlot()const;
-		SLOT getFistSlotWithItem( const Item* item )const;
-
-		bool isSlotValid( SLOT slot )const;
+		void addItem( std::unique_ptr<Item> item );
 
 		const ContainerType& getContent()const;
 

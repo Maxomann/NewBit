@@ -10,6 +10,7 @@ namespace nb
 	public:
 		using FACTORY_PTR = std::unique_ptr<FactoryType>;
 		using FACTORIES = std::map<FactoryId, FACTORY_PTR>;
+		using FACTORY_VEC_RAW = std::vector<FactoryType*>;
 
 	private:
 		FACTORIES factories;
@@ -20,7 +21,7 @@ namespace nb
 			factories.emplace( make_pair( factory->getId(), move( factory ) ) );
 		};
 
-		const FACTORY_PTR& getFactoryById( EntityFactory::ID id )const
+		const FACTORY_PTR& getFactoryById( FactoryId id )const
 		{
 			return factories.at( id );
 		};

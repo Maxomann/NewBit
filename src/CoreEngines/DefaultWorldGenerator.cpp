@@ -49,19 +49,20 @@ std::vector<Entity> nb::DefaultWorldGenerator::generateChunk( const sf::Vector3i
 						( positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL ),
 						chunkPosition.z );
 
-					EntityFactory::ID entityIdForField = 0;
 					if( dist2( mt ) < 2 )
-						entityIdForField = 10'000;
+					{
+						auto item = r_resourceEngine->items.getFactoryById( 0 )->create( *r_resourceEngine );
+						auto itemEntity = ItemManager::createItemEntity( move( item ), placementPosition );
 
-					Entity e = r_resourceEngine->entitiyFactories.getFactoryById( entityIdForField )->create( *r_resourceEngine );
-					e.getComponent<TransformationComponent>()->setPosition( placementPosition );
+						retVal.push_back( move( itemEntity ) );
+					}
+					else
+					{
+						Entity e = r_resourceEngine->entitiyFactories.getFactoryById( 0 )->create( *r_resourceEngine );
+						e.getComponent<TransformationComponent>()->setPosition( placementPosition );
 
-					retVal.push_back( move( e ) );
-					/*
-					Entity entity = r_resourceEngine->blueprints.getEntity( 0 );
-					entity->setPosition( {...} );
-					entity->setZValue( 0 );
-					*/
+						retVal.push_back( move( e ) );
+					}
 				}
 			}
 			else if( noiseVal > 0.4 )

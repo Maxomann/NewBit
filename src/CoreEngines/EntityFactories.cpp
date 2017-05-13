@@ -113,46 +113,6 @@ Entity TreeFactory::create( const ResourceEngine& resources )const
 	return entity;
 }
 
-ItemEntityWoodFactory::ItemEntityWoodFactory()
-	: EntityFactory( 10'000,
-					 "Item: Wood",
-					 {"item"} )
-{}
-
-Entity ItemEntityWoodFactory::create( const ResourceEngine& resources )const
-{
-	const auto& item = resources.items.getItem( 0 );
-
-	Entity entity;
-	entity.addComponent<TransformationComponent>( sf::Vector2f( 0, 0 ),
-												  0,
-												  Vector2f( 32, 32 ) );
-	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *item->getTextureReference() );
-
-	/* Physics */
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.linearDamping = 0.5f;
-
-	unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
-	auto physicsSize = 32.f * PIXEL_TO_METER * 0.5f;
-	shape->SetAsBox( physicsSize, physicsSize, b2Vec2( 0.f, -physicsSize ), 0.f );
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-
-	entity.addComponent<PhysicsComponent>( bodyDef,
-										   move( shape ),
-										   fixtureDef,
-										   true );
-
-	entity.addComponent<ItemComponent>( item );
-
-	return entity;
-}
-
 WallFactory::WallFactory()
 	: EntityFactory( 1,
 					 "Wall",

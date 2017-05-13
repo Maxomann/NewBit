@@ -9,12 +9,15 @@
 #include "PhysicsComponent.h"
 #include "ItemComponent.h"
 
+#include "LabeledFactoryManager.h"
+#include "ItemFactory.h"
+
+#include "DefaultItemFactory.h"
+
 namespace nb
 {
-	class ItemManager
+	class ItemManager : public LabeledFactoryManager< ItemFactory >
 	{
-		std::list<Item> items;
-
 		void parseFile( const std::string& path,
 						const TextureManager& textures );
 
@@ -22,13 +25,9 @@ namespace nb
 		void init( const PackageManager& packages,
 				   const TextureManager& textures );
 
-		// The returned value is thread safe
-		// It will not be modified after init() has been called
-		const Item* getItem( Item::ID id )const;
-
-		const std::list<Item>& getAllItems()const;
-
-		[[deprecated( "Use EntityFactory instead" )]] static Entity createItemEntity( const Item* item,
-																					  sf::Vector3i position );
+		static Entity createItemEntity( std::unique_ptr<Item> item,
+										sf::Vector3i position );
+		static Entity createItemEntity( std::unique_ptr<Item> item,
+										Position position );
 	};
 }

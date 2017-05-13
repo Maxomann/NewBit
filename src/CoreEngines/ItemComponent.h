@@ -8,13 +8,17 @@ namespace nb
 {
 	class ItemComponent : public Component
 	{
-		const Item* item;
+		std::unique_ptr<Item> item;
 
 	public:
-		ItemComponent( const Item* item );
+		ItemComponent( std::unique_ptr<Item> item );
 
 		virtual void init() override;
 
-		const Item* getItem()const;
+		const std::unique_ptr<Item>& getItem()const;
+
+		// this component is in an invalid state after calling moveItem()
+		// it should no longer be used and deleted imediately
+		std::unique_ptr<Item> moveItem();
 	};
 }

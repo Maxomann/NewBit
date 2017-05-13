@@ -33,14 +33,6 @@ namespace nb
 		virtual Entity create( const ResourceEngine& resources )const override;
 	};
 
-	class ItemEntityWoodFactory : public EntityFactory
-	{
-	public:
-		ItemEntityWoodFactory();
-
-		virtual Entity create( const ResourceEngine& resources )const override;
-	};
-
 	class WallFactory : public EntityFactory
 	{
 	public:
