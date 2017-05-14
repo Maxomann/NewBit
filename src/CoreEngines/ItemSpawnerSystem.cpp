@@ -10,8 +10,8 @@ void nb::ItemSpawnerSystem::init()
 
 void nb::ItemSpawnerSystem::update()
 {
-	/*for( auto& el : componentCache.get() )
-		el->spawnWithChance()*/
+	for( auto& el : componentCache.get() )
+		el->spawnUpdate( *world() );
 }
 
 void nb::ItemSpawnerSystem::destroy()

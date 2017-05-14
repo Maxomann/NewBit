@@ -3,19 +3,21 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-nb::ItemSpawnerComponent::ItemSpawnerComponent( const std::unique_ptr<ItemFactory>& itemFactory,
-												float spawnChanceInPercent,
+nb::ItemSpawnerComponent::ItemSpawnerComponent( const ItemFactory* itemFactory,
+												float spawnChanceInPercentPerTry,
+												int timeBetweenTryInMilliseconds,
 												float radiusMinInPixel,
 												float radiusMaxInPixel )
 	: itemFactory( itemFactory ),
-	spawnChanceInPercent( spawnChanceInPercent ),
+	spawnChanceInPercentPerTry( spawnChanceInPercentPerTry ),
+	timeBetweenTryInMilliseconds( timeBetweenTryInMilliseconds ),
 	radiusMinInPixel( radiusMinInPixel ),
 	radiusMaxInPixel( radiusMaxInPixel ),
 	spawnChanceDistribution( 0, 100 ),
 	spawnOffsetXDistribution( radiusMinInPixel, radiusMaxInPixel ),
 	spawnOffsetRotationDistribution( 0.f, 360.f )
 {
-	randomNumberEngine.seed( random_device() );
+	randomNumberEngine.seed( random_device()( ) );
 }
 
 void nb::ItemSpawnerComponent::init()
@@ -23,13 +25,20 @@ void nb::ItemSpawnerComponent::init()
 	transform = entity()->getComponent<TransformationComponent>();
 }
 
-void nb::ItemSpawnerComponent::spawnWithChance( ResourceEngine& resources, World & world ) const
+void nb::ItemSpawnerComponent::spawnUpdate( World & world )
 {
-	if( spawnChanceDistribution( randomNumberEngine ) < spawnChanceInPercent )
-		spawn( resources, world );
+	const auto frametimeInMilliseconds = world.getSystem<TimeSystem>()->getTimestep().asMilliseconds();
+	timeSinceLastSpawnTryInMilliseconds += frametimeInMilliseconds;
+
+	if( timeSinceLastSpawnTryInMilliseconds >= timeBetweenTryInMilliseconds )
+	{
+		timeSinceLastSpawnTryInMilliseconds = 0;
+		if( spawnChanceDistribution( randomNumberEngine ) < spawnChanceInPercentPerTry )
+			spawn( world );
+	}
 }
 
-void nb::ItemSpawnerComponent::spawn( ResourceEngine& resources, World & world ) const
+void nb::ItemSpawnerComponent::spawn( World & world ) const
 {
 	// determine item spawn position
 	Position spawnPosition( transform->getPosition() );
@@ -46,13 +55,12 @@ void nb::ItemSpawnerComponent::spawn( ResourceEngine& resources, World & world )
 
 	const auto& maxSteps = 4;
 	const auto& stepSize = 360.f / maxSteps;
-	Entity* entity;
 	for( int step = 0; step < ( maxSteps - 1 ); ++step )
 	{
 		if( physics->getFirstEntityAtPixelPosition( spawnPosition ) == nullptr )
 		{
 			// spawn position is available => spawn item here
-			world.addEntity( ItemManager::createItemEntity( itemFactory->create( resources ), spawnPosition ) );
+			world.addEntity( ItemManager::createItemEntity( itemFactory->create(), spawnPosition ) );
 			break;
 		}
 

@@ -7,5 +7,5 @@ namespace nb
 {
 	class ResourceEngine;
 
-	using ItemFactory = LabeledFactory<std::unique_ptr<Item>, const ResourceEngine&>;
+	using ItemFactory = LabeledFactory<std::unique_ptr<Item>>;
 }

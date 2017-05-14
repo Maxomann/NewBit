@@ -20,7 +20,7 @@ void nb::ItemManager::parseFile( const std::string & path, const TextureManager 
 			addFactory( make_unique<DefaultItemFactory>( move( id ),
 														 move( name ),
 														 DefaultItemFactory::LABELS(),
-														 move( textureId ) ) );
+														 textures.getTextureReference( textureId ) ) );
 		}
 	}
 	else if( fileContent.is_object() )
@@ -32,7 +32,7 @@ void nb::ItemManager::parseFile( const std::string & path, const TextureManager 
 		addFactory( make_unique<DefaultItemFactory>( move( id ),
 													 move( name ),
 													 DefaultItemFactory::LABELS(),
-													 move( textureId ) ) );
+													 textures.getTextureReference( textureId ) ) );
 	}
 	else
 		throw std::runtime_error( "ItemManager::parseFile failed: fileContent is not array or object" );

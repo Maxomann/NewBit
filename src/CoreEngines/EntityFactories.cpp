@@ -15,7 +15,7 @@ Entity nb::createHuman( const ResourceEngine*const resources, sf::Vector3i posit
 	entity.addComponent<SpriteComponent>( *resources->textures.getTextureReference( "default:texture:player" ) );
 	entity.addComponent<HealthComponent>( 200, 100 );
 
-	/* Physics */
+	// Physics
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.linearDamping = 0.5f;
@@ -55,47 +55,24 @@ Entity nb::createTilemapChunk( const ResourceEngine*const resources, sf::Vector3
 	return terrain;
 }
 
-Entity nb::createTree( const ResourceEngine*const resources, sf::Vector3i position )
-{
-	Entity entity;
-	entity.addComponent<TransformationComponent>( sf::Vector2f( position.x, position.y ),
-												  position.z,
-												  Vector2f( 48 * 2, 64 * 2 ) );
-	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *resources->textures.getTextureReference( "default:texture:object_tree" ) );
-	/* Physics */
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_staticBody;
-
-	unique_ptr<b2PolygonShape> shape = make_unique<b2PolygonShape>();
-	shape->SetAsBox( 0.3f, 0.3f, b2Vec2( 0.f, -0.3f ), 0.f );
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-
-	entity.addComponent<PhysicsComponent>( bodyDef,
-										   move( shape ),
-										   fixtureDef );
-
-	return entity;
-}
-
-TreeFactory::TreeFactory()
+TreeFactory::TreeFactory( const TextureManager& textures,
+						  const ItemManager& items )
 	: EntityFactory( 0,
 					 "Tree",
-					 {} )
+					 {} ),
+	texref( textures.getTextureReference( "default:texture:object_tree" ) ),
+	itemFactory( items.getFactoryById( 2 ) )
 {}
 
-Entity TreeFactory::create( const ResourceEngine& resources )const
+Entity TreeFactory::create()const
 {
 	Entity entity;
 	entity.addComponent<TransformationComponent>( sf::Vector2f( 0, 0 ),
 												  0,
 												  Vector2f( 48 * 2, 64 * 2 ) );
 	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *resources.textures.getTextureReference( "default:texture:object_tree" ) );
-	/* Physics */
+	entity.addComponent<SpriteComponent>( *texref );
+	// Physics
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
 
@@ -110,25 +87,33 @@ Entity TreeFactory::create( const ResourceEngine& resources )const
 										   move( shape ),
 										   fixtureDef );
 
+	// ItemSpawner
+	entity.addComponent<ItemSpawnerComponent>( itemFactory,
+											   0.1f,
+											   1000,
+											   Tile::TILE_SIZE_IN_PIXEL,
+											   Tile::TILE_SIZE_IN_PIXEL * 3.f );
+
 	return entity;
 }
 
-WallFactory::WallFactory()
+WallFactory::WallFactory( const TextureManager& textures )
 	: EntityFactory( 1,
 					 "Wall",
-					 {  } )
+					 {  } ),
+	texref( textures.getTextureReference( "default:texture:object_wall" ) )
 {}
 
-Entity WallFactory::create( const ResourceEngine& resources )const
+Entity WallFactory::create()const
 {
 	Entity entity;
 	entity.addComponent<TransformationComponent>( sf::Vector2f( 0, 0 ),
 												  0,
 												  Vector2f( 32, 64 ) );
 	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *resources.textures.getTextureReference( "default:texture:object_wall" ) );
+	entity.addComponent<SpriteComponent>( *texref );
 
-	/* Physics */
+	// Physics
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
 	bodyDef.linearDamping = 0.5f;

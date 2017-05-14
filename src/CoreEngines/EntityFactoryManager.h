@@ -10,6 +10,8 @@ namespace nb
 	class EntityFactoryManager : public LabeledFactoryManager<EntityFactory>
 	{
 	public:
-		void init();
+		void init( const PackageManager& packages,
+				   const TextureManager& textures,
+				   const ItemManager& items );
 	};
 }

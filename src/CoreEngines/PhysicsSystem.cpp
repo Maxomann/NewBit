@@ -99,7 +99,7 @@ bool nb::PhysicsSystem::isDebugDrawEnabled() const
 
 Entity * nb::PhysicsSystem::getFirstEntityAtPixelPosition( const sf::Vector3i & position )
 {
-	getFirstEntityAtPixelPosition( Position( position ) );
+	return getFirstEntityAtPixelPosition( Position( position ) );
 }
 
 Entity * nb::PhysicsSystem::getFirstEntityAtPixelPosition( const Position& position )

@@ -13,7 +13,7 @@ void nb::ResourceEngine::init( const CoreEngineManager& coreEngines )
 	textures.init( packages );
 	tiles.init( packages, textures );
 	items.init( packages, textures );
-	entitiyFactories.init();
+	entitiyFactories.init( packages, textures, items );
 }
 
 bool nb::ResourceEngine::update()

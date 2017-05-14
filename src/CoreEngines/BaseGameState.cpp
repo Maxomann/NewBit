@@ -66,6 +66,7 @@ void nb::BaseGameState::init( const CoreEngineManager & coreEngines,
 	world.addSystem<PhysicsSystem>();
 	world.addSystem<WorldLoadStateSystem>();
 	world.addSystem<NeedsSystem>();
+	world.addSystem<ItemSpawnerSystem>();
 	world.initSystems();
 
 	r_renderSystem = world.getSystem<RenderSystem>();

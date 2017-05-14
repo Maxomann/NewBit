@@ -13,25 +13,29 @@ namespace nb
 	{
 		TransformationComponent* transform;
 
-		std::mt19937 randomNumberEngine;
+		mutable std::mt19937 randomNumberEngine;
 		std::uniform_real_distribution<float> spawnChanceDistribution;
 		std::uniform_real_distribution<float> spawnOffsetXDistribution;
 		std::uniform_real_distribution<float> spawnOffsetRotationDistribution;
 
-		const std::unique_ptr<ItemFactory>& itemFactory;
-		float spawnChanceInPercent;
-		float radiusMinInPixel;
-		float radiusMaxInPixel;
+		const ItemFactory* itemFactory;
+		const float spawnChanceInPercentPerTry;
+		const int timeBetweenTryInMilliseconds;
+		const float radiusMinInPixel;
+		const float radiusMaxInPixel;
+
+		int timeSinceLastSpawnTryInMilliseconds = 0;
 
 	public:
-		ItemSpawnerComponent( const std::unique_ptr<ItemFactory>& itemFactory,
-							  float spawnChanceInPercent,
+		ItemSpawnerComponent( const ItemFactory* itemFactory,
+							  float spawnChanceInPercentPerTry,
+							  int timeBetweenTryInMilliseconds,
 							  float radiusMinInPixel,
 							  float radiusMaxInPixel );
 
 		virtual void init() override;
 
-		void spawnWithChance( ResourceEngine& resources, World& world )const;
-		void spawn( ResourceEngine& resources, World& world )const;
+		void spawnUpdate( World& world );
+		void spawn( World& world )const;
 	};
 }

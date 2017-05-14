@@ -7,12 +7,12 @@ using namespace nb;
 nb::DefaultItemFactory::DefaultItemFactory( ID id,
 											NAME name,
 											LABELS labels,
-											GlobalId textureId )
-	: ItemFactory( id, move( name ), move( labels ) ), textureId( textureId )
+											const TextureReference* texture )
+	: ItemFactory( id, move( name ), move( labels ) ), texture( texture )
 {}
 
-std::unique_ptr<Item> nb::DefaultItemFactory::create( const ResourceEngine & resources ) const
+std::unique_ptr<Item> nb::DefaultItemFactory::create() const
 {
 	return make_unique<DefaultItem>( getName(),
-									 resources.textures.getTextureReference( textureId ) );
+									 texture );
 }

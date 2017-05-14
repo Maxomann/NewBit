@@ -7,6 +7,7 @@
 #include "PhysicsComponent.h"
 #include "NeedsComponent.h"
 #include "InventoryComponent.h"
+#include "ItemSpawnerComponent.h"
 
 #include "EntityFactory.h"
 
@@ -14,6 +15,9 @@ namespace nb
 {
 	class ResourceEngine;
 	class Tile;
+	class TextureManager;
+	class TextureReference;
+	class ItemManager;
 
 	Entity createHuman( const ResourceEngine*const resources,
 						sf::Vector3i position = {0,0,0} );
@@ -22,22 +26,25 @@ namespace nb
 							   sf::Vector3i positionInChunks,
 							   std::vector<std::vector<const Tile*>> tiles );
 
-	Entity createTree( const ResourceEngine*const resources,
-					   sf::Vector3i position );
-
 	class TreeFactory : public EntityFactory
 	{
-	public:
-		TreeFactory();
+		const TextureReference* texref;
+		const ItemFactory* itemFactory;
 
-		virtual Entity create( const ResourceEngine& resources )const override;
+	public:
+		TreeFactory( const TextureManager& textures,
+					 const ItemManager& items );
+
+		virtual Entity create()const override;
 	};
 
 	class WallFactory : public EntityFactory
 	{
-	public:
-		WallFactory();
+		const TextureReference* texref;
 
-		virtual Entity create( const ResourceEngine& resources )const override;
+	public:
+		WallFactory( const TextureManager& textures );
+
+		virtual Entity create()const override;
 	};
 }

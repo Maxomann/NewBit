@@ -6,5 +6,5 @@ namespace nb
 {
 	class ResourceEngine;
 
-	using EntityFactory = LabeledFactory<Entity, const ResourceEngine&>;
+	using EntityFactory = LabeledFactory<Entity>;
 }

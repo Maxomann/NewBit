@@ -11,6 +11,7 @@
 #include "WorldLoadStateSystem.h"
 #include "NeedsSystem.h"
 #include "RenderSystem.h"
+#include "ItemSpawnerSystem.h"
 
 #include "WorldLoadingGameState.h"
 #include "TestGameState.h"

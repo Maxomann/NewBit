@@ -7,14 +7,14 @@ namespace nb
 {
 	class DefaultItemFactory : public ItemFactory
 	{
-		GlobalId textureId;
+		const TextureReference* texture;
 
 	public:
 		DefaultItemFactory( ID id,
 							NAME name,
 							LABELS labels,
-							GlobalId textureId );
+							const TextureReference* texture );
 
-		virtual std::unique_ptr<Item> create( const ResourceEngine& resources )const override;
+		virtual std::unique_ptr<Item> create()const override;
 	};
 }

@@ -63,7 +63,7 @@ void nb::DemoEditGameState::init( const CoreEngineManager & coreEngines,
 		auto placementPositionXY = static_cast<sf::Vector2i>( r_graphicsEngine->getWindow().mapPixelToCoords( mousePosition, camera->getComponent<CameraComponent>()->getView() ) );
 		auto placementLayer = camera->getComponent<TransformationComponent>()->getLayer();
 
-		auto entity = r_resourceEngine->entitiyFactories.getFactoryById( selectedObjectId )->create( *r_resourceEngine );
+		auto entity = r_resourceEngine->entitiyFactories.getFactoryById( selectedObjectId )->create();
 		auto transformComponent = entity.getComponent_try<TransformationComponent>();
 		if( transformComponent )
 		{
