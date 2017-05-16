@@ -49,20 +49,10 @@ std::vector<Entity> nb::DefaultWorldGenerator::generateChunk( const sf::Vector3i
 						( positionInTilesY*TileMapComponent::TILE_SIZE_IN_PIXEL ),
 						chunkPosition.z );
 
-					if( dist2( mt ) < 2 )
-					{
-						auto item = r_resourceEngine->items.getFactoryById( 0 )->create();
-						auto itemEntity = ItemManager::createItemEntity( move( item ), placementPosition );
+					Entity e = r_resourceEngine->entitiyFactories.getFactoryById( 0 )->create();
+					e.getComponent<TransformationComponent>()->setPosition( placementPosition );
 
-						retVal.push_back( move( itemEntity ) );
-					}
-					else
-					{
-						Entity e = r_resourceEngine->entitiyFactories.getFactoryById( 0 )->create();
-						e.getComponent<TransformationComponent>()->setPosition( placementPosition );
-
-						retVal.push_back( move( e ) );
-					}
+					retVal.push_back( move( e ) );
 				}
 			}
 			else if( noiseVal > 0.4 )

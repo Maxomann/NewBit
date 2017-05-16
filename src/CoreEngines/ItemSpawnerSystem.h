@@ -9,6 +9,8 @@ namespace nb
 	{
 		ComponentCache<ItemSpawnerComponent> componentCache;
 
+		std::mt19937 randomNumberEngine;
+
 	public:
 		virtual void init() override;
 		virtual void update() override;

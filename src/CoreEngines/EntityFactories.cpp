@@ -61,7 +61,18 @@ TreeFactory::TreeFactory( const TextureManager& textures,
 					 "Tree",
 					 {} ),
 	texref( textures.getTextureReference( "default:texture:object_tree" ) ),
-	itemFactory( items.getFactoryById( 2 ) )
+	appleItemFactory( items.getFactoryById( 2 ) ),
+	appleSpawnTask( appleItemFactory,
+					0.1f,
+					1000,
+					Tile::TILE_SIZE_IN_PIXEL,
+					Tile::TILE_SIZE_IN_PIXEL * 3.f ),
+	woodItemFactory( items.getFactoryById( 0 ) ),
+	woodSpawnTask( woodItemFactory,
+				   0.1f,
+				   1000,
+				   Tile::TILE_SIZE_IN_PIXEL,
+				   Tile::TILE_SIZE_IN_PIXEL * 3.f )
 {}
 
 Entity TreeFactory::create()const
@@ -88,11 +99,7 @@ Entity TreeFactory::create()const
 										   fixtureDef );
 
 	// ItemSpawner
-	entity.addComponent<ItemSpawnerComponent>( itemFactory,
-											   0.1f,
-											   1000,
-											   Tile::TILE_SIZE_IN_PIXEL,
-											   Tile::TILE_SIZE_IN_PIXEL * 3.f );
+	entity.addComponent<ItemSpawnerComponent>( vector<ItemSpawnTask>{ appleSpawnTask, woodSpawnTask } );
 
 	return entity;
 }

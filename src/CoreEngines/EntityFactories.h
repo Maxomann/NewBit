@@ -29,7 +29,11 @@ namespace nb
 	class TreeFactory : public EntityFactory
 	{
 		const TextureReference* texref;
-		const ItemFactory* itemFactory;
+		const ItemFactory* appleItemFactory;
+		const ItemFactory* woodItemFactory;
+
+		ItemSpawnTask appleSpawnTask;
+		ItemSpawnTask woodSpawnTask;
 
 	public:
 		TreeFactory( const TextureManager& textures,
