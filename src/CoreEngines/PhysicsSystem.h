@@ -36,5 +36,7 @@ namespace nb
 
 		Entity* getFirstEntityAtPixelPosition( const sf::Vector3i& position );
 		Entity* getFirstEntityAtPixelPosition( const Position& position );
+
+		std::vector<Entity*> getEntitiesInAABB( b2AABB aabb, int layer );
 	};
 }

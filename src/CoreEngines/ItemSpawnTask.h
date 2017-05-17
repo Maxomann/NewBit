@@ -24,6 +24,8 @@ namespace nb
 		std::uniform_real_distribution<float> spawnOffsetXDistribution;
 		std::uniform_real_distribution<float> spawnOffsetRotationDistribution;
 
+		static const float MIN_DISTANCE_BETWEEN_ITEMS_IN_PIXEL;
+
 	public:
 		ItemSpawnTask( const ItemFactory* itemFactory,
 					   float spawnChanceInPercentPerTry,

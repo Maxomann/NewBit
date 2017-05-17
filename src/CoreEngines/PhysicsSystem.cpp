@@ -118,3 +118,24 @@ Entity * nb::PhysicsSystem::getFirstEntityAtPixelPosition( const Position& posit
 	else
 		return nullptr;
 }
+
+std::vector<Entity*> nb::PhysicsSystem::getEntitiesInAABB( b2AABB aabb, int layer )
+{
+	std::vector<Entity*> retVal;
+
+	const auto& layerRef = getSimulationForLayer( layer );
+
+	aabb.upperBound.x = aabb.upperBound.x * PIXEL_TO_METER;
+	aabb.upperBound.y = aabb.upperBound.y * PIXEL_TO_METER;
+
+	aabb.lowerBound.x = aabb.lowerBound.x * PIXEL_TO_METER;
+	aabb.lowerBound.y = aabb.lowerBound.y * PIXEL_TO_METER;
+
+	PhysicsAABBCallback callback;
+	layerRef.QueryAABB( &callback, aabb );
+
+	for( const auto& el : callback.foundBodies )
+		retVal.push_back( static_cast<PhysicsComponent*>( el->GetUserData() )->getEntity() );
+
+	return retVal;
+}
