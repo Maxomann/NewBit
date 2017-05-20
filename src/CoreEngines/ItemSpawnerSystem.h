@@ -7,7 +7,8 @@ namespace nb
 {
 	class ItemSpawnerSystem : public System
 	{
-		ComponentCache<ItemSpawnerComponent> componentCache;
+		ComponentCache<ItemComponent> itemCache;
+		ComponentCache<ItemSpawnerComponent> spawnerCache;
 
 		std::mt19937 randomNumberEngine;
 

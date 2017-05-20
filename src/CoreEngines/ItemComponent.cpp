@@ -17,5 +17,13 @@ const std::unique_ptr<Item>& ItemComponent::getItem()const
 
 std::unique_ptr<Item> nb::ItemComponent::moveItem()
 {
-	return move( item );
+	auto temp = move( item );
+	item = nullptr;
+
+	return move( temp );
+}
+
+bool nb::ItemComponent::isEmpty() const
+{
+	return item.get() == nullptr;
 }

@@ -8,6 +8,7 @@
 #include "NeedsComponent.h"
 #include "InventoryComponent.h"
 #include "ItemSpawnerComponent.h"
+#include "ItemPickupComponent.h"
 
 #include "EntityFactory.h"
 

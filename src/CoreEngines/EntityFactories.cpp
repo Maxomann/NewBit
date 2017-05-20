@@ -34,6 +34,7 @@ Entity nb::createHuman( const ResourceEngine*const resources, sf::Vector3i posit
 
 	entity.addComponent<NeedsComponent>();
 	entity.addComponent<InventoryComponent>();
+	entity.addComponent<ItemPickupComponent>();
 
 	return entity;
 }

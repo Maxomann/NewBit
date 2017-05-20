@@ -7,12 +7,17 @@ void nb::ItemSpawnerSystem::init()
 {
 	randomNumberEngine.seed( random_device()( ) );
 
-	componentCache.connectToWorld( world() );
+	itemCache.connectToWorld( world() );
+	spawnerCache.connectToWorld( world() );
 }
 
 void nb::ItemSpawnerSystem::update()
 {
-	for( auto& el : componentCache.get() )
+	for( auto& el : itemCache.get() )
+		if( el->isEmpty() )
+			world()->removeEntity( el->entity() );
+
+	for( auto& el : spawnerCache.get() )
 		el->spawnUpdate( *world(), randomNumberEngine );
 }
 

@@ -17,8 +17,8 @@ namespace nb
 
 		const std::unique_ptr<Item>& getItem()const;
 
-		// this component is in an invalid state after calling moveItem()
-		// it should no longer be used and deleted imediately
 		std::unique_ptr<Item> moveItem();
+
+		bool isEmpty()const;
 	};
 }
