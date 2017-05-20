@@ -10,6 +10,8 @@
 #include "EntityFactories.h"
 #include "sfmlExtensions.h"
 
+#include "InventoryViewGameState.h"
+
 namespace nb
 {
 	class PlayingGameState : public GameState
@@ -30,6 +32,8 @@ namespace nb
 
 		Entity* player;
 		PhysicsComponent* playerPhysics;
+
+		InventoryViewGameState* inventoryView = nullptr;
 
 		Connections connections;
 

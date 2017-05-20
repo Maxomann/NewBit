@@ -183,6 +183,20 @@ void nb::PlayingGameState::init( const CoreEngineManager & coreEngines,
 	} );
 
 	// Input Callbacks
+	inputEngine->s_onKeyPressed[ Keyboard::E ].connect_track( connections, [&] (){
+		if( inventoryView != nullptr )
+		{
+			inventoryView->close();
+			inventoryView = nullptr;
+		}
+		else
+		{
+			inventoryView = gameStates.pushState_instant(
+				make_unique<InventoryViewGameState>( world,
+													 player,
+													 player->getComponent<InventoryComponent>()->inventory ) );
+		}
+	} );
 }
 
 void nb::PlayingGameState::update( GameStateManager & gameStates )
