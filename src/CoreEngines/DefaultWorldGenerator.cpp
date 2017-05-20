@@ -42,7 +42,7 @@ std::vector<Entity> nb::DefaultWorldGenerator::generateChunk( const sf::Vector3i
 			else if( noiseVal > 0.5 )
 			{
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );
-				/*if( dist2( mt ) < 1 )
+				if( dist2( mt ) < 1 )
 				{
 					Position placementPosition(
 						( positionInTilesX*TileMapComponent::TILE_SIZE_IN_PIXEL ) + TileMapComponent::TILE_SIZE_IN_PIXEL / 2,
@@ -53,7 +53,7 @@ std::vector<Entity> nb::DefaultWorldGenerator::generateChunk( const sf::Vector3i
 					e.getComponent<TransformationComponent>()->setPosition( placementPosition );
 
 					retVal.push_back( move( e ) );
-				}*/
+				}
 			}
 			else if( noiseVal > 0.4 )
 				tiles.at( x ).push_back( r_resourceEngine->tiles.getTile( 0 ) );

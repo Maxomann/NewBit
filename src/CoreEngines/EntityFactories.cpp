@@ -69,7 +69,7 @@ TreeFactory::TreeFactory( const TextureManager& textures,
 					Tile::TILE_SIZE_IN_PIXEL * 3.f ),
 	woodItemFactory( items.getFactoryById( 0 ) ),
 	woodSpawnTask( woodItemFactory,
-				   150.1f,
+				   0.1f,
 				   1000,
 				   Tile::TILE_SIZE_IN_PIXEL,
 				   Tile::TILE_SIZE_IN_PIXEL * 3.f )
