@@ -1,0 +1,8 @@
+set(EXECUTABLE_NAME TguiDemo)
+
+FILE(GLOB HEADER_FILES *.h)
+FILE(GLOB SOURCE_FILES *.cpp)
+add_executable(${EXECUTABLE_NAME} ${HEADER_FILES} ${SOURCE_FILES})
+set_target_properties(${EXECUTABLE_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+
+nb_target_add_libraries(${EXECUTABLE_NAME})

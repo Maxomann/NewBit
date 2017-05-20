@@ -125,6 +125,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
+add_subdirectory(TguiDemo)
+
 add_subdirectory(NewBitSignals)
 add_subdirectory(NewBitSignalsTest)
 add_dependencies(NewBitSignalsTest NewBitSignals)
