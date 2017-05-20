@@ -10,7 +10,7 @@ namespace nb
 		const CoreEngineManager& coreEnginesRef;
 
 		std::list<std::unique_ptr<GameState>> m_uninitializedStates;
-		std::vector<std::unique_ptr<GameState>> m_states;
+		std::list<std::unique_ptr<GameState>> m_states;
 
 	public:
 		GameStateManager( const CoreEngineManager& coreEnginesRef );

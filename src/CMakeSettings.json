@@ -30,6 +30,20 @@
       ]
     },
     {
+      "name": "x86-RelWithDebInfo",
+      "generator": "Visual Studio 15 2017",
+      "configurationType": "RelWithDebInfo",
+      "buildRoot": "${workspaceRoot}\\..\\build\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
+        {
+          "name": "PACKAGE_DIR",
+          "value": "${workspaceRoot}\\..\\libraries\\x86-rel-db"
+        }
+      ]
+    },
+    {
       "name": "x64-Debug",
       "generator": "Visual Studio 15 2017 Win64",
       "configurationType": "Debug",
@@ -54,6 +68,20 @@
         {
           "name": "PACKAGE_DIR",
           "value": "${workspaceRoot}\\..\\libraries\\x64-release"
+        }
+      ]
+    },
+    {
+      "name": "x64-RelWithDebInfo",
+      "generator": "Visual Studio 15 2017 Win64",
+      "configurationType": "RelWithDebInfo",
+      "buildRoot": "${workspaceRoot}\\..\\build\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-m -v:minimal",
+      "variables": [
+        {
+          "name": "PACKAGE_DIR",
+          "value": "${workspaceRoot}\\..\\libraries\\x64-rel-db"
         }
       ]
     }

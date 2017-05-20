@@ -11,11 +11,12 @@ void nb::BaseGameState::drawWorld()
 	const auto& camView = camComponent->getView();
 	const auto& camGlobalBounds = camComponent->getGlobalBounds();
 
-	std::vector<RenderComponent*> componentsToDraw;
+	std::vector<const RenderComponent*> componentsToDraw;
 
 	//get to draw
-	const auto& renderComponentsInWorld = r_renderSystem->getRenderComponentsInWorld();
-	for( const auto& el : renderComponentsInWorld )
+	const std::vector<RenderComponent*>& renderComponentsInWorld = r_renderSystem->getRenderComponentsInWorld();
+
+	for( const RenderComponent* el : renderComponentsInWorld )
 	{
 		if( el->getDrawingLayer() == camLayer &&
 			el->getGlobalBounds().intersects( camGlobalBounds ) )

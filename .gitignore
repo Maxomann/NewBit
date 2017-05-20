@@ -14,6 +14,8 @@
 !/libraries/build_dependencies_x86-release.bat
 !/libraries/build_dependencies_x64-debug.bat
 !/libraries/build_dependencies_x64-release.bat
+!/libraries/build_dependencies_x64-relwithdb.bat
+!/libraries/build_dependencies_x86-relwithdb.bat
 /NewBitTexturePackerTest/data/TexturePackerTestImages/*.png
 /CoreEngines/data/debug_CoreEngines/
 /NewBitPackageManagerTest/data/debug_packageManager/

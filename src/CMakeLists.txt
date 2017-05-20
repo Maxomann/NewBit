@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.6.0)
 project(NewBit)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/std:c++latest>)
+#add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/Od>)
 
 function(nb_target_add_libraries TARGET_NAME)
 	set(CMAKE_MODULE_PATH "${PACKAGE_DIR}\\sfml\\cmake\\Modules;${PACKAGE_DIR}\\tgui\\cmake\\Modules")
