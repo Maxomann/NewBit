@@ -5,17 +5,23 @@ add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/std:c++latest>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/W4>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/wd4100>)
 #add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/Od>)
+#add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/analyze>)
+
+#add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/Ob0>)
+#add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/Oi->)
+#add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/Oy->)
+
 
 function(nb_target_add_libraries TARGET_NAME)
 	set(CMAKE_MODULE_PATH "${PACKAGE_DIR}\\sfml\\cmake\\Modules;${PACKAGE_DIR}\\tgui\\cmake\\Modules")
 
 	if(WIN32)
 		#OpenGl
-		find_package(OPENGL REQUIRED)
-		if(OPENGL_FOUND)
-			target_include_directories(${TARGET_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
-			target_link_libraries(${TARGET_NAME} ${OPENGL_LIBRARIES})
-		endif()
+		#find_package(OPENGL REQUIRED)
+		#if(OPENGL_FOUND)
+		#	target_include_directories(${TARGET_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
+		#	target_link_libraries(${TARGET_NAME} ${OPENGL_LIBRARIES})
+		#endif()
 
 		target_link_libraries(${TARGET_NAME} legacy_stdio_definitions.lib)
 

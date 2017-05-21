@@ -41,13 +41,19 @@ const View & nb::CameraComponent::getView() const
 
 sf::FloatRect nb::CameraComponent::getGlobalBounds() const
 {
-	sf::Vector2f size = m_view.getSize();
-	sf::Vector2f center = m_view.getCenter();
+	const sf::Vector2f& size = m_view.getSize();
+	const sf::Vector2f& center = m_view.getCenter();
 
 	sf::RectangleShape shape;
-	shape.setPosition( center.x - ( size.x / 2 ), center.y - ( size.y / 2 ) );
+	shape.setPosition( center.x - ( size.x / 2.f ),
+					   center.y - ( size.y / 2.f ) );
 	shape.setSize( size );
 	shape.setRotation( m_view.getRotation() );
 
-	return shape.getGlobalBounds();
+	sf::FloatRect bounds( shape.getGlobalBounds() );
+
+	// return shape.getGlobalBounds() causes access violation (with optimization enabled)
+	// The temporary object 'bounds' is needed
+	// Maybe the error is caused by return value optimization?
+	return bounds;
 }

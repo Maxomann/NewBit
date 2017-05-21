@@ -6,10 +6,10 @@ using namespace nb;
 void nb::BaseGameState::drawWorld()
 {
 	// draw
-	const auto& camLayer = cam->getComponent<TransformationComponent>()->getLayer();
-	const auto& camComponent = cam->getComponent<CameraComponent>();
+	const auto camLayer = cam->getComponent<TransformationComponent>()->getLayer();
+	const auto camComponent = cam->getComponent<CameraComponent>();
 	const auto& camView = camComponent->getView();
-	const auto& camGlobalBounds = camComponent->getGlobalBounds();
+	const auto camGlobalBounds = camComponent->getGlobalBounds();
 
 	std::vector<const RenderComponent*> componentsToDraw;
 
