@@ -67,7 +67,7 @@ void nb::SpriteComponent::init()
 void nb::SpriteComponent::setTexture( const sf::Texture & texture )
 {
 	m_sprite.setTexture( texture, true );
-	auto& size = texture.getSize();
+	const auto& size = texture.getSize();
 	m_sprite.setOrigin( static_cast<float>( size.x ) / 2.f, static_cast<float>( size.y ) );
 	calculateGlobalBounds();
 }
