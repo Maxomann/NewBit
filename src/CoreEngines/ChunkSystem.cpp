@@ -8,7 +8,7 @@ const int ChunkSystem::CHUNK_SIZE_IN_PIXEL = TileMapComponent::TERRAIN_SIZE_IN_P
 void nb::ChunkSystem::onEntityPositionChanged( const TransformationComponent*const transform,
 											   const Position& oldPosition )
 {
-	auto entity = transform->getEntity();
+	auto entity = transform->entity();
 	auto newPosition = transform->getPosition();
 	auto newChunkPosition = calculateChunkPositionForPixelPosition( newPosition.asPixelPosition() );
 	auto oldChunkPosition = calculateChunkPositionForPixelPosition( oldPosition.asPixelPosition() );

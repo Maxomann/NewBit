@@ -21,7 +21,7 @@ namespace nb
 
 		Connections connections;
 
-		void updateView( const Inventory& inventory );
+		void updateView( const Inventory& inventoryForUpdate );
 
 	public:
 		InventoryViewGameState( World& world,

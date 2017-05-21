@@ -7,7 +7,7 @@ int main()
 	PackageManager packageManager;
 	packageManager.initFromFolder( "./data/debug_packageManager" );
 
-	const std::list<Package>& pkgsByName = packageManager.getLoadedPackages();
+	//const std::list<Package>& pkgsByName = packageManager.getLoadedPackages();
 
 	const Package* newPackage = packageManager.getPackageByName( "NewPackage" );
 	const Package* testpackage = packageManager.getPackageByName( "Testpackage" );
@@ -42,15 +42,15 @@ int main()
 
 	cout << boolalpha;
 	cout << "-- Compare MetaFiles:" << endl;
-	cout << (npm1 == _npm1) << endl;
-	cout << (npm2 == _npm2) << endl;
-	cout << (nptf == _nptf) << endl;
-	cout << (npmt == _npmt) << endl;
+	cout << ( npm1 == _npm1 ) << endl;
+	cout << ( npm2 == _npm2 ) << endl;
+	cout << ( nptf == _nptf ) << endl;
+	cout << ( npmt == _npmt ) << endl;
 
-	cout << (tpm1 == _tpm1) << endl;
-	cout << (tpm2 == _tpm2) << endl;
-	cout << (tpm3 == _tpm3) << endl;
-	cout << (tptf == _tptf) << endl;
+	cout << ( tpm1 == _tpm1 ) << endl;
+	cout << ( tpm2 == _tpm2 ) << endl;
+	cout << ( tpm3 == _tpm3 ) << endl;
+	cout << ( tptf == _tptf ) << endl;
 
 	//
 

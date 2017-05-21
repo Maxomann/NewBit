@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.6.0)
 project(NewBit)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/std:c++latest>)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/W4>)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/wd4100>)
 #add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/Od>)
 
 function(nb_target_add_libraries TARGET_NAME)

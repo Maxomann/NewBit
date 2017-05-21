@@ -15,6 +15,7 @@
 #include <typeindex>
 #include <mutex>
 #include <queue>
+#include <locale>
 
 #ifdef _WIN32
 #include <windows.h>

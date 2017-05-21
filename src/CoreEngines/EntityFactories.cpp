@@ -39,7 +39,9 @@ Entity nb::createHuman( const ResourceEngine*const resources, sf::Vector3i posit
 	return entity;
 }
 
-Entity nb::createTilemapChunk( const ResourceEngine*const resources, sf::Vector3i positionInChunks, std::vector<std::vector<const Tile*>> tiles )
+Entity nb::createTilemapChunk( const ResourceEngine*const resources,
+							   sf::Vector3i positionInChunks,
+							   std::vector<std::vector<const Tile*>> tiles )
 {
 	Entity terrain;
 	terrain.addComponent<TransformationComponent>(
@@ -51,7 +53,7 @@ Entity nb::createTilemapChunk( const ResourceEngine*const resources, sf::Vector3
 		);
 	terrain.addComponent<RenderComponent>( -10 );
 
-	auto terrainComp = terrain.addComponent<TileMapComponent>( move( tiles ) );
+	terrain.addComponent<TileMapComponent>( move( tiles ) );
 
 	return terrain;
 }

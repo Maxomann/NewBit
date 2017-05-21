@@ -4,13 +4,13 @@ using namespace sf;
 using namespace tgui;
 using namespace nb;
 
-void nb::InventoryViewGameState::updateView( const Inventory& inventory )
+void nb::InventoryViewGameState::updateView( const Inventory& inventoryForUpdate )
 {
 	inventoryListContainer->removeAllWidgets();
 
 	int counter = 0;
 
-	for( const auto& item : inventory.getContent() )
+	for( const auto& item : inventoryForUpdate.getContent() )
 	{
 		Panel::Ptr objectContainer = Panel::create();
 		objectContainer->setSize( 300, 60 );

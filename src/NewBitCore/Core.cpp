@@ -10,7 +10,7 @@ void nb::Core::loadPluginsFromFolder( std::string pathToFolder )
 		auto path = directoryEntry.path();
 		auto extension = path.extension().string();
 		//make extension lowercase
-		std::transform( begin( extension ), end( extension ), begin( extension ), ::tolower );
+		std::transform( begin( extension ), end( extension ), begin( extension ), bind( std::tolower<char>, placeholders::_1, locale() ) );
 		if( extension == ".dll" )
 		{
 			HMODULE libraryHandle = LoadLibrary( path.string().c_str() );

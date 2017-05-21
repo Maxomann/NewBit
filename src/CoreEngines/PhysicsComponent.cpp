@@ -3,13 +3,13 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-nb::PhysicsComponent::PhysicsComponent( b2BodyDef bodyDef,
+nb::PhysicsComponent::PhysicsComponent( b2BodyDef defaultBodyDef,
 										std::unique_ptr<b2Shape> shape,
-										b2FixtureDef fixtureDef,
+										b2FixtureDef defaultFixtureDef,
 										bool transparent )
-	:bodyDef( move( bodyDef ) ),
+	:defaultBodyDef( move( defaultBodyDef ) ),
 	shape( move( shape ) ),
-	fixtureDef( move( fixtureDef ) ),
+	defaultFixtureDef( move( defaultFixtureDef ) ),
 	transparent( transparent )
 {}
 
@@ -44,6 +44,7 @@ void nb::PhysicsComponent::addToSimulation( b2World & simulation )
 	auto rotation = transform->getRotation();
 
 	/* init */
+	b2BodyDef bodyDef( defaultBodyDef );
 	bodyDef.position.Set( position.x*PIXEL_TO_METER,
 						  position.y*PIXEL_TO_METER );
 	bodyDef.angle = degToRad( rotation );
@@ -52,7 +53,7 @@ void nb::PhysicsComponent::addToSimulation( b2World & simulation )
 	// store a ptr to this Component in UserData
 	body->SetUserData( this );
 
-	b2FixtureDef fixtureDef;
+	b2FixtureDef fixtureDef( defaultFixtureDef );
 	fixtureDef.shape = shape.get();
 
 	body->CreateFixture( &fixtureDef );

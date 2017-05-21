@@ -3,7 +3,7 @@ using namespace std;
 
 void TestComponent::init()
 {
-	cout << "init:" << (void*)getEntity() << endl;
+	cout << "init:" << (void*) entity() << endl;
 	has_init = true;
 }
 

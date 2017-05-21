@@ -5,7 +5,7 @@ using namespace nb;
 
 nb::HealthComponent::HealthComponent( int maxHealth, int initialHealth )
 	: m_maxHealth( maxHealth ),
-	m_health( initialHealth )
+	m_health( static_cast<float>( initialHealth ) )
 {}
 
 void nb::HealthComponent::init()

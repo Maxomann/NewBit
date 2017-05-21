@@ -8,9 +8,9 @@ namespace nb
 {
 	class PhysicsComponent : public Component
 	{
-		b2BodyDef bodyDef;
-		std::unique_ptr<b2Shape> shape;
-		b2FixtureDef fixtureDef;
+		const b2BodyDef defaultBodyDef;
+		const std::unique_ptr<b2Shape> shape;
+		const b2FixtureDef defaultFixtureDef;
 
 		bool isUpdatingToComponents = false;
 		b2Body* body = nullptr;
@@ -18,9 +18,9 @@ namespace nb
 		bool transparent;
 
 	public:
-		PhysicsComponent( b2BodyDef bodyDef,
+		PhysicsComponent( b2BodyDef defaultBodyDef,
 						  std::unique_ptr<b2Shape> shape,
-						  b2FixtureDef fixtureDef,
+						  b2FixtureDef defaultFixtureDef,
 						  bool transparent = false );
 
 		virtual void init() override;
