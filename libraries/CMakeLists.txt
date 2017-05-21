@@ -13,7 +13,7 @@ set(sfml_INSTALL_DIR ${PACKAGE_DIR}/sfml)
 ExternalProject_Add(sfml
   PREFIX ${sfml_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/LaurentGomila/SFML.git
-  GIT_TAG e4ae4f9cc3c3588a3634f46f436f77c051a85325 #2.4.2
+  GIT_TAG c43b5991afe815ef92a812d67f8af12b0143adfd #master (21.05.17)
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${sfml_INSTALL_DIR} -DBUILD_SHARED_LIBS=OFF
 )
 
@@ -23,7 +23,7 @@ set(tgui_INSTALL_DIR ${PACKAGE_DIR}/tgui)
 ExternalProject_Add(tgui
   PREFIX ${tgui_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/texus/TGUI.git
-  GIT_TAG 0e53b45bbad1ef72f4d4bade26f99b4cbc323f99 #0.8-dev (16.03.17)
+  GIT_TAG 38e86e2f01520e1963a5f46bbc36447dd83fc622 #0.8-dev (21.05.17)
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${tgui_INSTALL_DIR} -DSFML_ROOT=${sfml_INSTALL_DIR} -DTGUI_SHARED_LIBS=OFF
 )
 add_dependencies(tgui sfml)
@@ -34,7 +34,7 @@ set(json_INSTALL_DIR ${PACKAGE_DIR}/json)
 ExternalProject_Add(json
   PREFIX ${json_INSTALL_DIR}
   GIT_REPOSITORY https://github.com/nlohmann/json.git
-  GIT_TAG 6d2b5e377122955cb29889800cdbac653c2fae1e #2.0.7
+  GIT_TAG 9ff0cc0f0212cb1e85b83ce5d2907ba9531b6cae #2.1.1
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${json_INSTALL_DIR}
 )
 
