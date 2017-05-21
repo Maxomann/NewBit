@@ -33,19 +33,19 @@ namespace nb
 
 		//
 
-		void setPosition( Position position );
-		void setPositionXY( sf::Vector2f position );
-		void setPositionXY( sf::Vector2i position );
+		void setPosition( Position newPosition );
+		void setPositionXY( sf::Vector2f newPosition );
+		void setPositionXY( sf::Vector2i newPosition );
 		void moveXY( sf::Vector2f offset );
 		void moveXY( sf::Vector2i offset );
 
 		void setLayer( int layer );
 		void moveLayer( int offset );
 
-		void setSize( sf::Vector2f size );
+		void setSize( sf::Vector2f newSize );
 		void scale( float factor );
 
-		void setRotation( float rotation );
+		void setRotation( float newRotation );
 		void rotate( float offset );
 
 		//

@@ -40,13 +40,13 @@ float nb::TransformationComponent::getRotation() const
 	return rotation;
 }
 
-void nb::TransformationComponent::setPosition( Position position )
+void nb::TransformationComponent::setPosition( Position newPosition )
 {
 	auto oldPosition = getPosition();
 	auto oldPositionXY = getPositionXY();
 	auto oldLayer = getLayer();
 
-	this->position = move( position );
+	this->position = move( newPosition );
 
 	if( oldPosition != getPosition() )
 	{
@@ -58,12 +58,12 @@ void nb::TransformationComponent::setPosition( Position position )
 	}
 }
 
-void nb::TransformationComponent::setPositionXY( sf::Vector2f position )
+void nb::TransformationComponent::setPositionXY( sf::Vector2f newPosition )
 {
 	auto oldPosition = getPosition();
 	auto oldPositionXY = getPositionXY();
 
-	this->position.xy = move( position );
+	this->position.xy = move( newPosition );
 
 	if( oldPositionXY != getPositionXY() )
 	{
@@ -72,9 +72,9 @@ void nb::TransformationComponent::setPositionXY( sf::Vector2f position )
 	}
 }
 
-void nb::TransformationComponent::setPositionXY( sf::Vector2i position )
+void nb::TransformationComponent::setPositionXY( sf::Vector2i newPosition )
 {
-	setPositionXY( sf::Vector2f( position ) );
+	setPositionXY( sf::Vector2f( newPosition ) );
 }
 
 void nb::TransformationComponent::moveXY( sf::Vector2f offset )
@@ -107,11 +107,11 @@ void nb::TransformationComponent::moveLayer( int offset )
 	setLayer( getLayer() + offset );
 }
 
-void nb::TransformationComponent::setSize( sf::Vector2f size )
+void nb::TransformationComponent::setSize( sf::Vector2f newSize )
 {
 	auto oldSize = getSize();
 
-	this->size = size;
+	this->size = newSize;
 
 	if( oldSize != getSize() )
 		s_sizeChanged.call( this, oldSize );
@@ -125,11 +125,11 @@ void nb::TransformationComponent::scale( float factor )
 	setSize( newSize );
 }
 
-void nb::TransformationComponent::setRotation( float rotation )
+void nb::TransformationComponent::setRotation( float newRotation )
 {
 	auto oldRotation = getRotation();
 
-	this->rotation = rotation;
+	this->rotation = newRotation;
 
 	if( oldRotation != getRotation() )
 		s_rotationChanged.call( this, oldRotation );
