@@ -22,6 +22,7 @@ namespace nb
 		}
 
 		// T must inherit from GameState
+		// must not be called in GameState::update()
 		template< class T >
 		T* pushState_instant( std::unique_ptr<T>&& ptr )
 		{
