@@ -1,8 +1,38 @@
 #include <TGUI/TGUI.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Main.hpp>
+#include <SFML/Network.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <iostream>
+
+using namespace std;
+
+sf::FloatRect testfunc()
+{
+	const sf::Vector2f size( 200.f, 600.f );
+	const sf::Vector2f center( 100.f, 300.f );
+
+	sf::RectangleShape shape;
+	shape.setPosition( center.x - ( size.x / 2.f ),
+					   center.y - ( size.y / 2.f ) );
+	shape.setSize( size );
+	shape.setRotation( 0.f );
+
+	sf::FloatRect bounds( shape.getGlobalBounds() );
+
+	return shape.getGlobalBounds();
+}
 
 int main()
 {
+	auto test = testfunc();
+	cout << test.left << endl;
+	cout << test.top << endl;
+	cout << test.width << endl;
+	cout << test.height << endl;
+
 	sf::RenderWindow window( sf::VideoMode( 800, 600 ), "TGUI window" );
 	window.setFramerateLimit( 60 );
 
