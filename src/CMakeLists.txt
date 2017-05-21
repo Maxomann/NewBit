@@ -10,9 +10,6 @@ function(nb_target_add_libraries TARGET_NAME)
 	set(CMAKE_MODULE_PATH "${PACKAGE_DIR}\\sfml\\cmake\\Modules;${PACKAGE_DIR}\\tgui\\cmake\\Modules")
 
 	if(WIN32)
-		set(CMAKE_INCLUDE_PATH "c:\\Program Files (x86)\\GnuWin32\\include;c:\\Program Files (x86)\\OpenAL 1.1 SDK\\include")
-		set(CMAKE_LIBRARY_PATH "c:\\Program Files (x86)\\GnuWin32\\lib;c:\\Program Files (x86)\\OpenAL 1.1 SDK\\libs")
-
 		#OpenGl
 		find_package(OPENGL REQUIRED)
 		if(OPENGL_FOUND)
@@ -20,60 +17,8 @@ function(nb_target_add_libraries TARGET_NAME)
 			target_link_libraries(${TARGET_NAME} ${OPENGL_LIBRARIES})
 		endif()
 
-		#OpenAl
-		find_package(OPENAL REQUIRED)
-		if(OPENAL_FOUND)
-			target_include_directories(${TARGET_NAME} PUBLIC ${OPENAL_INCLUDE_DIR})
-			target_link_libraries(${TARGET_NAME} ${OPENAL_LIBRARIES})
-		endif()
+		target_link_libraries(${TARGET_NAME} legacy_stdio_definitions.lib)
 
-		#Freetype
-		find_package(FreeType REQUIRED)
-		if(FREETYPE_FOUND)
-			target_include_directories(${TARGET_NAME} PUBLIC ${FREETYPE_INCLUDE_DIRS})
-			target_link_libraries(${TARGET_NAME} ${FREETYPE_LIBRARIES})
-		endif()
-
-		#JPEG
-		find_package(JPEG REQUIRED)
-		if(JPEG_FOUND)
-			target_include_directories(${TARGET_NAME} PUBLIC ${JPEG_INCLUDE_DIR})
-			target_link_libraries(${TARGET_NAME} ${JPEG_LIBRARIES})
-		endif()
-
-		#winmm
-		target_link_libraries(${TARGET_NAME} winmm)
-
-		#GDI
-		FIND_LIBRARY(GDI REQUIRED)
-		if(GDI_FOUND)
-			target_include_directories(${TARGET_NAME} PUBLIC ${GDI_INCLUDE_DIR})
-			target_link_libraries(${TARGET_NAME} ${GDI_LIBRARIES})
-		endif()
-
-		#FLAC
-		FIND_LIBRARY(FLAC REQUIRED)
-		if(FLAC_FOUND)
-			target_include_directories(${TARGET_NAME} PUBLIC ${FLAC_INCLUDE_DIR})
-			target_link_libraries(${TARGET_NAME} ${FLAC_LIBRARIES})
-		endif()
-
-		#VORBIS
-		FIND_LIBRARY(VORBIS REQUIRED)
-		if(VORBIS_FOUND)
-			target_include_directories(${TARGET_NAME} PUBLIC ${VORBIS_INCLUDE_DIR})
-			target_link_libraries(${TARGET_NAME} ${VORBIS_LIBRARIES})
-		endif()
-
-		#EGL
-		FIND_LIBRARY(EGL REQUIRED)
-		if(EGL_FOUND)
-			target_include_directories(${TARGET_NAME} PUBLIC ${EGL_INCLUDE_DIR})
-			target_link_libraries(${TARGET_NAME} ${EGL_LIBRARIES})
-		endif()
-
-		#ws2_32
-		target_link_libraries(${TARGET_NAME} wsock32 ws2_32)
 	else()
 		MESSAGE(FATAL_ERROR "External dependencies must be configured for this plattform")
 	endif()
@@ -85,6 +30,7 @@ function(nb_target_add_libraries TARGET_NAME)
 	if(SFML_FOUND)
 		target_include_directories(${TARGET_NAME} PUBLIC ${SFML_INCLUDE_DIR})
 		target_link_libraries(${TARGET_NAME} ${SFML_LIBRARIES})
+		target_link_libraries(${TARGET_NAME} ${SFML_DEPENDENCIES})
 	endif()
 
 	# tgui
