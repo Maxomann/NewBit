@@ -85,7 +85,7 @@ Entity nb::ItemManager::createItemEntity( std::unique_ptr<Item> item, Position p
 	entity.addComponent<PhysicsComponent>( bodyDef,
 										   move( shape ),
 										   fixtureDef,
-										   true );
+										   false );
 
 	entity.addComponent<ItemComponent>( move( item ) );
 

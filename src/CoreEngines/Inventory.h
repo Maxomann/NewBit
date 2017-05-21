@@ -15,6 +15,8 @@ namespace nb
 	public:
 		void addItem( std::unique_ptr<Item> item );
 
+		std::unique_ptr<Item> moveItem( size_t id );
+
 		const ContainerType& getContent()const;
 
 		Signal<void( const Inventory& )> s_contentChange;

@@ -4,38 +4,18 @@ using namespace sf;
 using namespace tgui;
 using namespace nb;
 
+const tgui::Color InventoryViewGameState::inactiveColor = tgui::Color {102, 102, 102};
+const tgui::Color InventoryViewGameState::activeColor = tgui::Color {245, 245, 245};
+
 void nb::InventoryViewGameState::updateView( const Inventory& inventoryForUpdate )
 {
-	inventoryListContainer->removeAllWidgets();
+	itemList->removeAllItems();
 
 	int counter = 0;
 
 	for( const auto& item : inventoryForUpdate.getContent() )
 	{
-		Panel::Ptr objectContainer = Panel::create();
-		objectContainer->setSize( 300, 60 );
-		objectContainer->setPosition( 0, 60 * counter );
-		objectContainer->getRenderer()->setBackgroundColor( sf::Color::White );
-
-		/*Picture::Ptr picture = Picture::create();
-		picture->setSize( 60, 60 );*/
-
-		Label::Ptr label = Label::create();
-		label->setSize( 200, 60 );
-		label->setPosition( 60, 0 );
-		label->setText( item->getName() );
-
-		Button::Ptr useButton = Button::create();
-		useButton->setSize( 40, 40 );
-		useButton->setPosition( 260, 0 );
-		useButton->setText( "Use" );
-
-		//objectContainer->add( picture );
-		objectContainer->add( label );
-		objectContainer->add( useButton );
-
-		inventoryListContainer->add( objectContainer );
-
+		itemList->addItem( item->getName(), to_string( counter ) );
 		counter++;
 	}
 }
@@ -54,9 +34,79 @@ void nb::InventoryViewGameState::init( const CoreEngineManager& coreEngines,
 	graphics = coreEngines.getEngine<GraphicsEngine>();
 	resources = coreEngines.getEngine<ResourceEngine>();
 
-	inventoryListContainer = Panel::create();
-	inventoryListContainer->setSize( {300, 500} );
-	inventoryListContainer->setPosition( 700, "( parent.height - height ) / 2" );
+	inventoryListContainer = ChildWindow::create();
+	inventoryListContainer->setSize( {300, 360} );
+	inventoryListContainer->setTitle( "Inventory" );
+	inventoryListContainer->keepInParent( true );
+	inventoryListContainer->setTitleButtons( ChildWindow::TitleButton::None );
+
+	itemList = ListBox::create();
+	itemList->setSize( {300, 280} );
+	itemList->setPosition( {0,40} );
+
+	useButton = Button::create();
+	useButton->setSize( {300, 40} );
+	useButton->setPosition( {0, 320} );
+	useButton->setText( "Use" );
+	useButton->getRenderer()->setBackgroundColor( inactiveColor );
+	useButton->getRenderer()->setBackgroundColorHover( inactiveColor );
+
+	inventoryListContainer->add( itemList );
+	inventoryListContainer->add( useButton );
+
+	itemList->connect( "ItemSelected", [&] ( string name, string id ){
+		// select
+		if( itemList->getSelectedItem().getSize() > 0 )
+		{
+			selectedItemId = atoi( id.c_str() );
+
+			if( inventory.getContent().at( selectedItemId )->canBeUsed() )
+			{
+				useButton->getRenderer()->setBackgroundColor( activeColor );
+				useButton->getRenderer()->setBackgroundColorHover( activeColor );
+			}
+		}
+		else
+		{
+			selectedItemId = -1;
+			useButton->getRenderer()->setBackgroundColor( inactiveColor );
+			useButton->getRenderer()->setBackgroundColorHover( inactiveColor );
+		}
+	} );
+	itemList->connect( "DoubleClicked", [&] ( string name, string id ){
+		// drop
+
+		if( itemList->getSelectedItem().getSize() > 0 )
+		{
+			int clickedItemId = atoi( id.c_str() );
+
+			auto item = inventory.moveItem( clickedItemId );
+
+			auto spawnPosition = entityToApplyActions->getComponent<TransformationComponent>()->getPosition();
+			spawnPosition.xy += Vector2f( 0, 60 );
+
+			world.addEntity( ItemManager::createItemEntity( move( item ), spawnPosition ) );
+		}
+	} );
+	useButton->connect( "Pressed", [&] (){
+		// try to use
+
+		if( selectedItemId >= 0 )
+		{
+			const auto& selectedItem = inventory.getContent().at( selectedItemId );
+
+			if( selectedItem->canBeUsed() )
+			{
+				// use here TODO...
+
+				selectedItemId = -1;
+
+				useButton->getRenderer()->setBackgroundColor( inactiveColor );
+				useButton->getRenderer()->setBackgroundColorHover( inactiveColor );
+			}
+		}
+	} );
+
 	graphics->getGui()->add( inventoryListContainer );
 
 	inventory.s_contentChange.connect_track( connections, this, &InventoryViewGameState::updateView );

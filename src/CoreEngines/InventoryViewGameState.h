@@ -17,7 +17,14 @@ namespace nb
 		Entity* entityToApplyActions;
 		Inventory& inventory;
 
-		tgui::Panel::Ptr inventoryListContainer;
+		tgui::ChildWindow::Ptr inventoryListContainer;
+		tgui::ListBox::Ptr itemList;
+		tgui::Button::Ptr useButton;
+
+		int selectedItemId = -1;
+
+		static const tgui::Color inactiveColor;
+		static const tgui::Color activeColor;
 
 		Connections connections;
 

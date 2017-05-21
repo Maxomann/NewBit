@@ -11,6 +11,16 @@ void nb::Inventory::addItem( std::unique_ptr<Item> item )
 	}
 }
 
+std::unique_ptr<Item> nb::Inventory::moveItem( size_t id )
+{
+	auto retVal = move( items.at( id ) );
+
+	items.erase( items.begin() + id );
+	s_contentChange.call( *this );
+
+	return retVal;
+}
+
 const Inventory::ContainerType & nb::Inventory::getContent() const
 {
 	return items;
