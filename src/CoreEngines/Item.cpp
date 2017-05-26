@@ -3,14 +3,21 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-nb::Item::Item( std::string name,
+nb::Item::Item( const std::string name,
 				const TextureReference* texture,
-				bool usePossible,
-				std::string useActionName )
+				std::string useActionName,
+				bool isUsePossible )
 	: name( move( name ) ),
 	texref( move( texture ) ),
-	usePossible( usePossible ),
+	usePossible( isUsePossible ),
 	useActionName( useActionName )
+{}
+
+nb::Item::Item( const std::string name, const TextureReference * texture )
+	:Item( move( name ),
+		   move( texture ),
+		   "NO_USE",
+		   false )
 {}
 
 const std::string & nb::Item::getName() const

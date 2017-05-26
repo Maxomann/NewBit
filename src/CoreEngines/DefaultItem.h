@@ -7,9 +7,9 @@ namespace nb
 	class DefaultItem : public Item
 	{
 	public:
-		DefaultItem( std::string name,
+		DefaultItem( const std::string name,
 					 const TextureReference* texture );
 
-		virtual bool use( World& world, Entity* entity )override;
+		virtual void use( World& world, Entity* entity )override;
 	};
 }

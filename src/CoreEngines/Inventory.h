@@ -17,6 +17,10 @@ namespace nb
 
 		std::unique_ptr<Item> moveItem( size_t id );
 
+		bool containsItem( const Item* itemPtr )const;
+
+		void removeItem( const Item* itemPtr );
+
 		const ContainerType& getContent()const;
 
 		Signal<void( const Inventory& )> s_contentChange;

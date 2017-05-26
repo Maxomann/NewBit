@@ -9,9 +9,9 @@ namespace nb
 		float thirst = 100.f;
 		float energy = 100.f;
 
-		const float baseHungerRate = 0.00001f;
-		const float baseThirstRate = 0.00002f;
-		const float baseEnergyRate = 0.0000005f;
+		const float baseHungerRate = 0.0001f;
+		const float baseThirstRate = 0.0002f;
+		const float baseEnergyRate = 0.000005f;
 
 	public:
 		NeedsComponent();

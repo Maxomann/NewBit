@@ -21,6 +21,24 @@ std::unique_ptr<Item> nb::Inventory::moveItem( size_t id )
 	return retVal;
 }
 
+bool nb::Inventory::containsItem( const Item * itemPtr ) const
+{
+	auto it = std::find_if( items.begin(), items.end(), [&] ( const auto& el ){
+		return ( el.get() == itemPtr );
+	} );
+
+	return ( it != items.end() );
+}
+
+void nb::Inventory::removeItem( const Item * itemPtr )
+{
+	items.erase( remove_if( items.begin(), items.end(), [&] ( const auto& el ){
+		return ( el.get() == itemPtr );
+	} ), items.end() );
+
+	s_contentChange.call( *this );
+}
+
 const Inventory::ContainerType & nb::Inventory::getContent() const
 {
 	return items;

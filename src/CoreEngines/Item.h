@@ -19,10 +19,13 @@ namespace nb
 		std::string useActionName;
 
 	public:
-		Item( std::string name,
+		Item( const std::string name,
 			  const TextureReference* texture,
-			  bool usePossible,
-			  std::string useActionName );
+			  std::string useActionName,
+			  bool isUsePossible = true );
+		/* Item use IS NOT possible */
+		Item( const std::string name,
+			  const TextureReference* texture );
 		Item( const Item& item ) = delete;
 		Item( Item&& item ) = default;
 		virtual ~Item() = default;
@@ -36,6 +39,6 @@ namespace nb
 		const std::string& getUseActionName()const;
 
 		// return true if this item should be deleted after use
-		virtual bool use( World& world, Entity* entity ) = 0;
+		virtual void use( World& world, Entity* entity ) = 0;
 	};
 }

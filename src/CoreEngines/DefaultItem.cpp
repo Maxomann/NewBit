@@ -3,14 +3,12 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
-nb::DefaultItem::DefaultItem( std::string name, const TextureReference * texture )
+nb::DefaultItem::DefaultItem( const std::string name, const TextureReference * texture )
 	: Item( name,
-			texture,
-			false,
-			"NO_USE" )
+			texture )
 {}
 
-bool nb::DefaultItem::use( World & world, Entity * entity )
+void nb::DefaultItem::use( World & world, Entity * entity )
 {
-	return false;
+	return;
 }

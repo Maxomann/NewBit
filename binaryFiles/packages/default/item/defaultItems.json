@@ -11,7 +11,12 @@
 	},
 	{
 		"id":2,
+		"type":"food",
 		"name":"Apple",
-		"texture":"default:texture:item_apple"
+		"texture":"default:texture:item_apple",
+		"hunger":1,
+		"thirst":3,
+		"energy":0.05,
+		"uses":2
 	}
 ]

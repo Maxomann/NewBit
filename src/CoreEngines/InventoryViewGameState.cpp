@@ -54,7 +54,7 @@ void nb::InventoryViewGameState::init( const CoreEngineManager& coreEngines,
 	inventoryListContainer->add( itemList );
 	inventoryListContainer->add( useButton );
 
-	itemList->connect( "ItemSelected", [&] ( string name, string id ){
+	itemList->connect( "ItemSelected", [&] ( const string& name, const string& id ){
 		// select
 		if( itemList->getSelectedItem().getSize() > 0 )
 		{
@@ -65,6 +65,11 @@ void nb::InventoryViewGameState::init( const CoreEngineManager& coreEngines,
 				useButton->getRenderer()->setBackgroundColor( activeColor );
 				useButton->getRenderer()->setBackgroundColorHover( activeColor );
 			}
+			else
+			{
+				useButton->getRenderer()->setBackgroundColor( inactiveColor );
+				useButton->getRenderer()->setBackgroundColorHover( inactiveColor );
+			}
 		}
 		else
 		{
@@ -73,7 +78,7 @@ void nb::InventoryViewGameState::init( const CoreEngineManager& coreEngines,
 			useButton->getRenderer()->setBackgroundColorHover( inactiveColor );
 		}
 	} );
-	itemList->connect( "DoubleClicked", [&] ( string name, string id ){
+	itemList->connect( "DoubleClicked", [&] ( const string& name, const string& id ){
 		// drop
 
 		if( itemList->getSelectedItem().getSize() > 0 )
@@ -96,14 +101,7 @@ void nb::InventoryViewGameState::init( const CoreEngineManager& coreEngines,
 			const auto& selectedItem = inventory.getContent().at( selectedItemId );
 
 			if( selectedItem->canBeUsed() )
-			{
-				// use here TODO...
-
-				selectedItemId = -1;
-
-				useButton->getRenderer()->setBackgroundColor( inactiveColor );
-				useButton->getRenderer()->setBackgroundColorHover( inactiveColor );
-			}
+				selectedItem->use( world, entityToApplyActions );
 		}
 	} );
 

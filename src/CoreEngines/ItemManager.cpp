@@ -3,6 +3,53 @@ using namespace std;
 using namespace sf;
 using namespace nb;
 
+void nb::ItemManager::parseObject( const TextureManager & textures, const nlohmann::json & el )
+{
+	Item::ID id( el.at( "id" ).get<Item::ID>() );
+	string name( el.at( "name" ).get<string>() );
+	GlobalId textureId( el.at( "texture" ).get<std::string>() );
+
+	string itemType( "" );
+	if( el.find( "type" ) != el.end() )
+		itemType = ( el.at( "type" ).get<string>() );
+	if( itemType.size() == 0 || itemType == "default" )
+	{
+		addFactory( make_unique<DefaultItemFactory>( move( id ),
+													 move( name ),
+													 DefaultItemFactory::LABELS(),
+													 textures.getTextureReference( textureId ) ) );
+	}
+	else if( itemType == "food" )
+	{
+		float hunger = 0.f;
+		float thirst = 0.f;
+		float energy = 0.f;
+		unsigned int uses = 1;
+
+		auto it = el.find( "hunger" );
+		if( it != el.end() )
+			hunger = it->get<float>();
+		it = el.find( "thirst" );
+		if( it != el.end() )
+			thirst = it->get<float>();
+		it = el.find( "energy" );
+		if( it != el.end() )
+			energy = it->get<float>();
+		it = el.find( "uses" );
+		if( it != el.end() )
+			uses = it->get<unsigned int>();
+
+		addFactory( make_unique<DefaultFoodItemFactory>( move( id ),
+														 move( name ),
+														 DefaultItemFactory::LABELS(),
+														 textures.getTextureReference( textureId ),
+														 hunger,
+														 thirst,
+														 energy,
+														 uses ) );
+	}
+}
+
 void nb::ItemManager::parseFile( const std::string & path, const TextureManager & textures )
 {
 	ifstream file( path );
@@ -13,26 +60,12 @@ void nb::ItemManager::parseFile( const std::string & path, const TextureManager 
 	{
 		for( const auto& el : fileContent )
 		{
-			Item::ID id( el.at( "id" ).get<Item::ID>() );
-			string name( el.at( "name" ).get<string>() );
-			GlobalId textureId( el.at( "texture" ).get<std::string>() );
-
-			addFactory( make_unique<DefaultItemFactory>( move( id ),
-														 move( name ),
-														 DefaultItemFactory::LABELS(),
-														 textures.getTextureReference( textureId ) ) );
+			parseObject( textures, el );
 		}
 	}
 	else if( fileContent.is_object() )
 	{
-		Item::ID id( fileContent.at( "id" ).get<Item::ID>() );
-		string name( fileContent.at( "name" ).get<string>() );
-		GlobalId textureId( fileContent.at( "texture" ).get<std::string>() );
-
-		addFactory( make_unique<DefaultItemFactory>( move( id ),
-													 move( name ),
-													 DefaultItemFactory::LABELS(),
-													 textures.getTextureReference( textureId ) ) );
+		parseObject( textures, fileContent );
 	}
 	else
 		throw std::runtime_error( "ItemManager::parseFile failed: fileContent is not array or object" );

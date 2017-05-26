@@ -13,11 +13,15 @@
 #include "ItemFactory.h"
 
 #include "DefaultItemFactory.h"
+#include "DefaultFoodItemFactory.h"
 
 namespace nb
 {
 	class ItemManager : public LabeledFactoryManager< ItemFactory >
 	{
+		void parseObject( const TextureManager& textures,
+						  const nlohmann::json& el );
+
 		void parseFile( const std::string& path,
 						const TextureManager& textures );
 
