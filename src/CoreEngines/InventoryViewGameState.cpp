@@ -10,6 +10,7 @@ const tgui::Color InventoryViewGameState::activeColor = tgui::Color {245, 245, 2
 void nb::InventoryViewGameState::updateView( const Inventory& inventoryForUpdate )
 {
 	itemList->removeAllItems();
+	selectedItemId = -1;
 
 	int counter = 0;
 
