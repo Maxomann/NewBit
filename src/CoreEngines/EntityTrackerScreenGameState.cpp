@@ -29,7 +29,7 @@ void nb::EntityTrackerScreenGameState::init( const CoreEngineManager& coreEngine
 	m_playerPositionValueLabel->setText( "Not Available" );
 	m_playerStatsWindow->add( m_playerPositionValueLabel );
 
-	m_playerSpritePathLabel = Label::create();
+	/*m_playerSpritePathLabel = Label::create();
 	m_playerSpritePathLabel->setSize( Layout2d( 200, 40 ) );
 	m_playerSpritePathLabel->setPosition( Layout2d( 0, 60 ) );
 	m_playerSpritePathLabel->setText( "GlTextureHandle:" );
@@ -39,7 +39,7 @@ void nb::EntityTrackerScreenGameState::init( const CoreEngineManager& coreEngine
 	m_playerSpritePathValueLabel->setSize( Layout2d( 200, 40 ) );
 	m_playerSpritePathValueLabel->setPosition( Layout2d( 200, 60 ) );
 	m_playerSpritePathValueLabel->setText( "Not Available" );
-	m_playerStatsWindow->add( m_playerSpritePathValueLabel );
+	m_playerStatsWindow->add( m_playerSpritePathValueLabel );*/
 
 	m_playerHealthLabel = Label::create();
 	m_playerHealthLabel->setSize( Layout2d( 200, 40 ) );
@@ -99,12 +99,6 @@ void nb::EntityTrackerScreenGameState::track( const Entity* entity )
 												 "Y: " + to_string( position.xy.y ) + "\n" +
 												 "Z: " + to_string( position.layer ) );
 		} );
-	}
-
-	auto sprite = entity->getComponent_try<SpriteComponent>();
-	if( sprite )
-	{
-		m_playerSpritePathValueLabel->setText( to_string( sprite->getSprite().getTexture()->getNativeHandle() ) );
 	}
 
 	auto health = entity->getComponent_try<HealthComponent>();

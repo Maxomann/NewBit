@@ -7,6 +7,11 @@ nb::RenderComponent::RenderComponent( int zValue )
 	: m_zValue( zValue )
 {}
 
+nb::RenderComponent::RenderComponent( std::vector<std::unique_ptr<EntityRenderer>> renderers,
+									  int zValue )
+	: renderers( move( renderers ) )
+{}
+
 void RenderComponent::init()
 {
 	transformComponent = component<TransformationComponent>();
@@ -34,47 +39,32 @@ void nb::RenderComponent::setZValue( int zValue )
 	m_zValue = move( zValue );
 }
 
-void RenderComponent::addDrawable( const sf::Drawable* drawable, const sf::FloatRect* globalBoundsPtr )
+void nb::RenderComponent::addRenderer( std::unique_ptr<EntityRenderer> renderer )
 {
-	m_drawables.push_back( drawable );
-	globalBounds[ drawable ] = globalBoundsPtr;
-};
-
-void RenderComponent::removeDrawable( const sf::Drawable* drawable )
-{
-#ifdef _DEBUG
-	m_drawables.erase( std::remove( m_drawables.begin(), m_drawables.end(), drawable ) );
-#else
-	m_drawables.erase( std::remove( m_drawables.begin(), m_drawables.end(), drawable ), m_drawables.end() );
-#endif
-};
+	renderers.push_back( move( renderer ) );
+	drawables.push_back( renderers.back().get() );
+}
 
 const sf::FloatRect& nb::RenderComponent::getGlobalBounds() const
 {
 	// This should be replaced with a more sensible algorithm, but it works for now
 	// If clipping issues occur, this might be the cause :D
 
-	const sf::FloatRect* biggestRect = nullptr;
-	for( const auto& el : globalBounds )
+	const sf::FloatRect* biggestRect = &defaultRect;
+	for( const auto& el : renderers )
 	{
-		if( biggestRect == nullptr )
-			biggestRect = el.second;
-		else
-		{
-			auto areaA = el.second->width*el.second->height;
-			auto areaB = biggestRect->width*biggestRect->height;
-			if( areaA > areaB )
-				biggestRect = el.second;
-		}
+		const auto& thisRect = el->getGlobalBounds();
+
+		auto areaA = thisRect.width * thisRect.height;
+		auto areaB = biggestRect->width * biggestRect->height;
+		if( areaA > areaB )
+			biggestRect = &thisRect;
 	}
 
-	if( biggestRect == nullptr )
-		return defaultRect;
-	else
-		return *biggestRect;
+	return *biggestRect;
 }
 
 const std::vector<const sf::Drawable*>& RenderComponent::getDrawingData()const
 {
-	return m_drawables;
+	return drawables;
 };

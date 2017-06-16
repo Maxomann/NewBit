@@ -21,30 +21,30 @@ namespace nb
 		template < class T, class ... Args >
 		T* addComponent( Args&& ... args )
 		{
-			auto component = std::make_unique<T>( (std::forward<Args>( args ))... );
+			auto component = std::make_unique<T>( ( std::forward<Args>( args ) )... );
 			component->linkToEntity( this );
-			if (m_isInit)
+			if( m_isInit )
 				component->init();
 
-			const std::type_index typeIndex( typeid(T) );
+			const std::type_index typeIndex( typeid( T ) );
 
 			auto insertResult = m_components.insert( std::make_pair( typeIndex, std::move( component ) ) );
-			if (!insertResult.second)
+			if( !insertResult.second )
 			{
 				throw exception::ComponentAlreadyExistsException( typeIndex.name() );
 			}
-			return static_cast<T*>(insertResult.first->second.get());
+			return static_cast<T*>( insertResult.first->second.get() );
 		};
 
 		template < class T >
 		T* getComponent()const
 		{
-			const std::type_index typeIndex( typeid(T) );
+			const std::type_index typeIndex( typeid( T ) );
 			try
 			{
-				return (T*)m_components.at( typeIndex ).get();
+				return (T*) m_components.at( typeIndex ).get();
 			}
-			catch (std::out_of_range)
+			catch( std::out_of_range )
 			{
 				throw exception::ComponentDoesNotExistException( typeIndex.name() );
 			}
@@ -59,10 +59,10 @@ namespace nb
 		template < class T >
 		T* getComponent_try()const
 		{
-			const std::type_index typeIndex( typeid(T) );
+			const std::type_index typeIndex( typeid( T ) );
 			auto result = m_components.find( typeIndex );
-			if (result != m_components.end())
-				return (T*)result->second.get();
+			if( result != m_components.end() )
+				return (T*) result->second.get();
 			else
 				return nullptr;
 		};
@@ -76,15 +76,15 @@ namespace nb
 		template < class T >
 		void removeComponent()
 		{
-			const std::type_index typeIndex( typeid(T) );
+			const std::type_index typeIndex( typeid( T ) );
 			try
 			{
 				auto& component = m_components.at( typeIndex );
-				if (m_isInit)
+				if( m_isInit )
 					component->destroy();
 				m_components.erase( typeIndex );
 			}
-			catch (std::out_of_range)
+			catch( std::out_of_range )
 			{
 				throw exception::ComponentDoesNotExistException( typeIndex.name() );
 			}

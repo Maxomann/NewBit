@@ -2,13 +2,15 @@
 #include "stdafx.h"
 #include "TransformationComponent.h"
 #include "RenderComponent.h"
-#include "SpriteComponent.h"
 #include "HealthComponent.h"
 #include "PhysicsComponent.h"
 #include "NeedsComponent.h"
 #include "InventoryComponent.h"
 #include "ItemSpawnerComponent.h"
 #include "ItemPickupComponent.h"
+
+#include "SpriteRenderer.h"
+#include "TileMapRenderer.h"
 
 #include "EntityFactory.h"
 

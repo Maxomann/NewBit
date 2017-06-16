@@ -11,8 +11,11 @@ Entity nb::createHuman( const ResourceEngine*const resources, sf::Vector3i posit
 	entity.addComponent<TransformationComponent>( sf::Vector2f( position.x, position.y ),
 												  position.z,
 												  Vector2f( 32, 64 ) );
-	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *resources->textures.getTextureReference( "default:texture:player" ) );
+	entity.addComponent<RenderComponent>(
+		vector<unique_ptr<EntityRenderer>>{
+		make_unique<SpriteRenderer>( *resources->textures.getTextureReference( "default:texture:player" ) )
+	},
+		0 );
 	entity.addComponent<HealthComponent>( 200, 100 );
 
 	// Physics
@@ -51,7 +54,11 @@ Entity nb::createTilemapChunk( const ResourceEngine*const resources,
 		Vector2f( ChunkSystem::CHUNK_SIZE_IN_PIXEL,
 				  ChunkSystem::CHUNK_SIZE_IN_PIXEL )
 		);
-	terrain.addComponent<RenderComponent>( -10 );
+	terrain.addComponent<RenderComponent>(
+		vector<unique_ptr<EntityRenderer>>{
+		make_unique<TileMapRenderer>()
+	},
+		-10 );
 
 	terrain.addComponent<TileMapComponent>( move( tiles ) );
 
@@ -84,8 +91,11 @@ Entity TreeFactory::create()const
 	entity.addComponent<TransformationComponent>( sf::Vector2f( 0, 0 ),
 												  0,
 												  Vector2f( 48 * 2, 64 * 2 ) );
-	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *texref );
+	entity.addComponent<RenderComponent>(
+		vector<unique_ptr<EntityRenderer>>{
+		make_unique<SpriteRenderer>( *texref )
+	},
+		0 );
 	// Physics
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
@@ -120,8 +130,11 @@ Entity WallFactory::create()const
 	entity.addComponent<TransformationComponent>( sf::Vector2f( 0, 0 ),
 												  0,
 												  Vector2f( 32, 64 ) );
-	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *texref );
+	entity.addComponent<RenderComponent>(
+		vector<unique_ptr<EntityRenderer>>{
+		make_unique<SpriteRenderer>( *texref )
+	},
+		0 );
 
 	// Physics
 	b2BodyDef bodyDef;

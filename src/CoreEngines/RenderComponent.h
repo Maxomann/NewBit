@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "TransformationComponent.h"
 
+#include "EntityRenderer.h"
+
 namespace nb
 {
 	class RenderComponent : public Component
@@ -9,12 +11,14 @@ namespace nb
 		const TransformationComponent* transformComponent;
 		int m_zValue = 0;
 
-		std::vector<const sf::Drawable*> m_drawables;
-		std::map<const sf::Drawable*, const sf::FloatRect*> globalBounds;
+		std::vector<std::unique_ptr<EntityRenderer>> renderers;
+		std::vector<const sf::Drawable*> drawables;
 		const sf::FloatRect defaultRect = {0, 0, 0, 0};
 
 	public:
 		RenderComponent( int zValue = 0 );
+		RenderComponent( std::vector<std::unique_ptr<EntityRenderer>> renderers,
+						 int zValue = 0 );
 
 		virtual void init() override;
 
@@ -24,8 +28,7 @@ namespace nb
 		const int& getZValue()const;
 		void setZValue( int zValue );
 
-		void addDrawable( const sf::Drawable* drawable, const sf::FloatRect* globalBoundsPtr );
-		void removeDrawable( const sf::Drawable* drawable );
+		void addRenderer( std::unique_ptr<EntityRenderer> renderer );
 
 		const sf::FloatRect& getGlobalBounds()const;
 

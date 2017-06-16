@@ -5,9 +5,10 @@
 
 #include "TransformationComponent.h"
 #include "RenderComponent.h"
-#include "SpriteComponent.h"
 #include "PhysicsComponent.h"
 #include "ItemComponent.h"
+
+#include "SpriteRenderer.h"
 
 #include "LabeledFactoryManager.h"
 #include "ItemFactory.h"

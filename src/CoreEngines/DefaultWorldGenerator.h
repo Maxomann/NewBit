@@ -8,7 +8,6 @@
 #include "TileMapComponent.h"
 #include "ChunkSystem.h"
 #include "MathExtensions.h"
-#include "SpriteComponent.h"
 #include "PhysicsComponent.h"
 #include "EntityFactories.h"
 

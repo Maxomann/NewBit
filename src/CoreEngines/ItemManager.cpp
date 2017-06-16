@@ -99,8 +99,11 @@ Entity nb::ItemManager::createItemEntity( std::unique_ptr<Item> item, Position p
 	entity.addComponent<TransformationComponent>( sf::Vector2f( position.xy.x, position.xy.y ),
 												  position.layer,
 												  Vector2f( 32, 32 ) );
-	entity.addComponent<RenderComponent>( 0 );
-	entity.addComponent<SpriteComponent>( *item->getTextureReference() );
+	entity.addComponent<RenderComponent>(
+		vector<unique_ptr<EntityRenderer>>{
+		make_unique<SpriteRenderer>( *item->getTextureReference() )
+	},
+		0 );
 
 	/* Physics */
 	b2BodyDef bodyDef;

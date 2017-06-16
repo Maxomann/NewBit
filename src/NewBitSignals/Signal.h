@@ -23,8 +23,8 @@ namespace nb
 		{
 			m_callbacks.erase( std::remove_if( m_callbacks.begin(),
 											   m_callbacks.end(),
-											   []( const Callback& el ) {
-				if (el.optionalTrackingPtr.has_value())
+											   [] ( const Callback& el ){
+				if( el.optionalTrackingPtr.has_value() )
 					return el.optionalTrackingPtr->expired();
 				else
 					return false;
@@ -48,9 +48,9 @@ namespace nb
 		}
 
 		template < class T >
-		void connect( T* obj, RetVal( T::* mem_fn_ptr )(Args...) )
+		void connect( T* obj, RetVal( T::* mem_fn_ptr )( Args... ) )
 		{
-			connect( [=]( Args... args ) -> RetVal { return (obj->*mem_fn_ptr)(args...); } );
+			connect( [=] ( Args... args ) -> RetVal{ return ( obj->*mem_fn_ptr )( args... ); } );
 		}
 
 		void connect_track( Connections& connections, std::function<RetVal( Args... )> func )
@@ -67,19 +67,24 @@ namespace nb
 		}
 
 		template < class T >
-		void connect_track( Connections& connections, T* obj, RetVal( T::* mem_fn_ptr )(Args...) )
+		void connect_track( Connections& connections, T* obj, RetVal( T::* mem_fn_ptr )( Args... ) )
 		{
-			connect_track( connections, [=]( Args... args ) -> RetVal { return (obj->*mem_fn_ptr)(args...); } );
+			connect_track( connections, [=] ( Args... args ) -> RetVal{ return ( obj->*mem_fn_ptr )( args... ); } );
 		}
 
 		void call( Args const& ... args )
 		{
 			removeInvalidConnections();
 
-			for (const auto& el : m_callbacks)
+			for( const auto& el : m_callbacks )
 			{
 				el.func( args ... );
 			}
+		}
+
+		void operator() ( Args const& ... args )
+		{
+			call( std::forward( args )... );
 		}
 
 		Signal& operator=( const Signal& ) = delete;

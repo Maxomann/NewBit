@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 #include "id.h"
-#include "SpriteComponent.h"
 #include "RenderSystem.h"
 
 namespace nb

@@ -1,12 +1,13 @@
 #pragma once
 #include "stdafx.h"
+#include "EntityRenderer.h"
+
 #include "TransformationComponent.h"
 #include "TextureReference.h"
-#include "RenderComponent.h"
 
 namespace nb
 {
-	class SpriteComponent : public nb::Component
+	class SpriteRenderer : public EntityRenderer
 	{
 		sf::Sprite m_sprite;
 		sf::FloatRect globalBounds;
@@ -16,11 +17,14 @@ namespace nb
 		void calculateGlobalBounds();
 
 	public:
-		SpriteComponent() = default;
-		SpriteComponent( const sf::Texture& texture );
-		SpriteComponent( const TextureReference& texture );
+		SpriteRenderer( const sf::Texture& texture );
+		SpriteRenderer( const TextureReference& texture );
 
-		DLL_EXPORT virtual void init()override;
+		virtual void init( const Entity* entity ) override;
+
+		virtual const sf::FloatRect& getGlobalBounds()const override;
+
+		virtual void draw( sf::RenderTarget& target, sf::RenderStates states )const override;
 
 		void setTexture( const sf::Texture& texture );
 		void setTexture( const TextureReference& texture );
