@@ -99,10 +99,12 @@ Entity nb::ItemManager::createItemEntity( std::unique_ptr<Item> item, Position p
 	entity.addComponent<TransformationComponent>( sf::Vector2f( position.xy.x, position.xy.y ),
 												  position.layer,
 												  Vector2f( 32, 32 ) );
+
+	vector<unique_ptr<EntityRenderer>> tempv;
+	tempv.push_back( make_unique<SpriteRenderer>( *item->getTextureReference() ) );
+
 	entity.addComponent<RenderComponent>(
-		vector<unique_ptr<EntityRenderer>>{
-		make_unique<SpriteRenderer>( *item->getTextureReference() )
-	},
+		move( tempv ),
 		0 );
 
 	/* Physics */

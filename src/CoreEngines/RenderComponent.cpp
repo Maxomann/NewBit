@@ -9,12 +9,18 @@ nb::RenderComponent::RenderComponent( int zValue )
 
 nb::RenderComponent::RenderComponent( std::vector<std::unique_ptr<EntityRenderer>> renderers,
 									  int zValue )
-	: renderers( move( renderers ) )
-{}
+{
+	for( auto& el : renderers )
+		addRenderer( move( el ) );
+}
 
 void RenderComponent::init()
 {
+	isInit = true;
 	transformComponent = component<TransformationComponent>();
+
+	for( auto& el : renderers )
+		el->init( entity() );
 
 	return;
 };
@@ -41,6 +47,8 @@ void nb::RenderComponent::setZValue( int zValue )
 
 void nb::RenderComponent::addRenderer( std::unique_ptr<EntityRenderer> renderer )
 {
+	if( isInit )
+		renderer->init( entity() );
 	renderers.push_back( move( renderer ) );
 	drawables.push_back( renderers.back().get() );
 }

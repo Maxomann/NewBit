@@ -15,10 +15,13 @@ namespace nb
 		std::vector<const sf::Drawable*> drawables;
 		const sf::FloatRect defaultRect = {0, 0, 0, 0};
 
+		bool isInit = false;
+
 	public:
 		RenderComponent( int zValue = 0 );
 		RenderComponent( std::vector<std::unique_ptr<EntityRenderer>> renderers,
 						 int zValue = 0 );
+		RenderComponent( const RenderComponent& ) = delete;
 
 		virtual void init() override;
 

@@ -6,6 +6,10 @@ namespace nb
 	class EntityRenderer : public sf::Drawable
 	{
 	public:
+		EntityRenderer() = default;
+		EntityRenderer( const EntityRenderer& ) = delete;
+		EntityRenderer( EntityRenderer&& ) = default;
+
 		virtual ~EntityRenderer() = default;
 
 		virtual void init( const Entity* entity ) = 0;
