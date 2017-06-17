@@ -100,11 +100,11 @@ Entity nb::ItemManager::createItemEntity( std::unique_ptr<Item> item, Position p
 												  position.layer,
 												  Vector2f( 32, 32 ) );
 
-	vector<unique_ptr<EntityRenderer>> tempv;
-	tempv.push_back( make_unique<SpriteRenderer>( *item->getTextureReference() ) );
+	vector<unique_ptr<EntityRenderer>> renderers;
+	renderers.push_back( make_unique<SpriteRenderer>( *item->getTextureReference() ) );
 
 	entity.addComponent<RenderComponent>(
-		move( tempv ),
+		move( renderers ),
 		0 );
 
 	/* Physics */
